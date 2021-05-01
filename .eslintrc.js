@@ -13,7 +13,9 @@ module.exports = {
     sourceType: 'module',
   },
   plugins: ['react', '@typescript-eslint'],
-  rules: {},
+  rules: {
+    'require-jsdoc': 0,
+  },
   settings: {
     react: {
       version: 'latest',

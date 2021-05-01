@@ -2,41 +2,274 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const getTask = /* GraphQL */ `
-  query GetTask($id: ID!) {
-    getTask(id: $id) {
+export const getBoard = /* GraphQL */ `
+  query GetBoard($id: ID!) {
+    getBoard(id: $id) {
       id
-      title
+      name
       description
-      status
+      owner
+      editors
       createdAt
       updatedAt
+      columns {
+        items {
+          id
+          boardId
+          name
+          owner
+          createdAt
+          updatedAt
+          tickets {
+            items {
+              id
+              columnId
+              title
+              description
+              labels {
+                id
+                name
+                color
+              }
+              owner
+              createdAt
+              updatedAt
+              comments {
+                items {
+                  id
+                  ticketId
+                  content
+                  createdAt
+                  updatedAt
+                  owner
+                }
+                nextToken
+              }
+            }
+            nextToken
+          }
+        }
+        nextToken
+      }
     }
   }
 `;
-export const listTasks = /* GraphQL */ `
-  query ListTasks(
-    $filter: ModelTaskFilterInput
+export const listBoards = /* GraphQL */ `
+  query ListBoards(
+    $filter: ModelBoardFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listTasks(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listBoards(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        title
+        name
         description
-        status
+        owner
+        editors
         createdAt
         updatedAt
+        columns {
+          items {
+            id
+            boardId
+            name
+            owner
+            createdAt
+            updatedAt
+            tickets {
+              items {
+                id
+                columnId
+                title
+                description
+                labels {
+                  id
+                  name
+                  color
+                }
+                owner
+                createdAt
+                updatedAt
+                comments {
+                  items {
+                    id
+                    ticketId
+                    content
+                    createdAt
+                    updatedAt
+                    owner
+                  }
+                  nextToken
+                }
+              }
+              nextToken
+            }
+          }
+          nextToken
+        }
       }
       nextToken
     }
   }
 `;
-export const getPrivateNote = /* GraphQL */ `
-  query GetPrivateNote($id: ID!) {
-    getPrivateNote(id: $id) {
+export const getColumn = /* GraphQL */ `
+  query GetColumn($id: ID!) {
+    getColumn(id: $id) {
       id
+      boardId
+      name
+      owner
+      createdAt
+      updatedAt
+      tickets {
+        items {
+          id
+          columnId
+          title
+          description
+          labels {
+            id
+            name
+            color
+          }
+          owner
+          createdAt
+          updatedAt
+          comments {
+            items {
+              id
+              ticketId
+              content
+              createdAt
+              updatedAt
+              owner
+            }
+            nextToken
+          }
+        }
+        nextToken
+      }
+    }
+  }
+`;
+export const listColumns = /* GraphQL */ `
+  query ListColumns(
+    $filter: ModelColumnFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listColumns(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        boardId
+        name
+        owner
+        createdAt
+        updatedAt
+        tickets {
+          items {
+            id
+            columnId
+            title
+            description
+            labels {
+              id
+              name
+              color
+            }
+            owner
+            createdAt
+            updatedAt
+            comments {
+              items {
+                id
+                ticketId
+                content
+                createdAt
+                updatedAt
+                owner
+              }
+              nextToken
+            }
+          }
+          nextToken
+        }
+      }
+      nextToken
+    }
+  }
+`;
+export const getTicket = /* GraphQL */ `
+  query GetTicket($id: ID!) {
+    getTicket(id: $id) {
+      id
+      columnId
+      title
+      description
+      labels {
+        id
+        name
+        color
+      }
+      owner
+      createdAt
+      updatedAt
+      comments {
+        items {
+          id
+          ticketId
+          content
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
+    }
+  }
+`;
+export const listTickets = /* GraphQL */ `
+  query ListTickets(
+    $filter: ModelTicketFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listTickets(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        columnId
+        title
+        description
+        labels {
+          id
+          name
+          color
+        }
+        owner
+        createdAt
+        updatedAt
+        comments {
+          items {
+            id
+            ticketId
+            content
+            createdAt
+            updatedAt
+            owner
+          }
+          nextToken
+        }
+      }
+      nextToken
+    }
+  }
+`;
+export const getComment = /* GraphQL */ `
+  query GetComment($id: ID!) {
+    getComment(id: $id) {
+      id
+      ticketId
       content
       createdAt
       updatedAt
@@ -44,15 +277,16 @@ export const getPrivateNote = /* GraphQL */ `
     }
   }
 `;
-export const listPrivateNotes = /* GraphQL */ `
-  query ListPrivateNotes(
-    $filter: ModelPrivateNoteFilterInput
+export const listComments = /* GraphQL */ `
+  query ListComments(
+    $filter: ModelCommentFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listPrivateNotes(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listComments(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        ticketId
         content
         createdAt
         updatedAt

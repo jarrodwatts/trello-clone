@@ -1,28 +1,92 @@
-type Task
-  @model
-  @auth(
+# One Board can have many columns
+# One Column can have many tickets
+# One Ticket can have many comments
+# One Board can have One owner but many editors
+
+# CURRENT PROBLEMS:
+# - Teams can have multiple boards
+# - Teams have many members of different rank
+# - How do I get editors to inherit from the parent type
+
+type Board
+@model
+@auth(
     rules: [
+      # Owners of a board can perform any operations
+      { allow: owner }
+      # Editors of a board cannot perform delete or create board mutations
       {
-        allow: groups
-        groups: ["Managers"]
-        queries: null
-        mutations: [create, update, delete]
-      }
-      {
-        allow: groups
-        groups: ["Employees"]
-        queries: [get, list]
-        mutations: null
+        allow: owner, ownerField: "editors", operations: [read, update]
       }
     ]
   ) {
   id: ID!
-  title: String!
+  name: String!
   description: String
-  status: String
+  columns: [Column] @connection(keyName: "byBoard", fields: ["id"])
+  owner: String
+  editors: [String]
 }
 
-type PrivateNote @model @auth(rules: [{ allow: owner }]) {
+type Column 
+@model
+@key(name: "byBoard", fields: ["boardId", "name"])
+@auth(
+    rules: [
+      # Owners of a column can perform any operations
+      { allow: owner }
+      # Editors of a column can perform any operations
+      #{ allow: owner, ownerField: "editors" }
+    ]
+  )
+{
   id: ID!
+  boardId: ID!
+  name: String!
+  tickets: [Ticket] @connection(keyName: "byColumn", fields: ["id"])
+  owner: String
+  #editors: [String]
+}
+
+type Ticket
+@model
+@key(name: "byColumn", fields: ["columnId", "title"])
+@auth(
+  rules: [
+      # Owners of a ticket can perform any operations
+      { allow: owner }
+      # Editors of a ticket can perform any operations
+      #{ allow: owner, ownerField: "editors" }
+    ]
+)
+{
+  id: ID!
+  columnId: ID!
+  title: String!
+  description: String
+  comments: [Comment] @connection(keyName: "byTicket", fields: ["id"])
+  labels: [Label]
+  owner: String
+  #editors: [String]
+}
+
+type Comment 
+@model
+@key(name: "byTicket", fields: ["ticketId", "content"]) 
+@auth(
+    rules: [
+      # Owners of a comment can perform any operations
+      { allow: owner }
+    ]
+  )
+{
+  id: ID!
+  ticketId: ID!
   content: String!
+}
+
+type Label {
+  id: ID!
+  name: String!
+  color: String!
 }

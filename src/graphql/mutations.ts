@@ -2,58 +2,404 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createTask = /* GraphQL */ `
-  mutation CreateTask(
-    $input: CreateTaskInput!
-    $condition: ModelTaskConditionInput
+export const createBoard = /* GraphQL */ `
+  mutation CreateBoard(
+    $input: CreateBoardInput!
+    $condition: ModelBoardConditionInput
   ) {
-    createTask(input: $input, condition: $condition) {
+    createBoard(input: $input, condition: $condition) {
       id
-      title
+      name
       description
-      status
+      owner
+      editors
       createdAt
       updatedAt
+      columns {
+        items {
+          id
+          boardId
+          name
+          owner
+          createdAt
+          updatedAt
+          tickets {
+            items {
+              id
+              columnId
+              title
+              description
+              labels {
+                id
+                name
+                color
+              }
+              owner
+              createdAt
+              updatedAt
+              comments {
+                items {
+                  id
+                  ticketId
+                  content
+                  createdAt
+                  updatedAt
+                  owner
+                }
+                nextToken
+              }
+            }
+            nextToken
+          }
+        }
+        nextToken
+      }
     }
   }
 `;
-export const updateTask = /* GraphQL */ `
-  mutation UpdateTask(
-    $input: UpdateTaskInput!
-    $condition: ModelTaskConditionInput
+export const updateBoard = /* GraphQL */ `
+  mutation UpdateBoard(
+    $input: UpdateBoardInput!
+    $condition: ModelBoardConditionInput
   ) {
-    updateTask(input: $input, condition: $condition) {
+    updateBoard(input: $input, condition: $condition) {
       id
-      title
+      name
       description
-      status
+      owner
+      editors
       createdAt
       updatedAt
+      columns {
+        items {
+          id
+          boardId
+          name
+          owner
+          createdAt
+          updatedAt
+          tickets {
+            items {
+              id
+              columnId
+              title
+              description
+              labels {
+                id
+                name
+                color
+              }
+              owner
+              createdAt
+              updatedAt
+              comments {
+                items {
+                  id
+                  ticketId
+                  content
+                  createdAt
+                  updatedAt
+                  owner
+                }
+                nextToken
+              }
+            }
+            nextToken
+          }
+        }
+        nextToken
+      }
     }
   }
 `;
-export const deleteTask = /* GraphQL */ `
-  mutation DeleteTask(
-    $input: DeleteTaskInput!
-    $condition: ModelTaskConditionInput
+export const deleteBoard = /* GraphQL */ `
+  mutation DeleteBoard(
+    $input: DeleteBoardInput!
+    $condition: ModelBoardConditionInput
   ) {
-    deleteTask(input: $input, condition: $condition) {
+    deleteBoard(input: $input, condition: $condition) {
       id
-      title
+      name
       description
-      status
+      owner
+      editors
       createdAt
       updatedAt
+      columns {
+        items {
+          id
+          boardId
+          name
+          owner
+          createdAt
+          updatedAt
+          tickets {
+            items {
+              id
+              columnId
+              title
+              description
+              labels {
+                id
+                name
+                color
+              }
+              owner
+              createdAt
+              updatedAt
+              comments {
+                items {
+                  id
+                  ticketId
+                  content
+                  createdAt
+                  updatedAt
+                  owner
+                }
+                nextToken
+              }
+            }
+            nextToken
+          }
+        }
+        nextToken
+      }
     }
   }
 `;
-export const createPrivateNote = /* GraphQL */ `
-  mutation CreatePrivateNote(
-    $input: CreatePrivateNoteInput!
-    $condition: ModelPrivateNoteConditionInput
+export const createColumn = /* GraphQL */ `
+  mutation CreateColumn(
+    $input: CreateColumnInput!
+    $condition: ModelColumnConditionInput
   ) {
-    createPrivateNote(input: $input, condition: $condition) {
+    createColumn(input: $input, condition: $condition) {
       id
+      boardId
+      name
+      owner
+      createdAt
+      updatedAt
+      tickets {
+        items {
+          id
+          columnId
+          title
+          description
+          labels {
+            id
+            name
+            color
+          }
+          owner
+          createdAt
+          updatedAt
+          comments {
+            items {
+              id
+              ticketId
+              content
+              createdAt
+              updatedAt
+              owner
+            }
+            nextToken
+          }
+        }
+        nextToken
+      }
+    }
+  }
+`;
+export const updateColumn = /* GraphQL */ `
+  mutation UpdateColumn(
+    $input: UpdateColumnInput!
+    $condition: ModelColumnConditionInput
+  ) {
+    updateColumn(input: $input, condition: $condition) {
+      id
+      boardId
+      name
+      owner
+      createdAt
+      updatedAt
+      tickets {
+        items {
+          id
+          columnId
+          title
+          description
+          labels {
+            id
+            name
+            color
+          }
+          owner
+          createdAt
+          updatedAt
+          comments {
+            items {
+              id
+              ticketId
+              content
+              createdAt
+              updatedAt
+              owner
+            }
+            nextToken
+          }
+        }
+        nextToken
+      }
+    }
+  }
+`;
+export const deleteColumn = /* GraphQL */ `
+  mutation DeleteColumn(
+    $input: DeleteColumnInput!
+    $condition: ModelColumnConditionInput
+  ) {
+    deleteColumn(input: $input, condition: $condition) {
+      id
+      boardId
+      name
+      owner
+      createdAt
+      updatedAt
+      tickets {
+        items {
+          id
+          columnId
+          title
+          description
+          labels {
+            id
+            name
+            color
+          }
+          owner
+          createdAt
+          updatedAt
+          comments {
+            items {
+              id
+              ticketId
+              content
+              createdAt
+              updatedAt
+              owner
+            }
+            nextToken
+          }
+        }
+        nextToken
+      }
+    }
+  }
+`;
+export const createTicket = /* GraphQL */ `
+  mutation CreateTicket(
+    $input: CreateTicketInput!
+    $condition: ModelTicketConditionInput
+  ) {
+    createTicket(input: $input, condition: $condition) {
+      id
+      columnId
+      title
+      description
+      labels {
+        id
+        name
+        color
+      }
+      owner
+      createdAt
+      updatedAt
+      comments {
+        items {
+          id
+          ticketId
+          content
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
+    }
+  }
+`;
+export const updateTicket = /* GraphQL */ `
+  mutation UpdateTicket(
+    $input: UpdateTicketInput!
+    $condition: ModelTicketConditionInput
+  ) {
+    updateTicket(input: $input, condition: $condition) {
+      id
+      columnId
+      title
+      description
+      labels {
+        id
+        name
+        color
+      }
+      owner
+      createdAt
+      updatedAt
+      comments {
+        items {
+          id
+          ticketId
+          content
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
+    }
+  }
+`;
+export const deleteTicket = /* GraphQL */ `
+  mutation DeleteTicket(
+    $input: DeleteTicketInput!
+    $condition: ModelTicketConditionInput
+  ) {
+    deleteTicket(input: $input, condition: $condition) {
+      id
+      columnId
+      title
+      description
+      labels {
+        id
+        name
+        color
+      }
+      owner
+      createdAt
+      updatedAt
+      comments {
+        items {
+          id
+          ticketId
+          content
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
+    }
+  }
+`;
+export const createComment = /* GraphQL */ `
+  mutation CreateComment(
+    $input: CreateCommentInput!
+    $condition: ModelCommentConditionInput
+  ) {
+    createComment(input: $input, condition: $condition) {
+      id
+      ticketId
       content
       createdAt
       updatedAt
@@ -61,13 +407,14 @@ export const createPrivateNote = /* GraphQL */ `
     }
   }
 `;
-export const updatePrivateNote = /* GraphQL */ `
-  mutation UpdatePrivateNote(
-    $input: UpdatePrivateNoteInput!
-    $condition: ModelPrivateNoteConditionInput
+export const updateComment = /* GraphQL */ `
+  mutation UpdateComment(
+    $input: UpdateCommentInput!
+    $condition: ModelCommentConditionInput
   ) {
-    updatePrivateNote(input: $input, condition: $condition) {
+    updateComment(input: $input, condition: $condition) {
       id
+      ticketId
       content
       createdAt
       updatedAt
@@ -75,13 +422,14 @@ export const updatePrivateNote = /* GraphQL */ `
     }
   }
 `;
-export const deletePrivateNote = /* GraphQL */ `
-  mutation DeletePrivateNote(
-    $input: DeletePrivateNoteInput!
-    $condition: ModelPrivateNoteConditionInput
+export const deleteComment = /* GraphQL */ `
+  mutation DeleteComment(
+    $input: DeleteCommentInput!
+    $condition: ModelCommentConditionInput
   ) {
-    deletePrivateNote(input: $input, condition: $condition) {
+    deleteComment(input: $input, condition: $condition) {
       id
+      ticketId
       content
       createdAt
       updatedAt

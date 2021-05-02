@@ -124,8 +124,9 @@ export default function Index() {
               component='h2'
               style={{ color: '#091E42', fontWeight: 400, textAlign: 'center' }}
             >
-              If you would like to get in touch or support the creation of more
-              things like this, I would love you to come along for the ride!
+              My name is Jarrod Watts! If you would like to get in touch or
+              support the creation of more things like this, I would love you to
+              come along for the ride!
             </Typography>
             <Grid
               container

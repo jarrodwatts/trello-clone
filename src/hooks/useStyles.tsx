@@ -4,6 +4,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   icon: {
     marginRight: theme.spacing(2),
   },
+  paper: {
+    padding: theme.spacing(2),
+    textAlign: 'center',
+  },
   large: {
     width: theme.spacing(7),
     height: theme.spacing(7),

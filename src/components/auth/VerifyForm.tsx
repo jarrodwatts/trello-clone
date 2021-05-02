@@ -1,15 +1,11 @@
-import React, { ReactElement } from 'react';
+import React, { useState, ReactElement } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import { Divider, Typography } from '@material-ui/core';
-import Link from 'next/link';
 import { useForm, Controller } from 'react-hook-form';
 import { Auth } from 'aws-amplify';
-import { CognitoUser } from '@aws-amplify/auth';
 import { useRouter } from 'next/router';
-
 const useStyles = makeStyles((theme) => ({
   paper: {
     display: 'flex',
@@ -36,36 +32,61 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-interface SignInInput {
+// This page really sucks to me :(
+// for some reason you have to verify users before they can do anything with AWS Amplify...?
+// But when they confirm their email you THEN need to also sign them up...
+// Which requires their email and password... which aren't on this page because of the way i designed it.
+// I am sure there is a better way to do this...
+
+interface VerifyInput {
   email: string;
-  password: string;
+  code: string;
 }
 
-export default function SignInForm(): ReactElement {
+export default function VerifyForm({
+  passedThroughEmail,
+}: {
+  passedThroughEmail: string;
+}): ReactElement {
   const classes = useStyles();
   const router = useRouter();
-  const { control, register, handleSubmit } = useForm<SignInInput>();
+  const [resent, setResent] = useState<boolean>(false);
+  const [email, setEmail] = useState<string>(passedThroughEmail);
+  const { control, register, handleSubmit } = useForm<VerifyInput>();
 
-  const onSubmit = async (data: SignInInput) => {
-    const signInAttempt = await trySignIn(data);
-    router.push(`/boards`);
-    console.log(signInAttempt);
+  const onSubmit = async (data: VerifyInput) => {
+    try {
+      await tryVerify(data);
+      // if sign up success...
+      router.push(`/login`);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const trySignIn = async (data: SignInInput): Promise<CognitoUser | null> => {
+  const tryVerify = async (data: VerifyInput): Promise<void> => {
     try {
-      const user = await Auth.signIn(data.email, data.password);
-      return user;
+      await Auth.confirmSignUp(email, data.code);
     } catch (error) {
-      console.error('error signing up:', error);
-      return null;
+      console.error('error verifying:', error);
+    }
+  };
+
+  const resendVerification = async () => {
+    if (email) {
+      try {
+        await Auth.resendSignUp(email);
+        console.log('code resent successfully');
+        setResent(true);
+      } catch (err) {
+        console.error('error resending code: ', err);
+      }
     }
   };
 
   return (
     <div className={classes.paper}>
       <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
-        {/* Email and Password */}
         <Controller
           name='email'
           control={control}
@@ -74,6 +95,7 @@ export default function SignInForm(): ReactElement {
             <TextField
               {...register('email')}
               className={classes.field}
+              defaultValue={email}
               variant='outlined'
               margin='dense'
               required
@@ -83,26 +105,26 @@ export default function SignInForm(): ReactElement {
               name='email'
               autoComplete='email'
               autoFocus
+              onChange={(e) => setEmail(e.target.value)}
             />
           )}
         />
         <Controller
-          name='password'
+          name='code'
           control={control}
           rules={{ required: true }}
           render={({ field }) => (
             <TextField
-              {...register('password')}
+              {...register('code')}
               className={classes.field}
               variant='outlined'
               margin='dense'
               required
               fullWidth
-              name='password'
-              label='Enter Password'
-              type='password'
-              id='password'
-              autoComplete='current-password'
+              name='code'
+              label='Enter Confirmation Code'
+              type='text'
+              id='code'
             />
           )}
         />
@@ -112,49 +134,23 @@ export default function SignInForm(): ReactElement {
           variant='contained'
           className={classes.submit}
         >
-          Log in
+          Confirm
         </Button>
 
-        <Typography color='textSecondary'>OR</Typography>
+        <Divider style={{ width: '90%', marginTop: '32px' }} />
 
-        {/* Social Logins */}
-        <Grid
-          container
-          direction='column'
-          alignItems='center'
-          justify='center'
-          spacing={1}
-          style={{ marginTop: '8px' }}
-        >
-          <Grid item style={{ width: '100%' }}>
-            <Button style={{ width: '100%' }} variant='outlined'>
-              Continue with Google
-            </Button>
-          </Grid>
-          <Grid item style={{ width: '100%' }}>
-            <Button
-              color='default'
-              style={{ width: '100%' }}
-              variant='outlined'
-            >
-              Continue with Facebook
-            </Button>
-          </Grid>
-          <Divider style={{ width: '90%', marginTop: '32px' }} />
-
-          {/* Sign up for an account */}
-          <Link href='/signup'>
-            <a
-              style={{
-                marginTop: '8px',
-                textDecoration: 'none',
-                color: '#0052CC',
-              }}
-            >
-              Sign up for an account
-            </a>
-          </Link>
-        </Grid>
+        {/* Re-send  */}
+        {!resent ? (
+          <Button
+            color='default'
+            variant='text'
+            onClick={() => resendVerification()}
+          >
+            Didn&apos;t recieve an email? Resend
+          </Button>
+        ) : (
+          <Typography>Email Resent!</Typography>
+        )}
       </form>
     </div>
   );

@@ -2,7 +2,17 @@ import { Button, Container, Grid, Typography } from '@material-ui/core';
 import React from 'react';
 import ButtonAvatar from '../components/ButtonAvatar';
 import GuestHeader from '../components/Headers/GuestHeader';
+import { useRouter } from 'next/router';
+import { useUser } from '../context/AuthContext';
+
 export default function Index() {
+  const router = useRouter();
+  const { user } = useUser();
+
+  // Re-route signed in users to /boards
+  if (user) {
+    router.push(`/boards`);
+  }
   return (
     <div
       style={{
@@ -24,7 +34,11 @@ export default function Index() {
               component='h1'
               style={{ color: '#091E42', fontWeight: 500, textAlign: 'center' }}
             >
-              This is a crappy Trello Clone
+              Meet <b>Craplo</b>, a crappy{' '}
+              <a target='_blank' href='http://trello.com/' rel='noreferrer'>
+                Trello
+              </a>{' '}
+              Clone
             </Typography>
           </Grid>
 
@@ -34,11 +48,9 @@ export default function Index() {
               component='h2'
               style={{ color: '#091E42', fontWeight: 400, textAlign: 'center' }}
             >
-              It&apos;s &quot;crappy&quot; because I am not the best at
-              designing or styling things... It&apos;s purpose is to demonstrate
-              how to use modern technologies like <b></b>Next.JS, AWS Amplify
-              and TypeScript to create something awesome and functional at
-              lightning pace ⚡!
+              It&apos;s purpose is to demonstrate how to use modern technologies
+              like <b>Next.JS</b>, <b>AWS Amplify</b> and <b>TypeScript</b> to
+              create a real project at lightning pace ⚡!{' '}
             </Typography>
           </Grid>
 
@@ -49,6 +61,7 @@ export default function Index() {
           >
             <Button
               variant='contained'
+              onClick={() => router.push(`/signup`)}
               style={{ minWidth: '100%', backgroundColor: '#0065FF' }}
             >
               <Typography style={{ color: '#fff', fontWeight: 600 }}>
@@ -73,10 +86,25 @@ export default function Index() {
               component='h2'
               style={{ color: '#091E42', fontWeight: 400, textAlign: 'center' }}
             >
-              <b>El Craplo</b> was built using this amazing tech. It&apos;s also
-              completely open source. You can find the code for it on my GitHub.
-              As well as a full length video-tutorial on how to build something
-              like this on my YouTube Channel.
+              <b>Craplo</b> was built the latest and greatest in serverless
+              tech. It&apos;s also completely open source. You can find the code
+              for it on my{' '}
+              <a
+                target='_blank'
+                href='https://github.com/jarrodwatts/trello-clone'
+                rel='noreferrer'
+              >
+                GitHub here
+              </a>
+              . As well as a full length video-tutorial on how to build
+              something like this on my{' '}
+              <a
+                href='https://www.youtube.com/channel/UCJae_agpt9S3qwWNED0KHcQ'
+                target='_blank'
+                rel='noreferrer'
+              >
+                YouTube Channel.
+              </a>
             </Typography>
             <Grid
               container
@@ -101,6 +129,11 @@ export default function Index() {
                 alt={'TypeScript'}
                 src={'/tech/ts.svg'}
               />
+              <ButtonAvatar
+                link={'http://material-ui.com/'}
+                alt={'Material UI'}
+                src={'/tech/mui.png'}
+              />
             </Grid>
           </Grid>
 
@@ -124,9 +157,17 @@ export default function Index() {
               component='h2'
               style={{ color: '#091E42', fontWeight: 400, textAlign: 'center' }}
             >
-              My name is Jarrod Watts! If you would like to get in touch or
-              support the creation of more things like this, I would love you to
-              come along for the ride!
+              My name is{' '}
+              <a
+                target='_blank'
+                href='https://jarrodwatts.com'
+                rel='noreferrer'
+              >
+                Jarrod Watts
+              </a>
+              ! If you would like to get in touch or support the creation of
+              more things like this, I would love if you checked out my content.
+              Otherwise, thanks for stopping by!
             </Typography>
             <Grid
               container

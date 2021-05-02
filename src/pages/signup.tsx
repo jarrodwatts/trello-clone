@@ -1,15 +1,14 @@
 import { Container } from '@material-ui/core';
 import React, { ReactElement } from 'react';
 import FormContainer from '../components/auth/FormContainer';
-import SignInForm from '../components/auth/SignInForm';
+import SignUpForm from '../components/auth/SignUpForm';
 
-export default function Login(): ReactElement {
+export default function Signup(): ReactElement {
   return (
     <div style={{ background: '#f9fafc' }}>
       <Container maxWidth='xs'>
-        <FormContainer form={<SignInForm />} type='signin' />
+        <FormContainer form={<SignUpForm />} type='signup' />
       </Container>
     </div>
   );
 }
-1;

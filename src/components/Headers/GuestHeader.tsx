@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import { Avatar } from '@material-ui/core';
-import { useRouter } from 'next/dist/client/router';
+import { useRouter } from 'next/router';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function ButtonAppBar(): ReactElement {
+export default function GuestHeader(): ReactElement {
   const classes = useStyles();
   const router = useRouter();
 
@@ -44,7 +44,7 @@ export default function ButtonAppBar(): ReactElement {
             <Avatar src={`/logo.png`}></Avatar>
           </IconButton>
           <Typography variant='h4' className={classes.title}>
-            El Craplo
+            Craplo
           </Typography>
           <Button color='secondary' onClick={() => router.push(`/login`)}>
             <Typography

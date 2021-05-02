@@ -1,107 +1,166 @@
+import { Button, Container, Grid, Typography } from '@material-ui/core';
 import React from 'react';
-import AppBar from '@material-ui/core/AppBar';
-import Button from '@material-ui/core/Button';
-import CameraIcon from '@material-ui/icons/PhotoCamera';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Grid from '@material-ui/core/Grid';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
-import useStyles from '../hooks/useStyles';
-
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-
-export default function Album() {
-  const classes = useStyles();
-
+import ButtonAvatar from '../components/ButtonAvatar';
+import GuestHeader from '../components/Headers/GuestHeader';
+export default function Index() {
   return (
-    <React.Fragment>
-      <CssBaseline />
-      <AppBar position='relative'>
-        <Toolbar>
-          <CameraIcon className={classes.icon} />
-          <Typography variant='h6' color='inherit' noWrap>
-            Album layout
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <main>
-        {/* Hero unit */}
-        <div className={classes.heroContent}>
-          <Container maxWidth='sm'>
+    <div
+      style={{
+        background:
+          'linear-gradient(180deg, rgba(234,230,255,1), rgba(255,255,255,1))',
+      }}
+    >
+      <GuestHeader />
+      <Container
+        maxWidth='md'
+        style={{
+          marginTop: '32px',
+        }}
+      >
+        <Grid container alignItems='center' justify='center'>
+          <Grid item xs={12}>
             <Typography
+              variant='h3'
               component='h1'
-              variant='h2'
-              align='center'
-              color='textPrimary'
-              gutterBottom
+              style={{ color: '#091E42', fontWeight: 500, textAlign: 'center' }}
             >
-              Album layout
+              This is a crappy Trello Clone
             </Typography>
+          </Grid>
+
+          <Grid item xs={12} style={{ marginTop: '16px' }}>
+            <Typography
+              variant='h6'
+              component='h2'
+              style={{ color: '#091E42', fontWeight: 400, textAlign: 'center' }}
+            >
+              It&apos;s &quot;crappy&quot; because I am not the best at
+              designing or styling things... It&apos;s purpose is to demonstrate
+              how to use modern technologies like <b></b>Next.JS, AWS Amplify
+              and TypeScript to create something awesome and functional at
+              lightning pace ⚡!
+            </Typography>
+          </Grid>
+
+          <Grid
+            item
+            xs={12}
+            style={{ marginTop: '24px', marginBottom: '64px' }}
+          >
+            <Button
+              variant='contained'
+              style={{ minWidth: '100%', backgroundColor: '#0065FF' }}
+            >
+              <Typography style={{ color: '#fff', fontWeight: 600 }}>
+                Sign Up -It&apos;s Free!
+              </Typography>
+            </Button>
+          </Grid>
+
+          <Grid item xs={12} style={{ marginTop: '24px', marginBottom: '8px' }}>
             <Typography
               variant='h5'
-              align='center'
-              color='textSecondary'
-              paragraph
+              component='h3'
+              style={{ color: '#091E42', fontWeight: 500, textAlign: 'center' }}
             >
-              Something short and leading about the collection below—its
-              contents, the creator, etc. Make it short and sweet, but not too
-              short so folks don&apos;t simply skip over it entirely.
+              Made with love 💕
             </Typography>
-            <div className={classes.heroButtons}>
-              <Grid container spacing={2} justify='center'>
-                <Grid item>
-                  <Button variant='contained' color='primary'>
-                    Main call to action
-                  </Button>
-                </Grid>
-                <Grid item>
-                  <Button variant='outlined' color='primary'>
-                    Secondary action
-                  </Button>
-                </Grid>
-              </Grid>
-            </div>
-          </Container>
-        </div>
-        <Container className={classes.cardGrid} maxWidth='md'>
-          {/* End hero unit */}
-          <Grid container spacing={4}>
-            {cards.map((card) => (
-              <Grid item key={card} xs={12} sm={6} md={4}>
-                <Card className={classes.card}>
-                  <CardMedia
-                    className={classes.cardMedia}
-                    image='https://source.unsplash.com/random'
-                    title='Image title'
-                  />
-                  <CardContent className={classes.cardContent}>
-                    <Typography gutterBottom variant='h5' component='h2'>
-                      Heading
-                    </Typography>
-                    <Typography>
-                      This is a media card. You can use this section to describe
-                      the content.
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button size='small' color='primary'>
-                      View
-                    </Button>
-                    <Button size='small' color='primary'>
-                      Edit
-                    </Button>
-                  </CardActions>
-                </Card>
-              </Grid>
-            ))}
           </Grid>
-        </Container>
-      </main>
-    </React.Fragment>
+
+          <Grid item xs={12} style={{ marginBottom: '64px' }}>
+            <Typography
+              variant='h6'
+              component='h2'
+              style={{ color: '#091E42', fontWeight: 400, textAlign: 'center' }}
+            >
+              <b>El Craplo</b> was built using this amazing tech. It&apos;s also
+              completely open source. You can find the code for it on my GitHub.
+              As well as a full length video-tutorial on how to build something
+              like this on my YouTube Channel.
+            </Typography>
+            <Grid
+              container
+              direction='row'
+              alignItems='center'
+              justify='center'
+              spacing={3}
+              style={{ marginTop: '4px' }}
+            >
+              <ButtonAvatar
+                link={'https://aws.amazon.com/amplify/'}
+                alt={'AWS Amplify'}
+                src={'/tech/amplify.png'}
+              />
+              <ButtonAvatar
+                link={'https://nextjs.org/'}
+                alt={'Next.JS'}
+                src={'/tech/next.png'}
+              />
+              <ButtonAvatar
+                link={'https://www.typescriptlang.org/'}
+                alt={'TypeScript'}
+                src={'/tech/ts.svg'}
+              />
+            </Grid>
+          </Grid>
+
+          <Grid
+            item
+            xs={12}
+            style={{ marginTop: '24px', marginBottom: '16px' }}
+          >
+            <Typography
+              variant='h5'
+              component='h3'
+              style={{ color: '#091E42', fontWeight: 500, textAlign: 'center' }}
+            >
+              Who Am I? 🤔
+            </Typography>
+          </Grid>
+
+          <Grid item xs={12} style={{ marginBottom: '64px' }}>
+            <Typography
+              variant='h6'
+              component='h2'
+              style={{ color: '#091E42', fontWeight: 400, textAlign: 'center' }}
+            >
+              If you would like to get in touch or support the creation of more
+              things like this, I would love you to come along for the ride!
+            </Typography>
+            <Grid
+              container
+              direction='row'
+              alignItems='center'
+              justify='center'
+              spacing={3}
+              style={{ marginTop: '4px' }}
+            >
+              <ButtonAvatar
+                link={
+                  'https://www.youtube.com/channel/UCJae_agpt9S3qwWNED0KHcQ'
+                }
+                alt={'YouTube Channel'}
+                src={'/socials/youtube.png'}
+              />
+              <ButtonAvatar
+                link={'https://twitter.com/jarrodWattsDev'}
+                alt={'Twitter'}
+                src={'/socials/twitter.png'}
+              />
+              <ButtonAvatar
+                link={'https://blog.jarrodwatts.com/'}
+                alt={'My Blog'}
+                src={'/socials/hashnode.png'}
+              />
+              <ButtonAvatar
+                link={'https://www.reddit.com/user/cumcopter'}
+                alt={'Reddit'}
+                src={'/socials/reddit.svg'}
+              />
+            </Grid>
+          </Grid>
+        </Grid>
+      </Container>
+    </div>
   );
 }

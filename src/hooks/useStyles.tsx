@@ -1,8 +1,12 @@
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   icon: {
     marginRight: theme.spacing(2),
+  },
+  large: {
+    width: theme.spacing(7),
+    height: theme.spacing(7),
   },
   heroContent: {
     backgroundColor: theme.palette.background.paper,

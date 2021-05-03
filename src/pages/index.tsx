@@ -62,10 +62,17 @@ export default function Index() {
             <Button
               variant='contained'
               onClick={() => router.push(`/signup`)}
-              style={{ minWidth: '100%', backgroundColor: '#0065FF' }}
+              style={{
+                minWidth: '100%',
+                backgroundColor: '#0065FF',
+                minHeight: '44px',
+              }}
             >
-              <Typography style={{ color: '#fff', fontWeight: 600 }}>
-                Sign Up -It&apos;s Free!
+              <Typography
+                variant='h6'
+                style={{ color: '#fff', fontWeight: 500 }}
+              >
+                Sign Up - It&apos;s Free!
               </Typography>
             </Button>
           </Grid>

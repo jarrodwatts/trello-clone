@@ -7,7 +7,7 @@ import { Divider, Typography } from '@material-ui/core';
 import Link from 'next/link';
 import { useForm, Controller } from 'react-hook-form';
 import { Auth } from 'aws-amplify';
-import { CognitoUser } from '@aws-amplify/auth';
+import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth/lib/types';
 import { useRouter } from 'next/router';
 
 const useStyles = makeStyles((theme) => ({
@@ -52,7 +52,7 @@ export default function SignInForm(): ReactElement {
     console.log(signInAttempt);
   };
 
-  const trySignIn = async (data: SignInInput): Promise<CognitoUser | null> => {
+  const trySignIn = async (data: SignInInput) => {
     try {
       const user = await Auth.signIn(data.email, data.password);
       return user;
@@ -127,7 +127,15 @@ export default function SignInForm(): ReactElement {
           style={{ marginTop: '8px' }}
         >
           <Grid item style={{ width: '100%' }}>
-            <Button style={{ width: '100%' }} variant='outlined'>
+            <Button
+              style={{ width: '100%' }}
+              variant='outlined'
+              onClick={() =>
+                Auth.federatedSignIn({
+                  provider: CognitoHostedUIIdentityProvider.Google,
+                })
+              }
+            >
               Continue with Google
             </Button>
           </Grid>
@@ -136,6 +144,11 @@ export default function SignInForm(): ReactElement {
               color='default'
               style={{ width: '100%' }}
               variant='outlined'
+              onClick={() =>
+                Auth.federatedSignIn({
+                  provider: CognitoHostedUIIdentityProvider.Facebook,
+                })
+              }
             >
               Continue with Facebook
             </Button>

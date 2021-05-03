@@ -1,11 +1,11 @@
 import React, { ReactElement, useState, useEffect } from 'react';
 import { createContext, useContext } from 'react';
-import { Auth } from 'aws-amplify';
-import { CognitoUser } from '@aws-amplify/auth';
+import { Auth, Hub } from 'aws-amplify';
+import { CognitoUserExt } from '../types/UserAttributes';
 
 type UserContextType = {
-  user: CognitoUser | null;
-  setUser: React.Dispatch<React.SetStateAction<CognitoUser | null>>;
+  user: CognitoUserExt | null;
+  setUser: React.Dispatch<React.SetStateAction<CognitoUserExt | null>>;
 };
 
 // TODO: This feels so dumb that you need to have default values
@@ -16,9 +16,16 @@ interface Props {
 }
 
 export default function AuthContext({ children }: Props): ReactElement {
-  const [user, setUser] = useState<CognitoUser | null>(null);
+  const [user, setUser] = useState<CognitoUserExt | null>(null);
   useEffect(() => {
     checkUser();
+  }, []);
+
+  useEffect(() => {
+    Hub.listen('auth', () => {
+      // regardless of what auth event happens (e.g. sign in, sign out checkUser will handle it.)
+      checkUser();
+    });
   }, []);
 
   async function checkUser() {

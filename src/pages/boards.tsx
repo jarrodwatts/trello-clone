@@ -48,7 +48,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 interface Props {}
 
-export default function boards({}: Props): ReactElement {
+// We could use getServerSideProps to make the GQL call to list all workspaces here.
+// I don't want to stop the entire page loading while we do that though, so we are loading what we can,
+// while fetching the data from the API on the client side.
+export default function Boards({}: Props): ReactElement {
   const classes = useStyles();
 
   const [userWorkspaces, setUserWorkspaces] = useState<Workspace[]>([]);

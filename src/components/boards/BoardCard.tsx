@@ -1,8 +1,9 @@
-import { Theme, Typography } from '@material-ui/core';
+import { Theme, Typography, ButtonBase } from '@material-ui/core';
 import React, { ReactElement } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Board } from '../../API';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 const useStyles = makeStyles((theme: Theme) => ({
   cardImage: {
@@ -43,19 +44,25 @@ interface Props {
 // so that the white text is more readable.
 export default function BoardCard({ board }: Props): ReactElement {
   const classes = useStyles();
+  const router = useRouter();
   return (
-    <div className={classes.container}>
-      <Image
-        src='/boards/beach.jpg'
-        layout='responsive'
-        height={96}
-        width={206}
-        className={classes.cardImage}
-      />
-      <Typography variant='h6' className={classes.cardText}>
-        {board.name}
-      </Typography>
-      <div className={classes.gradientOverlay}></div>
-    </div>
+    <ButtonBase
+      className={classes.container}
+      onClick={() => router.push(`board/${board.id}`)}
+    >
+      <div className={classes.container}>
+        <Image
+          src='/boards/beach.jpg'
+          layout='responsive'
+          height={96}
+          width={206}
+          className={classes.cardImage}
+        />
+        <Typography variant='h6' className={classes.cardText}>
+          {board.name}
+        </Typography>
+        <div className={classes.gradientOverlay}></div>
+      </div>
+    </ButtonBase>
   );
 }

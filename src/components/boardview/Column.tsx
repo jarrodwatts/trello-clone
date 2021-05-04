@@ -3,6 +3,7 @@ import { makeStyles, Theme } from '@material-ui/core/styles';
 import { Grid, Typography } from '@material-ui/core';
 import { Column, Ticket } from '../../API';
 import TicketComponent from './Ticket';
+import { Droppable } from 'react-beautiful-dnd';
 
 const useStyles = makeStyles((theme: Theme) => ({
   column: {
@@ -28,12 +29,31 @@ interface Props {
 
 export default function ColumnComponent({ column }: Props): ReactElement {
   const classes = useStyles();
-  return (
-    <Grid container direction='column' className={classes.column}>
-      <Typography className={classes.name}>{column?.name}</Typography>
-      {column?.tickets?.items?.map((ticket: Ticket | null) => (
-        <TicketComponent key={ticket?.id} ticket={ticket} />
-      ))}
-    </Grid>
-  );
+  if (column && column.id) {
+    return (
+      <Grid container direction='column' className={classes.column}>
+        <Typography className={classes.name}>{column?.name}</Typography>
+        <Droppable droppableId={column.id}>
+          {(provided, snapshot) => (
+            <div
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+              // style={getListStyle(snapshot.isDraggingOver)}
+            >
+              {column?.tickets?.items?.map((ticket: Ticket | null, key) => (
+                <TicketComponent
+                  key={ticket?.id}
+                  ticket={ticket}
+                  keyProp={key}
+                />
+              ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </Grid>
+    );
+  } else {
+    return <div>Something went wrong :(</div>;
+  }
 }

@@ -14,10 +14,16 @@ import Image from 'next/image';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { Grid, Typography } from '@material-ui/core';
 import ColumnComponent from '../../components/boardview/Column';
+import { DragDropContext, DropResult } from 'react-beautiful-dnd';
+import { resetServerContext } from 'react-beautiful-dnd';
 
 const useStyles = makeStyles((theme: Theme) => ({
   backgroundImage: {
-    zIndex: -50,
+    position: 'fixed',
+    height: '100vh',
+    width: '100vw',
+    overflow: 'hidden',
+    zIndex: -1,
   },
   title: {
     color: '#172b4d',
@@ -32,30 +38,41 @@ interface Props {
 }
 
 export default function IndividualBoardPage({ board }: Props) {
+  // https://github.com/atlassian/react-beautiful-dnd/issues/1756
+  resetServerContext();
+
   const classes = useStyles();
   console.log('Board:', board);
 
+  const onDragEnd = (result: DropResult) => {
+    const { source, destination } = result;
+    console.log('Dragged from:', source, 'to:', destination);
+  };
+
   return (
     <React.Fragment>
-      <Image
-        alt={board.name}
-        src='/boards/beach.jpg'
-        layout='fill'
-        objectFit='cover'
-        quality={100}
-        className={classes.backgroundImage}
-      />
+      <div className={classes.backgroundImage}>
+        <Image
+          alt={board.name}
+          src='/boards/beach.jpg'
+          layout='fill'
+          objectFit='cover'
+          quality={100}
+        />
+      </div>
       <UserHeader st={'grey'} />
       <div style={{ padding: '16px' }}>
         <Typography variant='h5' className={classes.title}>
           {board.name}
         </Typography>
 
-        <Grid container direction='row' spacing={1}>
-          {board?.columns?.items?.map((column: Column | null) => (
-            <ColumnComponent column={column} key={column?.id} />
-          ))}
-        </Grid>
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Grid container direction='row' spacing={1}>
+            {board?.columns?.items?.map((column: Column | null) => (
+              <ColumnComponent column={column} key={column?.id} />
+            ))}
+          </Grid>
+        </DragDropContext>
       </div>
     </React.Fragment>
   );

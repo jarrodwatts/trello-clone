@@ -2,24 +2,61 @@ import React from 'react';
 import { withSSRContext } from 'aws-amplify';
 import { GetServerSideProps } from 'next';
 import { getBoard } from '../../graphql/queries';
-import { GetBoardQuery, GetBoardQueryVariables } from '../../API';
+import {
+  Board,
+  Column,
+  GetBoardQuery,
+  GetBoardQueryVariables,
+} from '../../API';
 import { GRAPHQL_AUTH_MODE } from '@aws-amplify/api';
-import Amplify from 'aws-amplify';
-import awsconfig from '../../aws-exports';
 import UserHeader from '../../components/Headers/UserHeader';
+import Image from 'next/image';
+import { makeStyles, Theme } from '@material-ui/core/styles';
+import { Grid, Typography } from '@material-ui/core';
+import ColumnComponent from '../../components/boardview/Column';
 
-Amplify.configure({ ...awsconfig, ssr: true });
+const useStyles = makeStyles((theme: Theme) => ({
+  backgroundImage: {
+    zIndex: -50,
+  },
+  title: {
+    color: '#172b4d',
+    fontSize: '20px',
+    fontWeight: 700,
+    marginBottom: '8px',
+  },
+}));
 
 interface Props {
-  board: any;
+  board: Board;
 }
 
 export default function IndividualBoardPage({ board }: Props) {
+  const classes = useStyles();
   console.log('Board:', board);
 
   return (
     <React.Fragment>
+      <Image
+        alt={board.name}
+        src='/boards/beach.jpg'
+        layout='fill'
+        objectFit='cover'
+        quality={100}
+        className={classes.backgroundImage}
+      />
       <UserHeader st={'grey'} />
+      <div style={{ padding: '16px' }}>
+        <Typography variant='h5' className={classes.title}>
+          {board.name}
+        </Typography>
+
+        <Grid container direction='row' spacing={1}>
+          {board?.columns?.items?.map((column: Column | null) => (
+            <ColumnComponent column={column} key={column?.id} />
+          ))}
+        </Grid>
+      </div>
     </React.Fragment>
   );
 }

@@ -3,14 +3,14 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
-import { Divider, Typography } from '@material-ui/core';
+import { Divider, Theme, Typography } from '@material-ui/core';
 import Link from 'next/link';
 import { useForm, Controller } from 'react-hook-form';
 import { Auth } from 'aws-amplify';
 import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth/lib/types';
 import VerifyForm from './VerifyForm';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   paper: {
     display: 'flex',
     flexDirection: 'column',

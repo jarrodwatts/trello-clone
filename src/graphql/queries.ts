@@ -2,14 +2,156 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const getWorkspace = /* GraphQL */ `
+  query GetWorkspace($id: ID!) {
+    getWorkspace(id: $id) {
+      id
+      name
+      description
+      members
+      createdAt
+      updatedAt
+      owner
+      boards {
+        items {
+          id
+          workspaceId
+          name
+          description
+          owner
+          editors
+          visibility
+          isTemplate
+          createdAt
+          updatedAt
+          columns {
+            items {
+              id
+              boardId
+              name
+              owner
+              createdAt
+              updatedAt
+              tickets {
+                items {
+                  id
+                  columnId
+                  title
+                  description
+                  labels {
+                    name
+                    color
+                  }
+                  owner
+                  createdAt
+                  updatedAt
+                  comments {
+                    items {
+                      id
+                      ticketId
+                      content
+                      createdAt
+                      updatedAt
+                      owner
+                    }
+                    nextToken
+                  }
+                }
+                nextToken
+              }
+            }
+            nextToken
+          }
+        }
+        nextToken
+      }
+    }
+  }
+`;
+export const listWorkspaces = /* GraphQL */ `
+  query ListWorkspaces(
+    $filter: ModelWorkspaceFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listWorkspaces(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        description
+        members
+        createdAt
+        updatedAt
+        owner
+        boards {
+          items {
+            id
+            workspaceId
+            name
+            description
+            owner
+            editors
+            visibility
+            isTemplate
+            createdAt
+            updatedAt
+            columns {
+              items {
+                id
+                boardId
+                name
+                owner
+                createdAt
+                updatedAt
+                tickets {
+                  items {
+                    id
+                    columnId
+                    title
+                    description
+                    labels {
+                      name
+                      color
+                    }
+                    owner
+                    createdAt
+                    updatedAt
+                    comments {
+                      items {
+                        id
+                        ticketId
+                        content
+                        createdAt
+                        updatedAt
+                        owner
+                      }
+                      nextToken
+                    }
+                  }
+                  nextToken
+                }
+              }
+              nextToken
+            }
+          }
+          nextToken
+        }
+      }
+      nextToken
+    }
+  }
+`;
 export const getBoard = /* GraphQL */ `
   query GetBoard($id: ID!) {
     getBoard(id: $id) {
       id
+      workspaceId
       name
       description
       owner
       editors
+      visibility
+      isTemplate
       createdAt
       updatedAt
       columns {
@@ -27,7 +169,6 @@ export const getBoard = /* GraphQL */ `
               title
               description
               labels {
-                id
                 name
                 color
               }
@@ -63,10 +204,13 @@ export const listBoards = /* GraphQL */ `
     listBoards(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        workspaceId
         name
         description
         owner
         editors
+        visibility
+        isTemplate
         createdAt
         updatedAt
         columns {
@@ -84,7 +228,6 @@ export const listBoards = /* GraphQL */ `
                 title
                 description
                 labels {
-                  id
                   name
                   color
                 }
@@ -129,7 +272,6 @@ export const getColumn = /* GraphQL */ `
           title
           description
           labels {
-            id
             name
             color
           }
@@ -174,7 +316,6 @@ export const listColumns = /* GraphQL */ `
             title
             description
             labels {
-              id
               name
               color
             }
@@ -208,7 +349,6 @@ export const getTicket = /* GraphQL */ `
       title
       description
       labels {
-        id
         name
         color
       }
@@ -242,7 +382,6 @@ export const listTickets = /* GraphQL */ `
         title
         description
         labels {
-          id
           name
           color
         }

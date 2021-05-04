@@ -2,14 +2,215 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const onCreateWorkspace = /* GraphQL */ `
+  subscription OnCreateWorkspace($owner: String!, $members: String!) {
+    onCreateWorkspace(owner: $owner, members: $members) {
+      id
+      name
+      description
+      members
+      createdAt
+      updatedAt
+      owner
+      boards {
+        items {
+          id
+          workspaceId
+          name
+          description
+          owner
+          editors
+          visibility
+          isTemplate
+          createdAt
+          updatedAt
+          columns {
+            items {
+              id
+              boardId
+              name
+              owner
+              createdAt
+              updatedAt
+              tickets {
+                items {
+                  id
+                  columnId
+                  title
+                  description
+                  labels {
+                    name
+                    color
+                  }
+                  owner
+                  createdAt
+                  updatedAt
+                  comments {
+                    items {
+                      id
+                      ticketId
+                      content
+                      createdAt
+                      updatedAt
+                      owner
+                    }
+                    nextToken
+                  }
+                }
+                nextToken
+              }
+            }
+            nextToken
+          }
+        }
+        nextToken
+      }
+    }
+  }
+`;
+export const onUpdateWorkspace = /* GraphQL */ `
+  subscription OnUpdateWorkspace($owner: String!, $members: String!) {
+    onUpdateWorkspace(owner: $owner, members: $members) {
+      id
+      name
+      description
+      members
+      createdAt
+      updatedAt
+      owner
+      boards {
+        items {
+          id
+          workspaceId
+          name
+          description
+          owner
+          editors
+          visibility
+          isTemplate
+          createdAt
+          updatedAt
+          columns {
+            items {
+              id
+              boardId
+              name
+              owner
+              createdAt
+              updatedAt
+              tickets {
+                items {
+                  id
+                  columnId
+                  title
+                  description
+                  labels {
+                    name
+                    color
+                  }
+                  owner
+                  createdAt
+                  updatedAt
+                  comments {
+                    items {
+                      id
+                      ticketId
+                      content
+                      createdAt
+                      updatedAt
+                      owner
+                    }
+                    nextToken
+                  }
+                }
+                nextToken
+              }
+            }
+            nextToken
+          }
+        }
+        nextToken
+      }
+    }
+  }
+`;
+export const onDeleteWorkspace = /* GraphQL */ `
+  subscription OnDeleteWorkspace($owner: String!, $members: String!) {
+    onDeleteWorkspace(owner: $owner, members: $members) {
+      id
+      name
+      description
+      members
+      createdAt
+      updatedAt
+      owner
+      boards {
+        items {
+          id
+          workspaceId
+          name
+          description
+          owner
+          editors
+          visibility
+          isTemplate
+          createdAt
+          updatedAt
+          columns {
+            items {
+              id
+              boardId
+              name
+              owner
+              createdAt
+              updatedAt
+              tickets {
+                items {
+                  id
+                  columnId
+                  title
+                  description
+                  labels {
+                    name
+                    color
+                  }
+                  owner
+                  createdAt
+                  updatedAt
+                  comments {
+                    items {
+                      id
+                      ticketId
+                      content
+                      createdAt
+                      updatedAt
+                      owner
+                    }
+                    nextToken
+                  }
+                }
+                nextToken
+              }
+            }
+            nextToken
+          }
+        }
+        nextToken
+      }
+    }
+  }
+`;
 export const onCreateBoard = /* GraphQL */ `
   subscription OnCreateBoard($owner: String!, $editors: String!) {
     onCreateBoard(owner: $owner, editors: $editors) {
       id
+      workspaceId
       name
       description
       owner
       editors
+      visibility
+      isTemplate
       createdAt
       updatedAt
       columns {
@@ -27,7 +228,6 @@ export const onCreateBoard = /* GraphQL */ `
               title
               description
               labels {
-                id
                 name
                 color
               }
@@ -58,10 +258,13 @@ export const onUpdateBoard = /* GraphQL */ `
   subscription OnUpdateBoard($owner: String!, $editors: String!) {
     onUpdateBoard(owner: $owner, editors: $editors) {
       id
+      workspaceId
       name
       description
       owner
       editors
+      visibility
+      isTemplate
       createdAt
       updatedAt
       columns {
@@ -79,7 +282,6 @@ export const onUpdateBoard = /* GraphQL */ `
               title
               description
               labels {
-                id
                 name
                 color
               }
@@ -110,10 +312,13 @@ export const onDeleteBoard = /* GraphQL */ `
   subscription OnDeleteBoard($owner: String!, $editors: String!) {
     onDeleteBoard(owner: $owner, editors: $editors) {
       id
+      workspaceId
       name
       description
       owner
       editors
+      visibility
+      isTemplate
       createdAt
       updatedAt
       columns {
@@ -131,7 +336,6 @@ export const onDeleteBoard = /* GraphQL */ `
               title
               description
               labels {
-                id
                 name
                 color
               }
@@ -174,7 +378,6 @@ export const onCreateColumn = /* GraphQL */ `
           title
           description
           labels {
-            id
             name
             color
           }
@@ -214,7 +417,6 @@ export const onUpdateColumn = /* GraphQL */ `
           title
           description
           labels {
-            id
             name
             color
           }
@@ -254,7 +456,6 @@ export const onDeleteColumn = /* GraphQL */ `
           title
           description
           labels {
-            id
             name
             color
           }
@@ -286,7 +487,6 @@ export const onCreateTicket = /* GraphQL */ `
       title
       description
       labels {
-        id
         name
         color
       }
@@ -315,7 +515,6 @@ export const onUpdateTicket = /* GraphQL */ `
       title
       description
       labels {
-        id
         name
         color
       }
@@ -344,7 +543,6 @@ export const onDeleteTicket = /* GraphQL */ `
       title
       description
       labels {
-        id
         name
         color
       }

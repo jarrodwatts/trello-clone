@@ -38,6 +38,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(6),
   },
+  boardImageRounding: {
+    borderRadius: 4,
+  },
 }));
 
 export default useStyles;

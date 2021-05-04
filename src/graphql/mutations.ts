@@ -2,6 +2,213 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const createWorkspace = /* GraphQL */ `
+  mutation CreateWorkspace(
+    $input: CreateWorkspaceInput!
+    $condition: ModelWorkspaceConditionInput
+  ) {
+    createWorkspace(input: $input, condition: $condition) {
+      id
+      name
+      description
+      members
+      createdAt
+      updatedAt
+      owner
+      boards {
+        items {
+          id
+          workspaceId
+          name
+          description
+          owner
+          editors
+          visibility
+          isTemplate
+          createdAt
+          updatedAt
+          columns {
+            items {
+              id
+              boardId
+              name
+              owner
+              createdAt
+              updatedAt
+              tickets {
+                items {
+                  id
+                  columnId
+                  title
+                  description
+                  labels {
+                    name
+                    color
+                  }
+                  owner
+                  createdAt
+                  updatedAt
+                  comments {
+                    items {
+                      id
+                      ticketId
+                      content
+                      createdAt
+                      updatedAt
+                      owner
+                    }
+                    nextToken
+                  }
+                }
+                nextToken
+              }
+            }
+            nextToken
+          }
+        }
+        nextToken
+      }
+    }
+  }
+`;
+export const updateWorkspace = /* GraphQL */ `
+  mutation UpdateWorkspace(
+    $input: UpdateWorkspaceInput!
+    $condition: ModelWorkspaceConditionInput
+  ) {
+    updateWorkspace(input: $input, condition: $condition) {
+      id
+      name
+      description
+      members
+      createdAt
+      updatedAt
+      owner
+      boards {
+        items {
+          id
+          workspaceId
+          name
+          description
+          owner
+          editors
+          visibility
+          isTemplate
+          createdAt
+          updatedAt
+          columns {
+            items {
+              id
+              boardId
+              name
+              owner
+              createdAt
+              updatedAt
+              tickets {
+                items {
+                  id
+                  columnId
+                  title
+                  description
+                  labels {
+                    name
+                    color
+                  }
+                  owner
+                  createdAt
+                  updatedAt
+                  comments {
+                    items {
+                      id
+                      ticketId
+                      content
+                      createdAt
+                      updatedAt
+                      owner
+                    }
+                    nextToken
+                  }
+                }
+                nextToken
+              }
+            }
+            nextToken
+          }
+        }
+        nextToken
+      }
+    }
+  }
+`;
+export const deleteWorkspace = /* GraphQL */ `
+  mutation DeleteWorkspace(
+    $input: DeleteWorkspaceInput!
+    $condition: ModelWorkspaceConditionInput
+  ) {
+    deleteWorkspace(input: $input, condition: $condition) {
+      id
+      name
+      description
+      members
+      createdAt
+      updatedAt
+      owner
+      boards {
+        items {
+          id
+          workspaceId
+          name
+          description
+          owner
+          editors
+          visibility
+          isTemplate
+          createdAt
+          updatedAt
+          columns {
+            items {
+              id
+              boardId
+              name
+              owner
+              createdAt
+              updatedAt
+              tickets {
+                items {
+                  id
+                  columnId
+                  title
+                  description
+                  labels {
+                    name
+                    color
+                  }
+                  owner
+                  createdAt
+                  updatedAt
+                  comments {
+                    items {
+                      id
+                      ticketId
+                      content
+                      createdAt
+                      updatedAt
+                      owner
+                    }
+                    nextToken
+                  }
+                }
+                nextToken
+              }
+            }
+            nextToken
+          }
+        }
+        nextToken
+      }
+    }
+  }
+`;
 export const createBoard = /* GraphQL */ `
   mutation CreateBoard(
     $input: CreateBoardInput!
@@ -9,10 +216,13 @@ export const createBoard = /* GraphQL */ `
   ) {
     createBoard(input: $input, condition: $condition) {
       id
+      workspaceId
       name
       description
       owner
       editors
+      visibility
+      isTemplate
       createdAt
       updatedAt
       columns {
@@ -30,7 +240,6 @@ export const createBoard = /* GraphQL */ `
               title
               description
               labels {
-                id
                 name
                 color
               }
@@ -64,10 +273,13 @@ export const updateBoard = /* GraphQL */ `
   ) {
     updateBoard(input: $input, condition: $condition) {
       id
+      workspaceId
       name
       description
       owner
       editors
+      visibility
+      isTemplate
       createdAt
       updatedAt
       columns {
@@ -85,7 +297,6 @@ export const updateBoard = /* GraphQL */ `
               title
               description
               labels {
-                id
                 name
                 color
               }
@@ -119,10 +330,13 @@ export const deleteBoard = /* GraphQL */ `
   ) {
     deleteBoard(input: $input, condition: $condition) {
       id
+      workspaceId
       name
       description
       owner
       editors
+      visibility
+      isTemplate
       createdAt
       updatedAt
       columns {
@@ -140,7 +354,6 @@ export const deleteBoard = /* GraphQL */ `
               title
               description
               labels {
-                id
                 name
                 color
               }
@@ -186,7 +399,6 @@ export const createColumn = /* GraphQL */ `
           title
           description
           labels {
-            id
             name
             color
           }
@@ -229,7 +441,6 @@ export const updateColumn = /* GraphQL */ `
           title
           description
           labels {
-            id
             name
             color
           }
@@ -272,7 +483,6 @@ export const deleteColumn = /* GraphQL */ `
           title
           description
           labels {
-            id
             name
             color
           }
@@ -307,7 +517,6 @@ export const createTicket = /* GraphQL */ `
       title
       description
       labels {
-        id
         name
         color
       }
@@ -339,7 +548,6 @@ export const updateTicket = /* GraphQL */ `
       title
       description
       labels {
-        id
         name
         color
       }
@@ -371,7 +579,6 @@ export const deleteTicket = /* GraphQL */ `
       title
       description
       labels {
-        id
         name
         color
       }

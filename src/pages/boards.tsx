@@ -85,7 +85,7 @@ export default function Boards({}: Props): ReactElement {
 
   return (
     <div>
-      <UserHeader />
+      <UserHeader st={'blue'} />
       <Container maxWidth='lg' className={classes.topPad}>
         <Grid container spacing={4}>
           {/* Side Menu Bar */}

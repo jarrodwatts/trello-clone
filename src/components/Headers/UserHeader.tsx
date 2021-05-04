@@ -29,7 +29,6 @@ const useStyles = makeStyles((theme: Theme) =>
     iconButton: {
       minHeight: '32px',
       minWidth: '32px',
-      backgroundColor: '#4e97c2',
       borderRadius: 4,
     },
     pad: {
@@ -38,9 +37,22 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function UserHeader(): ReactElement {
+interface Props {
+  // st = style type short hand
+  st: string;
+}
+
+export default function UserHeader({ st }: Props): ReactElement {
   const classes = useStyles();
   const { user } = useUser();
+
+  const backgroundStyle = () => {
+    if (st === 'blue') {
+      return { backgroundColor: '#4e97c2' };
+    } else {
+      return { backgroundColor: 'hsla(0,0%,100%,.3)' };
+    }
+  };
 
   if (user) {
     return (
@@ -48,9 +60,13 @@ export default function UserHeader(): ReactElement {
         {/* TODO: Set Background color to transparent and change elevation on scroll */}
         <AppBar
           position='static'
-          color='primary'
           elevation={0}
           className={classes.userBarHeight}
+          style={
+            st === 'blue'
+              ? { backgroundColor: '#026AA7' }
+              : { backgroundColor: 'rgba(0,0,0,.32)' }
+          }
         >
           <Grid
             container
@@ -60,35 +76,57 @@ export default function UserHeader(): ReactElement {
             className={classes.pad}
           >
             <Grid item>
-              <ButtonBase className={classes.iconButton}>
+              <ButtonBase
+                className={classes.iconButton}
+                style={backgroundStyle()}
+              >
                 <AppsIcon />
               </ButtonBase>
             </Grid>
             <Grid item>
-              <ButtonBase className={classes.iconButton}>
+              <ButtonBase
+                className={classes.iconButton}
+                style={backgroundStyle()}
+              >
                 <HomeIcon />
               </ButtonBase>
             </Grid>
             <Grid item>
               <ButtonBase
                 className={classes.iconButton}
-                style={{ paddingRight: '8px', paddingLeft: ' 4px' }}
+                style={backgroundStyle()}
               >
-                <DashboardIcon style={{ marginRight: '8px' }} />
-                <Typography style={{ fontWeight: 700 }}>Boards</Typography>
+                <DashboardIcon
+                  style={{ marginRight: '8px', paddingLeft: '4px' }}
+                />
+                <Typography
+                  style={{
+                    fontWeight: 700,
+                    paddingRight: '8px',
+                  }}
+                >
+                  Boards
+                </Typography>
               </ButtonBase>
             </Grid>
           </Grid>
 
           <Grid container direction='row' justify='center' alignItems='center'>
             <Grid item>
-              <DashboardIcon color='secondary' style={{ marginRight: '2px' }} />
+              <DashboardIcon
+                color={st === 'blue' ? 'secondary' : undefined}
+                style={st === 'blue' ? {} : { color: '#dcdcdd' }}
+              />
             </Grid>
             <Grid item>
               <Typography
-                color='secondary'
+                color={st === 'blue' ? 'secondary' : undefined}
+                style={
+                  st === 'blue'
+                    ? { fontWeight: 700 }
+                    : { color: '#dcdcdd', fontWeight: 700 }
+                }
                 variant='h6'
-                style={{ fontWeight: 700 }}
               >
                 Craplo
               </Typography>
@@ -103,17 +141,26 @@ export default function UserHeader(): ReactElement {
             style={{ marginRight: '4px' }}
           >
             <Grid item>
-              <ButtonBase className={classes.iconButton}>
+              <ButtonBase
+                className={classes.iconButton}
+                style={backgroundStyle()}
+              >
                 <AddIcon />
               </ButtonBase>
             </Grid>
             <Grid item>
-              <ButtonBase className={classes.iconButton}>
+              <ButtonBase
+                className={classes.iconButton}
+                style={backgroundStyle()}
+              >
                 <InfoIcon />
               </ButtonBase>
             </Grid>
             <Grid item>
-              <ButtonBase className={classes.iconButton}>
+              <ButtonBase
+                className={classes.iconButton}
+                style={backgroundStyle()}
+              >
                 <NotificationsIcon />
               </ButtonBase>
             </Grid>

@@ -6,6 +6,7 @@ import { GetBoardQuery, GetBoardQueryVariables } from '../../API';
 import { GRAPHQL_AUTH_MODE } from '@aws-amplify/api';
 import Amplify from 'aws-amplify';
 import awsconfig from '../../aws-exports';
+import UserHeader from '../../components/Headers/UserHeader';
 
 Amplify.configure({ ...awsconfig, ssr: true });
 
@@ -16,7 +17,11 @@ interface Props {
 export default function IndividualBoardPage({ board }: Props) {
   console.log('Board:', board);
 
-  return <div>loaded</div>;
+  return (
+    <React.Fragment>
+      <UserHeader st={'grey'} />
+    </React.Fragment>
+  );
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {

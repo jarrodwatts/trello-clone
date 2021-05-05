@@ -131,7 +131,13 @@ export default function IndividualBoardPage({ board }: Props) {
         </Typography>
 
         <DragDropContext onDragEnd={onDragEnd}>
-          <Grid container direction='row' spacing={1}>
+          <Grid
+            container
+            direction='row'
+            alignItems='flex-start'
+            justify='flex-start'
+            spacing={1}
+          >
             {columns.map((column) => (
               <ColumnComponent
                 column={column}

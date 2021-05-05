@@ -9,9 +9,9 @@ export const onCreateWorkspace = /* GraphQL */ `
       name
       description
       members
+      owner
       createdAt
       updatedAt
-      owner
       boards {
         items {
           id
@@ -30,6 +30,7 @@ export const onCreateWorkspace = /* GraphQL */ `
               boardId
               name
               owner
+              columnIndex
               createdAt
               updatedAt
               tickets {
@@ -43,6 +44,7 @@ export const onCreateWorkspace = /* GraphQL */ `
                     color
                   }
                   owner
+                  ticketIndex
                   createdAt
                   updatedAt
                   comments {
@@ -75,9 +77,9 @@ export const onUpdateWorkspace = /* GraphQL */ `
       name
       description
       members
+      owner
       createdAt
       updatedAt
-      owner
       boards {
         items {
           id
@@ -96,6 +98,7 @@ export const onUpdateWorkspace = /* GraphQL */ `
               boardId
               name
               owner
+              columnIndex
               createdAt
               updatedAt
               tickets {
@@ -109,6 +112,7 @@ export const onUpdateWorkspace = /* GraphQL */ `
                     color
                   }
                   owner
+                  ticketIndex
                   createdAt
                   updatedAt
                   comments {
@@ -141,9 +145,9 @@ export const onDeleteWorkspace = /* GraphQL */ `
       name
       description
       members
+      owner
       createdAt
       updatedAt
-      owner
       boards {
         items {
           id
@@ -162,6 +166,7 @@ export const onDeleteWorkspace = /* GraphQL */ `
               boardId
               name
               owner
+              columnIndex
               createdAt
               updatedAt
               tickets {
@@ -175,6 +180,7 @@ export const onDeleteWorkspace = /* GraphQL */ `
                     color
                   }
                   owner
+                  ticketIndex
                   createdAt
                   updatedAt
                   comments {
@@ -219,6 +225,7 @@ export const onCreateBoard = /* GraphQL */ `
           boardId
           name
           owner
+          columnIndex
           createdAt
           updatedAt
           tickets {
@@ -232,6 +239,7 @@ export const onCreateBoard = /* GraphQL */ `
                 color
               }
               owner
+              ticketIndex
               createdAt
               updatedAt
               comments {
@@ -273,6 +281,7 @@ export const onUpdateBoard = /* GraphQL */ `
           boardId
           name
           owner
+          columnIndex
           createdAt
           updatedAt
           tickets {
@@ -286,6 +295,7 @@ export const onUpdateBoard = /* GraphQL */ `
                 color
               }
               owner
+              ticketIndex
               createdAt
               updatedAt
               comments {
@@ -327,6 +337,7 @@ export const onDeleteBoard = /* GraphQL */ `
           boardId
           name
           owner
+          columnIndex
           createdAt
           updatedAt
           tickets {
@@ -340,6 +351,7 @@ export const onDeleteBoard = /* GraphQL */ `
                 color
               }
               owner
+              ticketIndex
               createdAt
               updatedAt
               comments {
@@ -369,6 +381,7 @@ export const onCreateColumn = /* GraphQL */ `
       boardId
       name
       owner
+      columnIndex
       createdAt
       updatedAt
       tickets {
@@ -382,6 +395,7 @@ export const onCreateColumn = /* GraphQL */ `
             color
           }
           owner
+          ticketIndex
           createdAt
           updatedAt
           comments {
@@ -408,6 +422,7 @@ export const onUpdateColumn = /* GraphQL */ `
       boardId
       name
       owner
+      columnIndex
       createdAt
       updatedAt
       tickets {
@@ -421,6 +436,7 @@ export const onUpdateColumn = /* GraphQL */ `
             color
           }
           owner
+          ticketIndex
           createdAt
           updatedAt
           comments {
@@ -447,6 +463,7 @@ export const onDeleteColumn = /* GraphQL */ `
       boardId
       name
       owner
+      columnIndex
       createdAt
       updatedAt
       tickets {
@@ -460,6 +477,7 @@ export const onDeleteColumn = /* GraphQL */ `
             color
           }
           owner
+          ticketIndex
           createdAt
           updatedAt
           comments {
@@ -491,6 +509,7 @@ export const onCreateTicket = /* GraphQL */ `
         color
       }
       owner
+      ticketIndex
       createdAt
       updatedAt
       comments {
@@ -519,6 +538,7 @@ export const onUpdateTicket = /* GraphQL */ `
         color
       }
       owner
+      ticketIndex
       createdAt
       updatedAt
       comments {
@@ -547,6 +567,7 @@ export const onDeleteTicket = /* GraphQL */ `
         color
       }
       owner
+      ticketIndex
       createdAt
       updatedAt
       comments {

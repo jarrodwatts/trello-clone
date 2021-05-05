@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import { Button, Paper, Typography } from '@material-ui/core';
+import { Paper, Typography } from '@material-ui/core';
 import { Ticket } from '../../API';
 import { Draggable } from 'react-beautiful-dnd';
 
@@ -11,14 +11,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: '4px',
     marginBottom: '8px',
   },
-  name: {
-    fontSize: 12,
-    fontWeight: 600,
+  ticketName: {
+    paddingLeft: '4px',
   },
 }));
 
 interface Props {
-  ticket: Ticket | null;
+  ticket: Ticket;
   keyProp: number;
 }
 
@@ -30,7 +29,8 @@ export default function TicketComponent({
   return (
     <Draggable
       key={ticket?.id}
-      draggableId={keyProp.toString()}
+      // @ts-ignore : Again, ticket id cannot be null idk why it is saying this.
+      draggableId={ticket?.id}
       index={keyProp}
     >
       {(provided, snapshot) => (
@@ -45,8 +45,9 @@ export default function TicketComponent({
           {...provided.dragHandleProps}
         >
           <Paper className={classes.ticket} elevation={1}>
-            <Button>test</Button>
-            <Typography variant='body1'>{ticket?.title}</Typography>
+            <Typography className={classes.ticketName} variant='body1'>
+              {ticket.title}
+            </Typography>
           </Paper>
         </div>
       )}

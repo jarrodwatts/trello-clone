@@ -7,6 +7,7 @@ export type CreateWorkspaceInput = {
   name: string,
   description?: string | null,
   members?: Array< string | null > | null,
+  owner?: string | null,
 };
 
 export type ModelWorkspaceConditionInput = {
@@ -63,9 +64,9 @@ export type Workspace = {
   name?: string,
   description?: string | null,
   members?: Array< string | null > | null,
+  owner?: string | null,
   createdAt?: string,
   updatedAt?: string,
-  owner?: string | null,
   boards?: ModelBoardConnection,
 };
 
@@ -109,6 +110,7 @@ export type Column = {
   boardId?: string,
   name?: string,
   owner?: string | null,
+  columnIndex?: number,
   createdAt?: string,
   updatedAt?: string,
   tickets?: ModelTicketConnection,
@@ -128,6 +130,7 @@ export type Ticket = {
   description?: string | null,
   labels?:  Array<Label | null > | null,
   owner?: string | null,
+  ticketIndex?: number,
   createdAt?: string,
   updatedAt?: string,
   comments?: ModelCommentConnection,
@@ -160,6 +163,7 @@ export type UpdateWorkspaceInput = {
   name?: string | null,
   description?: string | null,
   members?: Array< string | null > | null,
+  owner?: string | null,
 };
 
 export type DeleteWorkspaceInput = {
@@ -236,14 +240,28 @@ export type CreateColumnInput = {
   boardId: string,
   name: string,
   owner?: string | null,
+  columnIndex: number,
 };
 
 export type ModelColumnConditionInput = {
   boardId?: ModelIDInput | null,
   name?: ModelStringInput | null,
+  columnIndex?: ModelIntInput | null,
   and?: Array< ModelColumnConditionInput | null > | null,
   or?: Array< ModelColumnConditionInput | null > | null,
   not?: ModelColumnConditionInput | null,
+};
+
+export type ModelIntInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
 };
 
 export type UpdateColumnInput = {
@@ -251,6 +269,7 @@ export type UpdateColumnInput = {
   boardId?: string | null,
   name?: string | null,
   owner?: string | null,
+  columnIndex?: number | null,
 };
 
 export type DeleteColumnInput = {
@@ -264,6 +283,7 @@ export type CreateTicketInput = {
   description?: string | null,
   labels?: Array< LabelInput | null > | null,
   owner?: string | null,
+  ticketIndex: number,
 };
 
 export type LabelInput = {
@@ -275,6 +295,7 @@ export type ModelTicketConditionInput = {
   columnId?: ModelIDInput | null,
   title?: ModelStringInput | null,
   description?: ModelStringInput | null,
+  ticketIndex?: ModelIntInput | null,
   and?: Array< ModelTicketConditionInput | null > | null,
   or?: Array< ModelTicketConditionInput | null > | null,
   not?: ModelTicketConditionInput | null,
@@ -287,6 +308,7 @@ export type UpdateTicketInput = {
   description?: string | null,
   labels?: Array< LabelInput | null > | null,
   owner?: string | null,
+  ticketIndex?: number | null,
 };
 
 export type DeleteTicketInput = {
@@ -322,6 +344,7 @@ export type ModelWorkspaceFilterInput = {
   name?: ModelStringInput | null,
   description?: ModelStringInput | null,
   members?: ModelStringInput | null,
+  owner?: ModelStringInput | null,
   and?: Array< ModelWorkspaceFilterInput | null > | null,
   or?: Array< ModelWorkspaceFilterInput | null > | null,
   not?: ModelWorkspaceFilterInput | null,
@@ -352,6 +375,7 @@ export type ModelColumnFilterInput = {
   boardId?: ModelIDInput | null,
   name?: ModelStringInput | null,
   owner?: ModelStringInput | null,
+  columnIndex?: ModelIntInput | null,
   and?: Array< ModelColumnFilterInput | null > | null,
   or?: Array< ModelColumnFilterInput | null > | null,
   not?: ModelColumnFilterInput | null,
@@ -363,6 +387,7 @@ export type ModelTicketFilterInput = {
   title?: ModelStringInput | null,
   description?: ModelStringInput | null,
   owner?: ModelStringInput | null,
+  ticketIndex?: ModelIntInput | null,
   and?: Array< ModelTicketFilterInput | null > | null,
   or?: Array< ModelTicketFilterInput | null > | null,
   not?: ModelTicketFilterInput | null,
@@ -389,9 +414,9 @@ export type CreateWorkspaceMutation = {
     name: string,
     description?: string | null,
     members?: Array< string | null > | null,
+    owner?: string | null,
     createdAt: string,
     updatedAt: string,
-    owner?: string | null,
     boards?:  {
       __typename: "ModelBoardConnection",
       items?:  Array< {
@@ -414,6 +439,7 @@ export type CreateWorkspaceMutation = {
             boardId: string,
             name: string,
             owner?: string | null,
+            columnIndex: number,
             createdAt: string,
             updatedAt: string,
             tickets?:  {
@@ -430,6 +456,7 @@ export type CreateWorkspaceMutation = {
                   color: string,
                 } | null > | null,
                 owner?: string | null,
+                ticketIndex: number,
                 createdAt: string,
                 updatedAt: string,
                 comments?:  {
@@ -469,9 +496,9 @@ export type UpdateWorkspaceMutation = {
     name: string,
     description?: string | null,
     members?: Array< string | null > | null,
+    owner?: string | null,
     createdAt: string,
     updatedAt: string,
-    owner?: string | null,
     boards?:  {
       __typename: "ModelBoardConnection",
       items?:  Array< {
@@ -494,6 +521,7 @@ export type UpdateWorkspaceMutation = {
             boardId: string,
             name: string,
             owner?: string | null,
+            columnIndex: number,
             createdAt: string,
             updatedAt: string,
             tickets?:  {
@@ -510,6 +538,7 @@ export type UpdateWorkspaceMutation = {
                   color: string,
                 } | null > | null,
                 owner?: string | null,
+                ticketIndex: number,
                 createdAt: string,
                 updatedAt: string,
                 comments?:  {
@@ -549,9 +578,9 @@ export type DeleteWorkspaceMutation = {
     name: string,
     description?: string | null,
     members?: Array< string | null > | null,
+    owner?: string | null,
     createdAt: string,
     updatedAt: string,
-    owner?: string | null,
     boards?:  {
       __typename: "ModelBoardConnection",
       items?:  Array< {
@@ -574,6 +603,7 @@ export type DeleteWorkspaceMutation = {
             boardId: string,
             name: string,
             owner?: string | null,
+            columnIndex: number,
             createdAt: string,
             updatedAt: string,
             tickets?:  {
@@ -590,6 +620,7 @@ export type DeleteWorkspaceMutation = {
                   color: string,
                 } | null > | null,
                 owner?: string | null,
+                ticketIndex: number,
                 createdAt: string,
                 updatedAt: string,
                 comments?:  {
@@ -643,6 +674,7 @@ export type CreateBoardMutation = {
         boardId: string,
         name: string,
         owner?: string | null,
+        columnIndex: number,
         createdAt: string,
         updatedAt: string,
         tickets?:  {
@@ -659,6 +691,7 @@ export type CreateBoardMutation = {
               color: string,
             } | null > | null,
             owner?: string | null,
+            ticketIndex: number,
             createdAt: string,
             updatedAt: string,
             comments?:  {
@@ -709,6 +742,7 @@ export type UpdateBoardMutation = {
         boardId: string,
         name: string,
         owner?: string | null,
+        columnIndex: number,
         createdAt: string,
         updatedAt: string,
         tickets?:  {
@@ -725,6 +759,7 @@ export type UpdateBoardMutation = {
               color: string,
             } | null > | null,
             owner?: string | null,
+            ticketIndex: number,
             createdAt: string,
             updatedAt: string,
             comments?:  {
@@ -775,6 +810,7 @@ export type DeleteBoardMutation = {
         boardId: string,
         name: string,
         owner?: string | null,
+        columnIndex: number,
         createdAt: string,
         updatedAt: string,
         tickets?:  {
@@ -791,6 +827,7 @@ export type DeleteBoardMutation = {
               color: string,
             } | null > | null,
             owner?: string | null,
+            ticketIndex: number,
             createdAt: string,
             updatedAt: string,
             comments?:  {
@@ -827,6 +864,7 @@ export type CreateColumnMutation = {
     boardId: string,
     name: string,
     owner?: string | null,
+    columnIndex: number,
     createdAt: string,
     updatedAt: string,
     tickets?:  {
@@ -843,6 +881,7 @@ export type CreateColumnMutation = {
           color: string,
         } | null > | null,
         owner?: string | null,
+        ticketIndex: number,
         createdAt: string,
         updatedAt: string,
         comments?:  {
@@ -876,6 +915,7 @@ export type UpdateColumnMutation = {
     boardId: string,
     name: string,
     owner?: string | null,
+    columnIndex: number,
     createdAt: string,
     updatedAt: string,
     tickets?:  {
@@ -892,6 +932,7 @@ export type UpdateColumnMutation = {
           color: string,
         } | null > | null,
         owner?: string | null,
+        ticketIndex: number,
         createdAt: string,
         updatedAt: string,
         comments?:  {
@@ -925,6 +966,7 @@ export type DeleteColumnMutation = {
     boardId: string,
     name: string,
     owner?: string | null,
+    columnIndex: number,
     createdAt: string,
     updatedAt: string,
     tickets?:  {
@@ -941,6 +983,7 @@ export type DeleteColumnMutation = {
           color: string,
         } | null > | null,
         owner?: string | null,
+        ticketIndex: number,
         createdAt: string,
         updatedAt: string,
         comments?:  {
@@ -980,6 +1023,7 @@ export type CreateTicketMutation = {
       color: string,
     } | null > | null,
     owner?: string | null,
+    ticketIndex: number,
     createdAt: string,
     updatedAt: string,
     comments?:  {
@@ -1016,6 +1060,7 @@ export type UpdateTicketMutation = {
       color: string,
     } | null > | null,
     owner?: string | null,
+    ticketIndex: number,
     createdAt: string,
     updatedAt: string,
     comments?:  {
@@ -1052,6 +1097,7 @@ export type DeleteTicketMutation = {
       color: string,
     } | null > | null,
     owner?: string | null,
+    ticketIndex: number,
     createdAt: string,
     updatedAt: string,
     comments?:  {
@@ -1132,9 +1178,9 @@ export type GetWorkspaceQuery = {
     name: string,
     description?: string | null,
     members?: Array< string | null > | null,
+    owner?: string | null,
     createdAt: string,
     updatedAt: string,
-    owner?: string | null,
     boards?:  {
       __typename: "ModelBoardConnection",
       items?:  Array< {
@@ -1157,6 +1203,7 @@ export type GetWorkspaceQuery = {
             boardId: string,
             name: string,
             owner?: string | null,
+            columnIndex: number,
             createdAt: string,
             updatedAt: string,
             tickets?:  {
@@ -1173,6 +1220,7 @@ export type GetWorkspaceQuery = {
                   color: string,
                 } | null > | null,
                 owner?: string | null,
+                ticketIndex: number,
                 createdAt: string,
                 updatedAt: string,
                 comments?:  {
@@ -1215,9 +1263,9 @@ export type ListWorkspacesQuery = {
       name: string,
       description?: string | null,
       members?: Array< string | null > | null,
+      owner?: string | null,
       createdAt: string,
       updatedAt: string,
-      owner?: string | null,
       boards?:  {
         __typename: "ModelBoardConnection",
         items?:  Array< {
@@ -1240,6 +1288,7 @@ export type ListWorkspacesQuery = {
               boardId: string,
               name: string,
               owner?: string | null,
+              columnIndex: number,
               createdAt: string,
               updatedAt: string,
               tickets?:  {
@@ -1256,6 +1305,7 @@ export type ListWorkspacesQuery = {
                     color: string,
                   } | null > | null,
                   owner?: string | null,
+                  ticketIndex: number,
                   createdAt: string,
                   updatedAt: string,
                   comments?:  {
@@ -1310,6 +1360,7 @@ export type GetBoardQuery = {
         boardId: string,
         name: string,
         owner?: string | null,
+        columnIndex: number,
         createdAt: string,
         updatedAt: string,
         tickets?:  {
@@ -1326,6 +1377,7 @@ export type GetBoardQuery = {
               color: string,
             } | null > | null,
             owner?: string | null,
+            ticketIndex: number,
             createdAt: string,
             updatedAt: string,
             comments?:  {
@@ -1379,6 +1431,7 @@ export type ListBoardsQuery = {
           boardId: string,
           name: string,
           owner?: string | null,
+          columnIndex: number,
           createdAt: string,
           updatedAt: string,
           tickets?:  {
@@ -1395,6 +1448,7 @@ export type ListBoardsQuery = {
                 color: string,
               } | null > | null,
               owner?: string | null,
+              ticketIndex: number,
               createdAt: string,
               updatedAt: string,
               comments?:  {
@@ -1432,6 +1486,7 @@ export type GetColumnQuery = {
     boardId: string,
     name: string,
     owner?: string | null,
+    columnIndex: number,
     createdAt: string,
     updatedAt: string,
     tickets?:  {
@@ -1448,6 +1503,7 @@ export type GetColumnQuery = {
           color: string,
         } | null > | null,
         owner?: string | null,
+        ticketIndex: number,
         createdAt: string,
         updatedAt: string,
         comments?:  {
@@ -1484,6 +1540,7 @@ export type ListColumnsQuery = {
       boardId: string,
       name: string,
       owner?: string | null,
+      columnIndex: number,
       createdAt: string,
       updatedAt: string,
       tickets?:  {
@@ -1500,6 +1557,7 @@ export type ListColumnsQuery = {
             color: string,
           } | null > | null,
           owner?: string | null,
+          ticketIndex: number,
           createdAt: string,
           updatedAt: string,
           comments?:  {
@@ -1540,6 +1598,7 @@ export type GetTicketQuery = {
       color: string,
     } | null > | null,
     owner?: string | null,
+    ticketIndex: number,
     createdAt: string,
     updatedAt: string,
     comments?:  {
@@ -1579,6 +1638,7 @@ export type ListTicketsQuery = {
         color: string,
       } | null > | null,
       owner?: string | null,
+      ticketIndex: number,
       createdAt: string,
       updatedAt: string,
       comments?:  {
@@ -1649,9 +1709,9 @@ export type OnCreateWorkspaceSubscription = {
     name: string,
     description?: string | null,
     members?: Array< string | null > | null,
+    owner?: string | null,
     createdAt: string,
     updatedAt: string,
-    owner?: string | null,
     boards?:  {
       __typename: "ModelBoardConnection",
       items?:  Array< {
@@ -1674,6 +1734,7 @@ export type OnCreateWorkspaceSubscription = {
             boardId: string,
             name: string,
             owner?: string | null,
+            columnIndex: number,
             createdAt: string,
             updatedAt: string,
             tickets?:  {
@@ -1690,6 +1751,7 @@ export type OnCreateWorkspaceSubscription = {
                   color: string,
                 } | null > | null,
                 owner?: string | null,
+                ticketIndex: number,
                 createdAt: string,
                 updatedAt: string,
                 comments?:  {
@@ -1729,9 +1791,9 @@ export type OnUpdateWorkspaceSubscription = {
     name: string,
     description?: string | null,
     members?: Array< string | null > | null,
+    owner?: string | null,
     createdAt: string,
     updatedAt: string,
-    owner?: string | null,
     boards?:  {
       __typename: "ModelBoardConnection",
       items?:  Array< {
@@ -1754,6 +1816,7 @@ export type OnUpdateWorkspaceSubscription = {
             boardId: string,
             name: string,
             owner?: string | null,
+            columnIndex: number,
             createdAt: string,
             updatedAt: string,
             tickets?:  {
@@ -1770,6 +1833,7 @@ export type OnUpdateWorkspaceSubscription = {
                   color: string,
                 } | null > | null,
                 owner?: string | null,
+                ticketIndex: number,
                 createdAt: string,
                 updatedAt: string,
                 comments?:  {
@@ -1809,9 +1873,9 @@ export type OnDeleteWorkspaceSubscription = {
     name: string,
     description?: string | null,
     members?: Array< string | null > | null,
+    owner?: string | null,
     createdAt: string,
     updatedAt: string,
-    owner?: string | null,
     boards?:  {
       __typename: "ModelBoardConnection",
       items?:  Array< {
@@ -1834,6 +1898,7 @@ export type OnDeleteWorkspaceSubscription = {
             boardId: string,
             name: string,
             owner?: string | null,
+            columnIndex: number,
             createdAt: string,
             updatedAt: string,
             tickets?:  {
@@ -1850,6 +1915,7 @@ export type OnDeleteWorkspaceSubscription = {
                   color: string,
                 } | null > | null,
                 owner?: string | null,
+                ticketIndex: number,
                 createdAt: string,
                 updatedAt: string,
                 comments?:  {
@@ -1903,6 +1969,7 @@ export type OnCreateBoardSubscription = {
         boardId: string,
         name: string,
         owner?: string | null,
+        columnIndex: number,
         createdAt: string,
         updatedAt: string,
         tickets?:  {
@@ -1919,6 +1986,7 @@ export type OnCreateBoardSubscription = {
               color: string,
             } | null > | null,
             owner?: string | null,
+            ticketIndex: number,
             createdAt: string,
             updatedAt: string,
             comments?:  {
@@ -1969,6 +2037,7 @@ export type OnUpdateBoardSubscription = {
         boardId: string,
         name: string,
         owner?: string | null,
+        columnIndex: number,
         createdAt: string,
         updatedAt: string,
         tickets?:  {
@@ -1985,6 +2054,7 @@ export type OnUpdateBoardSubscription = {
               color: string,
             } | null > | null,
             owner?: string | null,
+            ticketIndex: number,
             createdAt: string,
             updatedAt: string,
             comments?:  {
@@ -2035,6 +2105,7 @@ export type OnDeleteBoardSubscription = {
         boardId: string,
         name: string,
         owner?: string | null,
+        columnIndex: number,
         createdAt: string,
         updatedAt: string,
         tickets?:  {
@@ -2051,6 +2122,7 @@ export type OnDeleteBoardSubscription = {
               color: string,
             } | null > | null,
             owner?: string | null,
+            ticketIndex: number,
             createdAt: string,
             updatedAt: string,
             comments?:  {
@@ -2086,6 +2158,7 @@ export type OnCreateColumnSubscription = {
     boardId: string,
     name: string,
     owner?: string | null,
+    columnIndex: number,
     createdAt: string,
     updatedAt: string,
     tickets?:  {
@@ -2102,6 +2175,7 @@ export type OnCreateColumnSubscription = {
           color: string,
         } | null > | null,
         owner?: string | null,
+        ticketIndex: number,
         createdAt: string,
         updatedAt: string,
         comments?:  {
@@ -2134,6 +2208,7 @@ export type OnUpdateColumnSubscription = {
     boardId: string,
     name: string,
     owner?: string | null,
+    columnIndex: number,
     createdAt: string,
     updatedAt: string,
     tickets?:  {
@@ -2150,6 +2225,7 @@ export type OnUpdateColumnSubscription = {
           color: string,
         } | null > | null,
         owner?: string | null,
+        ticketIndex: number,
         createdAt: string,
         updatedAt: string,
         comments?:  {
@@ -2182,6 +2258,7 @@ export type OnDeleteColumnSubscription = {
     boardId: string,
     name: string,
     owner?: string | null,
+    columnIndex: number,
     createdAt: string,
     updatedAt: string,
     tickets?:  {
@@ -2198,6 +2275,7 @@ export type OnDeleteColumnSubscription = {
           color: string,
         } | null > | null,
         owner?: string | null,
+        ticketIndex: number,
         createdAt: string,
         updatedAt: string,
         comments?:  {
@@ -2236,6 +2314,7 @@ export type OnCreateTicketSubscription = {
       color: string,
     } | null > | null,
     owner?: string | null,
+    ticketIndex: number,
     createdAt: string,
     updatedAt: string,
     comments?:  {
@@ -2271,6 +2350,7 @@ export type OnUpdateTicketSubscription = {
       color: string,
     } | null > | null,
     owner?: string | null,
+    ticketIndex: number,
     createdAt: string,
     updatedAt: string,
     comments?:  {
@@ -2306,6 +2386,7 @@ export type OnDeleteTicketSubscription = {
       color: string,
     } | null > | null,
     owner?: string | null,
+    ticketIndex: number,
     createdAt: string,
     updatedAt: string,
     comments?:  {

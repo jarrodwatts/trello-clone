@@ -14,46 +14,45 @@ const useStyles = makeStyles((theme: Theme) => ({
     backgroundColor: '#ebecf0',
     padding: '8px',
     borderRadius: 4,
+    marginLeft: '8px',
   },
   name: {
     fontSize: 16,
     fontWeight: 600,
     marginBottom: '4px',
-    marginLeft: '8px',
+    marginLeft: '16px',
   },
 }));
 
 interface Props {
-  column: Column | null;
+  column: Column;
+  tickets: Ticket[];
 }
 
-export default function ColumnComponent({ column }: Props): ReactElement {
+export default function ColumnComponent({
+  column,
+  tickets,
+}: Props): ReactElement {
   const classes = useStyles();
-  if (column && column.id) {
-    return (
-      <Grid container direction='column' className={classes.column}>
-        <Typography className={classes.name}>{column?.name}</Typography>
-        <Droppable droppableId={column.id}>
-          {(provided, snapshot) => (
-            <div
-              ref={provided.innerRef}
-              {...provided.droppableProps}
-              // style={getListStyle(snapshot.isDraggingOver)}
-            >
-              {column?.tickets?.items?.map((ticket: Ticket | null, key) => (
-                <TicketComponent
-                  key={ticket?.id}
-                  ticket={ticket}
-                  keyProp={key}
-                />
-              ))}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </Grid>
-    );
-  } else {
-    return <div>Something went wrong :(</div>;
-  }
+
+  return (
+    <Grid container direction='column' className={classes.column}>
+      <Typography className={classes.name}>{column?.name}</Typography>
+      {/* @ts-ignore: Why does Amplify think column.id can be null...? It can't. In the schema it MUST be there.*/}
+      <Droppable droppableId={column.id}>
+        {(provided, snapshot) => (
+          <div
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+            // style={getListStyle(snapshot.isDraggingOver)}
+          >
+            {tickets.map((ticket: Ticket, key) => (
+              <TicketComponent key={ticket?.id} ticket={ticket} keyProp={key} />
+            ))}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+    </Grid>
+  );
 }

@@ -25,6 +25,7 @@ type Workspace
   description: String
   boards: [Board] @connection(keyName: "byWorkspace", fields: ["id"])
   members: [String]
+  owner: String
 }
 
 type Board
@@ -68,7 +69,7 @@ type Column
   name: String!
   tickets: [Ticket] @connection(keyName: "byColumn", fields: ["id"])
   owner: String
-  #editors: [String]
+  columnIndex: Int!
 }
 
 type Ticket
@@ -90,6 +91,7 @@ type Ticket
   comments: [Comment] @connection(keyName: "byTicket", fields: ["id"])
   labels: [Label]
   owner: String
+  ticketIndex: Int!
   #editors: [String]
 }
 

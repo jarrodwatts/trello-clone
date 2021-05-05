@@ -9,9 +9,9 @@ export const getWorkspace = /* GraphQL */ `
       name
       description
       members
+      owner
       createdAt
       updatedAt
-      owner
       boards {
         items {
           id
@@ -30,6 +30,7 @@ export const getWorkspace = /* GraphQL */ `
               boardId
               name
               owner
+              columnIndex
               createdAt
               updatedAt
               tickets {
@@ -43,6 +44,7 @@ export const getWorkspace = /* GraphQL */ `
                     color
                   }
                   owner
+                  ticketIndex
                   createdAt
                   updatedAt
                   comments {
@@ -80,9 +82,9 @@ export const listWorkspaces = /* GraphQL */ `
         name
         description
         members
+        owner
         createdAt
         updatedAt
-        owner
         boards {
           items {
             id
@@ -101,6 +103,7 @@ export const listWorkspaces = /* GraphQL */ `
                 boardId
                 name
                 owner
+                columnIndex
                 createdAt
                 updatedAt
                 tickets {
@@ -114,6 +117,7 @@ export const listWorkspaces = /* GraphQL */ `
                       color
                     }
                     owner
+                    ticketIndex
                     createdAt
                     updatedAt
                     comments {
@@ -160,6 +164,7 @@ export const getBoard = /* GraphQL */ `
           boardId
           name
           owner
+          columnIndex
           createdAt
           updatedAt
           tickets {
@@ -173,6 +178,7 @@ export const getBoard = /* GraphQL */ `
                 color
               }
               owner
+              ticketIndex
               createdAt
               updatedAt
               comments {
@@ -219,6 +225,7 @@ export const listBoards = /* GraphQL */ `
             boardId
             name
             owner
+            columnIndex
             createdAt
             updatedAt
             tickets {
@@ -232,6 +239,7 @@ export const listBoards = /* GraphQL */ `
                   color
                 }
                 owner
+                ticketIndex
                 createdAt
                 updatedAt
                 comments {
@@ -263,6 +271,7 @@ export const getColumn = /* GraphQL */ `
       boardId
       name
       owner
+      columnIndex
       createdAt
       updatedAt
       tickets {
@@ -276,6 +285,7 @@ export const getColumn = /* GraphQL */ `
             color
           }
           owner
+          ticketIndex
           createdAt
           updatedAt
           comments {
@@ -307,6 +317,7 @@ export const listColumns = /* GraphQL */ `
         boardId
         name
         owner
+        columnIndex
         createdAt
         updatedAt
         tickets {
@@ -320,6 +331,7 @@ export const listColumns = /* GraphQL */ `
               color
             }
             owner
+            ticketIndex
             createdAt
             updatedAt
             comments {
@@ -353,6 +365,7 @@ export const getTicket = /* GraphQL */ `
         color
       }
       owner
+      ticketIndex
       createdAt
       updatedAt
       comments {
@@ -386,6 +399,7 @@ export const listTickets = /* GraphQL */ `
           color
         }
         owner
+        ticketIndex
         createdAt
         updatedAt
         comments {

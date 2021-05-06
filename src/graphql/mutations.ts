@@ -11,7 +11,6 @@ export const createWorkspace = /* GraphQL */ `
       id
       name
       description
-      members
       owner
       createdAt
       updatedAt
@@ -22,7 +21,6 @@ export const createWorkspace = /* GraphQL */ `
           name
           description
           owner
-          editors
           visibility
           isTemplate
           createdAt
@@ -30,6 +28,7 @@ export const createWorkspace = /* GraphQL */ `
           columns {
             items {
               id
+              owner
               boardId
               name
               tickets {
@@ -41,13 +40,10 @@ export const createWorkspace = /* GraphQL */ `
                   name
                   color
                 }
-                owner
               }
               columnIndex
               createdAt
               updatedAt
-              owner
-              editors
             }
             nextToken
           }
@@ -66,7 +62,6 @@ export const updateWorkspace = /* GraphQL */ `
       id
       name
       description
-      members
       owner
       createdAt
       updatedAt
@@ -77,7 +72,6 @@ export const updateWorkspace = /* GraphQL */ `
           name
           description
           owner
-          editors
           visibility
           isTemplate
           createdAt
@@ -85,6 +79,7 @@ export const updateWorkspace = /* GraphQL */ `
           columns {
             items {
               id
+              owner
               boardId
               name
               tickets {
@@ -96,13 +91,10 @@ export const updateWorkspace = /* GraphQL */ `
                   name
                   color
                 }
-                owner
               }
               columnIndex
               createdAt
               updatedAt
-              owner
-              editors
             }
             nextToken
           }
@@ -121,7 +113,6 @@ export const deleteWorkspace = /* GraphQL */ `
       id
       name
       description
-      members
       owner
       createdAt
       updatedAt
@@ -132,7 +123,6 @@ export const deleteWorkspace = /* GraphQL */ `
           name
           description
           owner
-          editors
           visibility
           isTemplate
           createdAt
@@ -140,6 +130,7 @@ export const deleteWorkspace = /* GraphQL */ `
           columns {
             items {
               id
+              owner
               boardId
               name
               tickets {
@@ -151,13 +142,10 @@ export const deleteWorkspace = /* GraphQL */ `
                   name
                   color
                 }
-                owner
               }
               columnIndex
               createdAt
               updatedAt
-              owner
-              editors
             }
             nextToken
           }
@@ -178,7 +166,6 @@ export const createBoard = /* GraphQL */ `
       name
       description
       owner
-      editors
       visibility
       isTemplate
       createdAt
@@ -186,6 +173,7 @@ export const createBoard = /* GraphQL */ `
       columns {
         items {
           id
+          owner
           boardId
           name
           tickets {
@@ -197,13 +185,10 @@ export const createBoard = /* GraphQL */ `
               name
               color
             }
-            owner
           }
           columnIndex
           createdAt
           updatedAt
-          owner
-          editors
         }
         nextToken
       }
@@ -221,7 +206,6 @@ export const updateBoard = /* GraphQL */ `
       name
       description
       owner
-      editors
       visibility
       isTemplate
       createdAt
@@ -229,6 +213,7 @@ export const updateBoard = /* GraphQL */ `
       columns {
         items {
           id
+          owner
           boardId
           name
           tickets {
@@ -240,13 +225,10 @@ export const updateBoard = /* GraphQL */ `
               name
               color
             }
-            owner
           }
           columnIndex
           createdAt
           updatedAt
-          owner
-          editors
         }
         nextToken
       }
@@ -264,7 +246,6 @@ export const deleteBoard = /* GraphQL */ `
       name
       description
       owner
-      editors
       visibility
       isTemplate
       createdAt
@@ -272,6 +253,7 @@ export const deleteBoard = /* GraphQL */ `
       columns {
         items {
           id
+          owner
           boardId
           name
           tickets {
@@ -283,13 +265,10 @@ export const deleteBoard = /* GraphQL */ `
               name
               color
             }
-            owner
           }
           columnIndex
           createdAt
           updatedAt
-          owner
-          editors
         }
         nextToken
       }
@@ -303,6 +282,7 @@ export const createColumn = /* GraphQL */ `
   ) {
     createColumn(input: $input, condition: $condition) {
       id
+      owner
       boardId
       name
       tickets {
@@ -314,13 +294,10 @@ export const createColumn = /* GraphQL */ `
           name
           color
         }
-        owner
       }
       columnIndex
       createdAt
       updatedAt
-      owner
-      editors
     }
   }
 `;
@@ -331,6 +308,7 @@ export const updateColumn = /* GraphQL */ `
   ) {
     updateColumn(input: $input, condition: $condition) {
       id
+      owner
       boardId
       name
       tickets {
@@ -342,13 +320,10 @@ export const updateColumn = /* GraphQL */ `
           name
           color
         }
-        owner
       }
       columnIndex
       createdAt
       updatedAt
-      owner
-      editors
     }
   }
 `;
@@ -359,6 +334,7 @@ export const deleteColumn = /* GraphQL */ `
   ) {
     deleteColumn(input: $input, condition: $condition) {
       id
+      owner
       boardId
       name
       tickets {
@@ -370,13 +346,10 @@ export const deleteColumn = /* GraphQL */ `
           name
           color
         }
-        owner
       }
       columnIndex
       createdAt
       updatedAt
-      owner
-      editors
     }
   }
 `;

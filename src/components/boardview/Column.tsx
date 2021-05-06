@@ -1,18 +1,15 @@
-import React, { useState, useEffect, ReactElement } from 'react';
+import React, { ReactElement } from 'react';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { Button, Grid, Typography } from '@material-ui/core';
 import {
   Column,
-  OnUpdateColumnSubscription,
   Ticket,
   TicketInput,
-  UpdateColumnInput,
   UpdateColumnMutation,
   UpdateColumnMutationVariables,
 } from '../../API';
 import TicketComponent from './Ticket';
 import { Droppable } from 'react-beautiful-dnd';
-import { onUpdateColumn } from '../../graphql/subscriptions';
 import { API } from 'aws-amplify';
 import { GRAPHQL_AUTH_MODE } from '@aws-amplify/api';
 import { v4 as uuidv4 } from 'uuid';
@@ -39,81 +36,51 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 interface Props {
   column: Column;
+  setColumns: React.Dispatch<React.SetStateAction<Column[]>>;
+  allColumns: Column[];
 }
 
-export default function ColumnComponent({ column }: Props): ReactElement {
+export default function ColumnComponent({
+  column,
+  setColumns,
+  allColumns,
+}: Props): ReactElement {
   const classes = useStyles();
-  const [stateColumn, setColumn] = useState<Column>(column);
-
-  useEffect(() => {
-    const onUpdateListener = API.graphql({
-      query: onUpdateColumn,
-      variables: {
-        owner: stateColumn.owner,
-        editors: stateColumn.editors,
-      },
-      authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
-    });
-
-    // @ts-ignore : property subscribe doesn't exist for whatever reason in typescript
-    onUpdateListener.subscribe(
-      ({
-        value,
-      }: {
-        value: {
-          data: OnUpdateColumnSubscription;
-          errors: any[];
-        };
-      }) => {
-        const { data, errors } = value;
-        if (errors) {
-          console.error([...errors]);
-        }
-
-        // Update the column if the mutation detected is this column.
-        // (since there will be multiple of this component - one per column)
-        if (stateColumn.id === data?.onUpdateColumn?.id) {
-          console.log(
-            'Event coming in from subscription:',
-            data.onUpdateColumn
-          );
-          setColumn(data.onUpdateColumn as Column);
-        }
-      }
-    );
-  }, []);
 
   const addTicketToColumn = async () => {
     const newTicket: TicketInput = {
       id: uuidv4(),
       title: '',
       // @ts-ignore column shouldn't be undefined ever
-      columnId: stateColumn.id,
+      columnId: column.id,
     };
 
     let updatedTickets: Ticket[];
-    if (stateColumn.tickets) {
-      updatedTickets = [...stateColumn.tickets, newTicket as Ticket];
+    if (column.tickets) {
+      updatedTickets = [...column.tickets, newTicket as Ticket];
     } else {
       updatedTickets = [newTicket as Ticket];
     }
-    setColumn({
-      ...stateColumn,
-      tickets: updatedTickets,
+    // setColumn({
+    //   ...stateColumn,
+    //   tickets: updatedTickets,
+    // });
+
+    const updatedColumns = allColumns.map((c) => {
+      if (c.id === column.id) {
+        return { ...c, tickets: updatedTickets };
+      }
+      return c;
     });
 
-    console.log('Updated tickets  as input:', stateColumn.tickets);
-    console.log('Column is now:', stateColumn);
+    setColumns(updatedColumns);
 
     // update by pushing the whole of the column to the update mutation
     const input: UpdateColumnMutationVariables = {
       input: {
         // @ts-ignore shouldn't be undefined ever
-        id: stateColumn.id,
-        boardId: stateColumn.boardId,
-        name: stateColumn.name,
+        id: column.id,
         tickets: updatedTickets as TicketInput[],
-        columnIndex: stateColumn.columnIndex,
       },
     };
 
@@ -130,11 +97,9 @@ export default function ColumnComponent({ column }: Props): ReactElement {
     }
   };
 
-  console.log('Columns updated:', stateColumn);
-
   return (
     <Grid container direction='column' className={classes.column}>
-      <Typography className={classes.name}>{stateColumn?.name}</Typography>
+      <Typography className={classes.name}>{column?.name}</Typography>
       {/* @ts-ignore: Why does Amplify think column.id can be null...? It can't. In the schema it MUST be there.*/}
       <Droppable droppableId={column.id}>
         {(provided, snapshot) => (
@@ -143,7 +108,7 @@ export default function ColumnComponent({ column }: Props): ReactElement {
             {...provided.droppableProps}
             // style={getListStyle(snapshot.isDraggingOver)}
           >
-            {stateColumn?.tickets?.map((ticket, key) => (
+            {column?.tickets?.map((ticket, key) => (
               <TicketComponent key={ticket?.id} ticket={ticket} keyProp={key} />
             ))}
             {provided.placeholder}

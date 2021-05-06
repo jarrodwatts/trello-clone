@@ -1,17 +1,22 @@
 import React, { useState, useEffect, ReactElement } from 'react';
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import { Grid, Typography } from '@material-ui/core';
+import { Button, Grid, Typography } from '@material-ui/core';
 import {
   Column,
   OnUpdateColumnSubscription,
-  OnUpdateColumnSubscriptionVariables,
   Ticket,
+  TicketInput,
+  UpdateColumnInput,
+  UpdateColumnMutation,
+  UpdateColumnMutationVariables,
 } from '../../API';
 import TicketComponent from './Ticket';
 import { Droppable } from 'react-beautiful-dnd';
 import { onUpdateColumn } from '../../graphql/subscriptions';
-import Amplify, { API } from 'aws-amplify';
+import { API } from 'aws-amplify';
 import { GRAPHQL_AUTH_MODE } from '@aws-amplify/api';
+import { v4 as uuidv4 } from 'uuid';
+import { updateColumn } from '../../graphql/mutations';
 
 const useStyles = makeStyles((theme: Theme) => ({
   column: {
@@ -36,72 +41,100 @@ interface Props {
   column: Column;
 }
 
-/*
-With TS we create an Observable type to describe the return type of a GraphQL subscription.
-Hopefully in future releases of aws-amplify we will have generic types for API.graphql that will make this un-necessary.
-*/
-type Observable<Value = unknown, Error = {}> = {
-  subscribe: (
-    cb?: (v: Value) => void,
-    errorCb?: (e: Error) => void,
-    completeCallback?: () => void
-  ) => void;
-  unsubscribe: Function;
-};
-
-type Listener<T> = Observable<{ value: { data: T } }>;
-
 export default function ColumnComponent({ column }: Props): ReactElement {
   const classes = useStyles();
+  const [stateColumn, setColumn] = useState<Column>(column);
 
   useEffect(() => {
-    blah();
-
-    const onUpdateListener: Listener<OnUpdateColumnSubscription> = API.graphql({
+    const onUpdateListener = API.graphql({
       query: onUpdateColumn,
       variables: {
-        owner: column.owner,
-        editors: column.editors,
+        owner: stateColumn.owner,
+        editors: stateColumn.editors,
       },
       authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
     });
 
-    const onUpdateSubscription = onUpdateListener.subscribe((v) => {
-      console.log(v);
-    });
+    // @ts-ignore : property subscribe doesn't exist for whatever reason in typescript
+    onUpdateListener.subscribe(
+      ({
+        value,
+      }: {
+        value: {
+          data: OnUpdateColumnSubscription;
+          errors: any[];
+        };
+      }) => {
+        const { data, errors } = value;
+        if (errors) {
+          console.error([...errors]);
+        }
 
-    console.log('On Update Sub: ', onUpdateSubscription);
+        // Update the column if the mutation detected is this column.
+        // (since there will be multiple of this component - one per column)
+        if (stateColumn.id === data?.onUpdateColumn?.id) {
+          console.log(
+            'Event coming in from subscription:',
+            data.onUpdateColumn
+          );
+          setColumn(data.onUpdateColumn as Column);
+        }
+      }
+    );
   }, []);
 
-  async function blah() {
-    const input: OnUpdateColumnSubscriptionVariables = {
-      owner: column.owner,
-      editors: column.editors,
+  const addTicketToColumn = async () => {
+    const newTicket: TicketInput = {
+      id: uuidv4(),
+      title: '',
+      // @ts-ignore column shouldn't be undefined ever
+      columnId: stateColumn.id,
     };
 
-    const listener: Observable<{
-      value: { data: OnUpdateColumnSubscription };
-    }> = (await API.graphql({
-      query: onUpdateColumn,
-      variables: input,
-      authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
-    })) as { data: OnUpdateColumnSubscription };
-
-    const subscription = listener.subscribe((v) => {
-      console.log('v', v);
+    let updatedTickets: Ticket[];
+    if (stateColumn.tickets) {
+      updatedTickets = [...stateColumn.tickets, newTicket as Ticket];
+    } else {
+      updatedTickets = [newTicket as Ticket];
+    }
+    setColumn({
+      ...stateColumn,
+      tickets: updatedTickets,
     });
 
-    console.log('Listner:', listener);
-    console.log('Subscription:', subscription);
-  }
+    console.log('Updated tickets  as input:', stateColumn.tickets);
+    console.log('Column is now:', stateColumn);
 
-  const [tickets, setTickets] = useState<Ticket[]>(
-    column.tickets ? column.tickets : []
-  );
+    // update by pushing the whole of the column to the update mutation
+    const input: UpdateColumnMutationVariables = {
+      input: {
+        // @ts-ignore shouldn't be undefined ever
+        id: stateColumn.id,
+        boardId: stateColumn.boardId,
+        name: stateColumn.name,
+        tickets: updatedTickets as TicketInput[],
+        columnIndex: stateColumn.columnIndex,
+      },
+    };
+
+    console.log('Trying to update from Column');
+    try {
+      const updated = (await API.graphql({
+        query: updateColumn,
+        variables: input,
+        authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
+      })) as UpdateColumnMutation;
+      console.log('Finished updating without error:', updated);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  console.log('Columns updated:', stateColumn);
 
   return (
     <Grid container direction='column' className={classes.column}>
-      <Typography className={classes.name}>{column?.name}</Typography>
+      <Typography className={classes.name}>{stateColumn?.name}</Typography>
       {/* @ts-ignore: Why does Amplify think column.id can be null...? It can't. In the schema it MUST be there.*/}
       <Droppable droppableId={column.id}>
         {(provided, snapshot) => (
@@ -110,13 +143,18 @@ export default function ColumnComponent({ column }: Props): ReactElement {
             {...provided.droppableProps}
             // style={getListStyle(snapshot.isDraggingOver)}
           >
-            {column?.tickets?.map((ticket, key) => (
+            {stateColumn?.tickets?.map((ticket, key) => (
               <TicketComponent key={ticket?.id} ticket={ticket} keyProp={key} />
             ))}
             {provided.placeholder}
           </div>
         )}
       </Droppable>
+
+      {/* Button to add a ticket */}
+      <Button onClick={addTicketToColumn} variant='text'>
+        Add One brah
+      </Button>
     </Grid>
   );
 }

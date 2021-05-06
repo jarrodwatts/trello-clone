@@ -78,7 +78,6 @@ type Ticket {
   description: String
   labels: [Label!]
   owner: String
-  ticketIndex: Int!
 }
 
 type Label {

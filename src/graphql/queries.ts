@@ -39,7 +39,6 @@ export const getWorkspace = /* GraphQL */ `
                   color
                 }
                 owner
-                ticketIndex
               }
               columnIndex
               createdAt
@@ -97,7 +96,6 @@ export const listWorkspaces = /* GraphQL */ `
                     color
                   }
                   owner
-                  ticketIndex
                 }
                 columnIndex
                 createdAt
@@ -143,7 +141,6 @@ export const getBoard = /* GraphQL */ `
               color
             }
             owner
-            ticketIndex
           }
           columnIndex
           createdAt
@@ -189,7 +186,6 @@ export const listBoards = /* GraphQL */ `
                 color
               }
               owner
-              ticketIndex
             }
             columnIndex
             createdAt
@@ -220,7 +216,6 @@ export const getColumn = /* GraphQL */ `
           color
         }
         owner
-        ticketIndex
       }
       columnIndex
       createdAt
@@ -251,7 +246,6 @@ export const listColumns = /* GraphQL */ `
             color
           }
           owner
-          ticketIndex
         }
         columnIndex
         createdAt

@@ -42,7 +42,6 @@ export const createWorkspace = /* GraphQL */ `
                   color
                 }
                 owner
-                ticketIndex
               }
               columnIndex
               createdAt
@@ -98,7 +97,6 @@ export const updateWorkspace = /* GraphQL */ `
                   color
                 }
                 owner
-                ticketIndex
               }
               columnIndex
               createdAt
@@ -154,7 +152,6 @@ export const deleteWorkspace = /* GraphQL */ `
                   color
                 }
                 owner
-                ticketIndex
               }
               columnIndex
               createdAt
@@ -201,7 +198,6 @@ export const createBoard = /* GraphQL */ `
               color
             }
             owner
-            ticketIndex
           }
           columnIndex
           createdAt
@@ -245,7 +241,6 @@ export const updateBoard = /* GraphQL */ `
               color
             }
             owner
-            ticketIndex
           }
           columnIndex
           createdAt
@@ -289,7 +284,6 @@ export const deleteBoard = /* GraphQL */ `
               color
             }
             owner
-            ticketIndex
           }
           columnIndex
           createdAt
@@ -321,7 +315,6 @@ export const createColumn = /* GraphQL */ `
           color
         }
         owner
-        ticketIndex
       }
       columnIndex
       createdAt
@@ -350,7 +343,6 @@ export const updateColumn = /* GraphQL */ `
           color
         }
         owner
-        ticketIndex
       }
       columnIndex
       createdAt
@@ -379,7 +371,6 @@ export const deleteColumn = /* GraphQL */ `
           color
         }
         owner
-        ticketIndex
       }
       columnIndex
       createdAt

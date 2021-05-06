@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { withSSRContext } from 'aws-amplify';
+import { API, withSSRContext } from 'aws-amplify';
 import { GetServerSideProps } from 'next';
 import { getBoard } from '../../graphql/queries';
 import {
@@ -7,6 +7,9 @@ import {
   Column,
   GetBoardQuery,
   GetBoardQueryVariables,
+  TicketInput,
+  UpdateColumnMutation,
+  UpdateColumnMutationVariables,
 } from '../../API';
 import { GRAPHQL_AUTH_MODE } from '@aws-amplify/api';
 import UserHeader from '../../components/Headers/UserHeader';
@@ -16,6 +19,7 @@ import { Grid, Typography } from '@material-ui/core';
 import ColumnComponent from '../../components/boardview/Column';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { resetServerContext } from 'react-beautiful-dnd';
+import { updateColumn } from '../../graphql/mutations';
 
 const useStyles = makeStyles((theme: Theme) => ({
   backgroundImage: {
@@ -49,8 +53,66 @@ export default function IndividualBoardPage({ board }: Props) {
   const classes = useStyles();
   console.log('Board:', board);
 
-  const onDragEnd = (result: DropResult): void => {
+  const onDragEnd = async (result: DropResult): void => {
     const { source, destination } = result;
+    console.log('Dragged from:', source, 'to:', destination);
+
+    // handle the state and then make a mutation to GraphQL API
+
+    // Path 0: Moving out of bounds or moving nowhere
+    if (
+      !destination ||
+      (destination.droppableId === source.droppableId &&
+        destination.index === source.index)
+    ) {
+      return;
+    }
+
+    // Path 1: Moving from one column to the same column.
+    if (source.droppableId === destination.droppableId) {
+      // Get the relevant column
+      const destinationColumn = columns.find(
+        (c) => c.id === destination.droppableId
+      );
+      // Should always find it
+      if (destinationColumn && destinationColumn.tickets) {
+        const existingTickets = [...destinationColumn.tickets];
+        // remove it from the source index
+        const [removed] = existingTickets.splice(source.index, 1);
+
+        // add it back to the destination index
+        const newTickets = existingTickets.splice(
+          destination.index,
+          0,
+          removed
+        ) as TicketInput[];
+
+        // make a call to update the thang
+        const input: UpdateColumnMutationVariables = {
+          input: {
+            id: destination.droppableId, // id of the column
+            tickets: newTickets,
+          },
+        };
+
+        (await API.graphql({
+          query: updateColumn,
+          variables: input,
+          authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
+        })) as UpdateColumnMutation;
+      }
+    }
+
+    // Path 2: Moving from one column to another column
+    if (source.droppableId != destination.droppableId) {
+      // Get the relevant columns
+      const sourceColumn = columns.find((c) => c.id === source.droppableId);
+      const destinationColumn = columns.find(
+        (c) => c.id === destination.droppableId
+      );
+
+      console.log('do something for moving it.');
+    }
   };
 
   return (
@@ -101,8 +163,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     variables: input,
     authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
   })) as { data: GetBoardQuery; errors: any[] };
-
-  console.log(response);
 
   return {
     props: {

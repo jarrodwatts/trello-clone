@@ -29,38 +29,23 @@ export const getWorkspace = /* GraphQL */ `
               id
               boardId
               name
-              owner
+              tickets {
+                id
+                columnId
+                title
+                description
+                labels {
+                  name
+                  color
+                }
+                owner
+                ticketIndex
+              }
               columnIndex
               createdAt
               updatedAt
-              tickets {
-                items {
-                  id
-                  columnId
-                  title
-                  description
-                  labels {
-                    name
-                    color
-                  }
-                  owner
-                  ticketIndex
-                  createdAt
-                  updatedAt
-                  comments {
-                    items {
-                      id
-                      ticketId
-                      content
-                      createdAt
-                      updatedAt
-                      owner
-                    }
-                    nextToken
-                  }
-                }
-                nextToken
-              }
+              owner
+              editors
             }
             nextToken
           }
@@ -102,38 +87,23 @@ export const listWorkspaces = /* GraphQL */ `
                 id
                 boardId
                 name
-                owner
+                tickets {
+                  id
+                  columnId
+                  title
+                  description
+                  labels {
+                    name
+                    color
+                  }
+                  owner
+                  ticketIndex
+                }
                 columnIndex
                 createdAt
                 updatedAt
-                tickets {
-                  items {
-                    id
-                    columnId
-                    title
-                    description
-                    labels {
-                      name
-                      color
-                    }
-                    owner
-                    ticketIndex
-                    createdAt
-                    updatedAt
-                    comments {
-                      items {
-                        id
-                        ticketId
-                        content
-                        createdAt
-                        updatedAt
-                        owner
-                      }
-                      nextToken
-                    }
-                  }
-                  nextToken
-                }
+                owner
+                editors
               }
               nextToken
             }
@@ -163,38 +133,23 @@ export const getBoard = /* GraphQL */ `
           id
           boardId
           name
-          owner
+          tickets {
+            id
+            columnId
+            title
+            description
+            labels {
+              name
+              color
+            }
+            owner
+            ticketIndex
+          }
           columnIndex
           createdAt
           updatedAt
-          tickets {
-            items {
-              id
-              columnId
-              title
-              description
-              labels {
-                name
-                color
-              }
-              owner
-              ticketIndex
-              createdAt
-              updatedAt
-              comments {
-                items {
-                  id
-                  ticketId
-                  content
-                  createdAt
-                  updatedAt
-                  owner
-                }
-                nextToken
-              }
-            }
-            nextToken
-          }
+          owner
+          editors
         }
         nextToken
       }
@@ -224,38 +179,23 @@ export const listBoards = /* GraphQL */ `
             id
             boardId
             name
-            owner
+            tickets {
+              id
+              columnId
+              title
+              description
+              labels {
+                name
+                color
+              }
+              owner
+              ticketIndex
+            }
             columnIndex
             createdAt
             updatedAt
-            tickets {
-              items {
-                id
-                columnId
-                title
-                description
-                labels {
-                  name
-                  color
-                }
-                owner
-                ticketIndex
-                createdAt
-                updatedAt
-                comments {
-                  items {
-                    id
-                    ticketId
-                    content
-                    createdAt
-                    updatedAt
-                    owner
-                  }
-                  nextToken
-                }
-              }
-              nextToken
-            }
+            owner
+            editors
           }
           nextToken
         }
@@ -270,38 +210,23 @@ export const getColumn = /* GraphQL */ `
       id
       boardId
       name
-      owner
+      tickets {
+        id
+        columnId
+        title
+        description
+        labels {
+          name
+          color
+        }
+        owner
+        ticketIndex
+      }
       columnIndex
       createdAt
       updatedAt
-      tickets {
-        items {
-          id
-          columnId
-          title
-          description
-          labels {
-            name
-            color
-          }
-          owner
-          ticketIndex
-          createdAt
-          updatedAt
-          comments {
-            items {
-              id
-              ticketId
-              content
-              createdAt
-              updatedAt
-              owner
-            }
-            nextToken
-          }
-        }
-        nextToken
-      }
+      owner
+      editors
     }
   }
 `;
@@ -316,134 +241,23 @@ export const listColumns = /* GraphQL */ `
         id
         boardId
         name
-        owner
+        tickets {
+          id
+          columnId
+          title
+          description
+          labels {
+            name
+            color
+          }
+          owner
+          ticketIndex
+        }
         columnIndex
         createdAt
         updatedAt
-        tickets {
-          items {
-            id
-            columnId
-            title
-            description
-            labels {
-              name
-              color
-            }
-            owner
-            ticketIndex
-            createdAt
-            updatedAt
-            comments {
-              items {
-                id
-                ticketId
-                content
-                createdAt
-                updatedAt
-                owner
-              }
-              nextToken
-            }
-          }
-          nextToken
-        }
-      }
-      nextToken
-    }
-  }
-`;
-export const getTicket = /* GraphQL */ `
-  query GetTicket($id: ID!) {
-    getTicket(id: $id) {
-      id
-      columnId
-      title
-      description
-      labels {
-        name
-        color
-      }
-      owner
-      ticketIndex
-      createdAt
-      updatedAt
-      comments {
-        items {
-          id
-          ticketId
-          content
-          createdAt
-          updatedAt
-          owner
-        }
-        nextToken
-      }
-    }
-  }
-`;
-export const listTickets = /* GraphQL */ `
-  query ListTickets(
-    $filter: ModelTicketFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listTickets(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        columnId
-        title
-        description
-        labels {
-          name
-          color
-        }
         owner
-        ticketIndex
-        createdAt
-        updatedAt
-        comments {
-          items {
-            id
-            ticketId
-            content
-            createdAt
-            updatedAt
-            owner
-          }
-          nextToken
-        }
-      }
-      nextToken
-    }
-  }
-`;
-export const getComment = /* GraphQL */ `
-  query GetComment($id: ID!) {
-    getComment(id: $id) {
-      id
-      ticketId
-      content
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const listComments = /* GraphQL */ `
-  query ListComments(
-    $filter: ModelCommentFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listComments(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        ticketId
-        content
-        createdAt
-        updatedAt
-        owner
+        editors
       }
       nextToken
     }

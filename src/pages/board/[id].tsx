@@ -7,7 +7,6 @@ import {
   Column,
   GetBoardQuery,
   GetBoardQueryVariables,
-  Ticket,
 } from '../../API';
 import { GRAPHQL_AUTH_MODE } from '@aws-amplify/api';
 import UserHeader from '../../components/Headers/UserHeader';
@@ -41,12 +40,8 @@ interface Props {
 export default function IndividualBoardPage({ board }: Props) {
   // Extract out the columns and tickets into state and use the right type from the board prop
   const [columns] = useState<Column[]>(board.columns?.items as Column[]);
-  const [tickets, setTickets] = useState<Ticket[]>(
-    board.columns?.items?.flatMap((col) => col?.tickets?.items) as Ticket[]
-  );
 
   console.log('Columns:', columns);
-  console.log('Tickets:', tickets);
 
   // https://github.com/atlassian/react-beautiful-dnd/issues/1756
   resetServerContext();
@@ -56,61 +51,6 @@ export default function IndividualBoardPage({ board }: Props) {
 
   const onDragEnd = (result: DropResult): void => {
     const { source, destination } = result;
-    console.log('Dragged from:', source, 'to:', destination);
-
-    // Didn't move it to a valid destination - cancel
-    if (!destination || !destination.droppableId) {
-      return;
-    }
-
-    // Move a ticket's places within the same column
-    if (source.droppableId === destination?.droppableId) {
-      console.log('Move a tickets place within the same column');
-
-      // In hindsight this is a really weird way to do it...
-      // but messing around with react-beatiful-dnd wasn't the point of making this
-      // so enjoy some funky JS :-)
-      const filtered = Array.from(
-        tickets.filter((t) => t.columnId === source.droppableId)
-      );
-      const others = Array.from(
-        tickets.filter((t) => t.columnId != source.droppableId)
-      );
-      const [removed] = filtered.splice(source.index, 1);
-      filtered.splice(destination.index, 0, removed);
-      setTickets([...filtered, ...others]);
-    }
-
-    // Move a ticket from one column to another column
-    if (source.droppableId != destination?.droppableId) {
-      console.log('Move a ticket from one column to another column');
-
-      // All the tickets that were in the source column
-      const filtered = Array.from(
-        tickets.filter((t) => t.columnId === source.droppableId)
-      );
-      const others = Array.from(
-        tickets.filter((t) => t.columnId != source.droppableId)
-      );
-
-      console.log('filtered:', filtered, 'others:', others);
-      // ticketMoved = The ticket that got moved.
-      // Remove it from the source column with splice
-      const [ticketMoved] = filtered.splice(source.index, 1);
-
-      // Update the column id of the
-      ticketMoved.columnId = destination.droppableId;
-
-      // Place the modified ticket into the temp state's new column
-      others.splice(destination.index, 0, ticketMoved);
-
-      setTickets([...filtered, ...others]);
-    }
-
-    // TODO: Move a column
-    else {
-      console.log('No criteria met');
-    }
   };
 
   return (
@@ -139,11 +79,7 @@ export default function IndividualBoardPage({ board }: Props) {
             spacing={1}
           >
             {columns.map((column) => (
-              <ColumnComponent
-                column={column}
-                tickets={tickets.filter((t) => t.columnId === column.id)}
-                key={column?.id}
-              />
+              <ColumnComponent column={column} key={column?.id} />
             ))}
           </Grid>
         </DragDropContext>

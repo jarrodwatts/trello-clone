@@ -83,7 +83,7 @@ export type Board = {
   name?: string,
   description?: string | null,
   owner?: string | null,
-  editors?: Array< string | null > | null,
+  editors?: Array< string > | null,
   visibility?: Visibility | null,
   isTemplate?: boolean | null,
   createdAt?: string,
@@ -109,17 +109,12 @@ export type Column = {
   id?: string,
   boardId?: string,
   name?: string,
-  owner?: string | null,
+  tickets?:  Array<Ticket > | null,
   columnIndex?: number,
   createdAt?: string,
   updatedAt?: string,
-  tickets?: ModelTicketConnection,
-};
-
-export type ModelTicketConnection = {
-  __typename: "ModelTicketConnection",
-  items?:  Array<Ticket | null > | null,
-  nextToken?: string | null,
+  owner?: string | null,
+  editors?: string | null,
 };
 
 export type Ticket = {
@@ -128,34 +123,15 @@ export type Ticket = {
   columnId?: string,
   title?: string,
   description?: string | null,
-  labels?:  Array<Label | null > | null,
+  labels?:  Array<Label > | null,
   owner?: string | null,
   ticketIndex?: number,
-  createdAt?: string,
-  updatedAt?: string,
-  comments?: ModelCommentConnection,
 };
 
 export type Label = {
   __typename: "Label",
   name?: string,
   color?: string,
-};
-
-export type ModelCommentConnection = {
-  __typename: "ModelCommentConnection",
-  items?:  Array<Comment | null > | null,
-  nextToken?: string | null,
-};
-
-export type Comment = {
-  __typename: "Comment",
-  id?: string,
-  ticketId?: string,
-  content?: string,
-  createdAt?: string,
-  updatedAt?: string,
-  owner?: string | null,
 };
 
 export type UpdateWorkspaceInput = {
@@ -176,7 +152,7 @@ export type CreateBoardInput = {
   name: string,
   description?: string | null,
   owner?: string | null,
-  editors?: Array< string | null > | null,
+  editors?: Array< string > | null,
   visibility?: Visibility | null,
   isTemplate?: boolean | null,
 };
@@ -226,7 +202,7 @@ export type UpdateBoardInput = {
   name?: string | null,
   description?: string | null,
   owner?: string | null,
-  editors?: Array< string | null > | null,
+  editors?: Array< string > | null,
   visibility?: Visibility | null,
   isTemplate?: boolean | null,
 };
@@ -239,8 +215,23 @@ export type CreateColumnInput = {
   id?: string | null,
   boardId: string,
   name: string,
-  owner?: string | null,
+  tickets?: Array< TicketInput > | null,
   columnIndex: number,
+};
+
+export type TicketInput = {
+  id: string,
+  columnId: string,
+  title: string,
+  description?: string | null,
+  labels?: Array< LabelInput > | null,
+  owner?: string | null,
+  ticketIndex: number,
+};
+
+export type LabelInput = {
+  name: string,
+  color: string,
 };
 
 export type ModelColumnConditionInput = {
@@ -268,74 +259,11 @@ export type UpdateColumnInput = {
   id: string,
   boardId?: string | null,
   name?: string | null,
-  owner?: string | null,
+  tickets?: Array< TicketInput > | null,
   columnIndex?: number | null,
 };
 
 export type DeleteColumnInput = {
-  id?: string | null,
-};
-
-export type CreateTicketInput = {
-  id?: string | null,
-  columnId: string,
-  title: string,
-  description?: string | null,
-  labels?: Array< LabelInput | null > | null,
-  owner?: string | null,
-  ticketIndex: number,
-};
-
-export type LabelInput = {
-  name: string,
-  color: string,
-};
-
-export type ModelTicketConditionInput = {
-  columnId?: ModelIDInput | null,
-  title?: ModelStringInput | null,
-  description?: ModelStringInput | null,
-  ticketIndex?: ModelIntInput | null,
-  and?: Array< ModelTicketConditionInput | null > | null,
-  or?: Array< ModelTicketConditionInput | null > | null,
-  not?: ModelTicketConditionInput | null,
-};
-
-export type UpdateTicketInput = {
-  id: string,
-  columnId?: string | null,
-  title?: string | null,
-  description?: string | null,
-  labels?: Array< LabelInput | null > | null,
-  owner?: string | null,
-  ticketIndex?: number | null,
-};
-
-export type DeleteTicketInput = {
-  id?: string | null,
-};
-
-export type CreateCommentInput = {
-  id?: string | null,
-  ticketId: string,
-  content: string,
-};
-
-export type ModelCommentConditionInput = {
-  ticketId?: ModelIDInput | null,
-  content?: ModelStringInput | null,
-  and?: Array< ModelCommentConditionInput | null > | null,
-  or?: Array< ModelCommentConditionInput | null > | null,
-  not?: ModelCommentConditionInput | null,
-};
-
-export type UpdateCommentInput = {
-  id: string,
-  ticketId?: string | null,
-  content?: string | null,
-};
-
-export type DeleteCommentInput = {
   id?: string | null,
 };
 
@@ -374,32 +302,10 @@ export type ModelColumnFilterInput = {
   id?: ModelIDInput | null,
   boardId?: ModelIDInput | null,
   name?: ModelStringInput | null,
-  owner?: ModelStringInput | null,
   columnIndex?: ModelIntInput | null,
   and?: Array< ModelColumnFilterInput | null > | null,
   or?: Array< ModelColumnFilterInput | null > | null,
   not?: ModelColumnFilterInput | null,
-};
-
-export type ModelTicketFilterInput = {
-  id?: ModelIDInput | null,
-  columnId?: ModelIDInput | null,
-  title?: ModelStringInput | null,
-  description?: ModelStringInput | null,
-  owner?: ModelStringInput | null,
-  ticketIndex?: ModelIntInput | null,
-  and?: Array< ModelTicketFilterInput | null > | null,
-  or?: Array< ModelTicketFilterInput | null > | null,
-  not?: ModelTicketFilterInput | null,
-};
-
-export type ModelCommentFilterInput = {
-  id?: ModelIDInput | null,
-  ticketId?: ModelIDInput | null,
-  content?: ModelStringInput | null,
-  and?: Array< ModelCommentFilterInput | null > | null,
-  or?: Array< ModelCommentFilterInput | null > | null,
-  not?: ModelCommentFilterInput | null,
 };
 
 export type CreateWorkspaceMutationVariables = {
@@ -426,7 +332,7 @@ export type CreateWorkspaceMutation = {
         name: string,
         description?: string | null,
         owner?: string | null,
-        editors?: Array< string | null > | null,
+        editors?: Array< string > | null,
         visibility?: Visibility | null,
         isTemplate?: boolean | null,
         createdAt: string,
@@ -438,43 +344,25 @@ export type CreateWorkspaceMutation = {
             id: string,
             boardId: string,
             name: string,
-            owner?: string | null,
+            tickets?:  Array< {
+              __typename: "Ticket",
+              id: string,
+              columnId: string,
+              title: string,
+              description?: string | null,
+              labels?:  Array< {
+                __typename: "Label",
+                name: string,
+                color: string,
+              } > | null,
+              owner?: string | null,
+              ticketIndex: number,
+            } > | null,
             columnIndex: number,
             createdAt: string,
             updatedAt: string,
-            tickets?:  {
-              __typename: "ModelTicketConnection",
-              items?:  Array< {
-                __typename: "Ticket",
-                id: string,
-                columnId: string,
-                title: string,
-                description?: string | null,
-                labels?:  Array< {
-                  __typename: "Label",
-                  name: string,
-                  color: string,
-                } | null > | null,
-                owner?: string | null,
-                ticketIndex: number,
-                createdAt: string,
-                updatedAt: string,
-                comments?:  {
-                  __typename: "ModelCommentConnection",
-                  items?:  Array< {
-                    __typename: "Comment",
-                    id: string,
-                    ticketId: string,
-                    content: string,
-                    createdAt: string,
-                    updatedAt: string,
-                    owner?: string | null,
-                  } | null > | null,
-                  nextToken?: string | null,
-                } | null,
-              } | null > | null,
-              nextToken?: string | null,
-            } | null,
+            owner?: string | null,
+            editors?: string | null,
           } | null > | null,
           nextToken?: string | null,
         } | null,
@@ -508,7 +396,7 @@ export type UpdateWorkspaceMutation = {
         name: string,
         description?: string | null,
         owner?: string | null,
-        editors?: Array< string | null > | null,
+        editors?: Array< string > | null,
         visibility?: Visibility | null,
         isTemplate?: boolean | null,
         createdAt: string,
@@ -520,43 +408,25 @@ export type UpdateWorkspaceMutation = {
             id: string,
             boardId: string,
             name: string,
-            owner?: string | null,
+            tickets?:  Array< {
+              __typename: "Ticket",
+              id: string,
+              columnId: string,
+              title: string,
+              description?: string | null,
+              labels?:  Array< {
+                __typename: "Label",
+                name: string,
+                color: string,
+              } > | null,
+              owner?: string | null,
+              ticketIndex: number,
+            } > | null,
             columnIndex: number,
             createdAt: string,
             updatedAt: string,
-            tickets?:  {
-              __typename: "ModelTicketConnection",
-              items?:  Array< {
-                __typename: "Ticket",
-                id: string,
-                columnId: string,
-                title: string,
-                description?: string | null,
-                labels?:  Array< {
-                  __typename: "Label",
-                  name: string,
-                  color: string,
-                } | null > | null,
-                owner?: string | null,
-                ticketIndex: number,
-                createdAt: string,
-                updatedAt: string,
-                comments?:  {
-                  __typename: "ModelCommentConnection",
-                  items?:  Array< {
-                    __typename: "Comment",
-                    id: string,
-                    ticketId: string,
-                    content: string,
-                    createdAt: string,
-                    updatedAt: string,
-                    owner?: string | null,
-                  } | null > | null,
-                  nextToken?: string | null,
-                } | null,
-              } | null > | null,
-              nextToken?: string | null,
-            } | null,
+            owner?: string | null,
+            editors?: string | null,
           } | null > | null,
           nextToken?: string | null,
         } | null,
@@ -590,7 +460,7 @@ export type DeleteWorkspaceMutation = {
         name: string,
         description?: string | null,
         owner?: string | null,
-        editors?: Array< string | null > | null,
+        editors?: Array< string > | null,
         visibility?: Visibility | null,
         isTemplate?: boolean | null,
         createdAt: string,
@@ -602,43 +472,25 @@ export type DeleteWorkspaceMutation = {
             id: string,
             boardId: string,
             name: string,
-            owner?: string | null,
+            tickets?:  Array< {
+              __typename: "Ticket",
+              id: string,
+              columnId: string,
+              title: string,
+              description?: string | null,
+              labels?:  Array< {
+                __typename: "Label",
+                name: string,
+                color: string,
+              } > | null,
+              owner?: string | null,
+              ticketIndex: number,
+            } > | null,
             columnIndex: number,
             createdAt: string,
             updatedAt: string,
-            tickets?:  {
-              __typename: "ModelTicketConnection",
-              items?:  Array< {
-                __typename: "Ticket",
-                id: string,
-                columnId: string,
-                title: string,
-                description?: string | null,
-                labels?:  Array< {
-                  __typename: "Label",
-                  name: string,
-                  color: string,
-                } | null > | null,
-                owner?: string | null,
-                ticketIndex: number,
-                createdAt: string,
-                updatedAt: string,
-                comments?:  {
-                  __typename: "ModelCommentConnection",
-                  items?:  Array< {
-                    __typename: "Comment",
-                    id: string,
-                    ticketId: string,
-                    content: string,
-                    createdAt: string,
-                    updatedAt: string,
-                    owner?: string | null,
-                  } | null > | null,
-                  nextToken?: string | null,
-                } | null,
-              } | null > | null,
-              nextToken?: string | null,
-            } | null,
+            owner?: string | null,
+            editors?: string | null,
           } | null > | null,
           nextToken?: string | null,
         } | null,
@@ -661,7 +513,7 @@ export type CreateBoardMutation = {
     name: string,
     description?: string | null,
     owner?: string | null,
-    editors?: Array< string | null > | null,
+    editors?: Array< string > | null,
     visibility?: Visibility | null,
     isTemplate?: boolean | null,
     createdAt: string,
@@ -673,43 +525,25 @@ export type CreateBoardMutation = {
         id: string,
         boardId: string,
         name: string,
-        owner?: string | null,
+        tickets?:  Array< {
+          __typename: "Ticket",
+          id: string,
+          columnId: string,
+          title: string,
+          description?: string | null,
+          labels?:  Array< {
+            __typename: "Label",
+            name: string,
+            color: string,
+          } > | null,
+          owner?: string | null,
+          ticketIndex: number,
+        } > | null,
         columnIndex: number,
         createdAt: string,
         updatedAt: string,
-        tickets?:  {
-          __typename: "ModelTicketConnection",
-          items?:  Array< {
-            __typename: "Ticket",
-            id: string,
-            columnId: string,
-            title: string,
-            description?: string | null,
-            labels?:  Array< {
-              __typename: "Label",
-              name: string,
-              color: string,
-            } | null > | null,
-            owner?: string | null,
-            ticketIndex: number,
-            createdAt: string,
-            updatedAt: string,
-            comments?:  {
-              __typename: "ModelCommentConnection",
-              items?:  Array< {
-                __typename: "Comment",
-                id: string,
-                ticketId: string,
-                content: string,
-                createdAt: string,
-                updatedAt: string,
-                owner?: string | null,
-              } | null > | null,
-              nextToken?: string | null,
-            } | null,
-          } | null > | null,
-          nextToken?: string | null,
-        } | null,
+        owner?: string | null,
+        editors?: string | null,
       } | null > | null,
       nextToken?: string | null,
     } | null,
@@ -729,7 +563,7 @@ export type UpdateBoardMutation = {
     name: string,
     description?: string | null,
     owner?: string | null,
-    editors?: Array< string | null > | null,
+    editors?: Array< string > | null,
     visibility?: Visibility | null,
     isTemplate?: boolean | null,
     createdAt: string,
@@ -741,43 +575,25 @@ export type UpdateBoardMutation = {
         id: string,
         boardId: string,
         name: string,
-        owner?: string | null,
+        tickets?:  Array< {
+          __typename: "Ticket",
+          id: string,
+          columnId: string,
+          title: string,
+          description?: string | null,
+          labels?:  Array< {
+            __typename: "Label",
+            name: string,
+            color: string,
+          } > | null,
+          owner?: string | null,
+          ticketIndex: number,
+        } > | null,
         columnIndex: number,
         createdAt: string,
         updatedAt: string,
-        tickets?:  {
-          __typename: "ModelTicketConnection",
-          items?:  Array< {
-            __typename: "Ticket",
-            id: string,
-            columnId: string,
-            title: string,
-            description?: string | null,
-            labels?:  Array< {
-              __typename: "Label",
-              name: string,
-              color: string,
-            } | null > | null,
-            owner?: string | null,
-            ticketIndex: number,
-            createdAt: string,
-            updatedAt: string,
-            comments?:  {
-              __typename: "ModelCommentConnection",
-              items?:  Array< {
-                __typename: "Comment",
-                id: string,
-                ticketId: string,
-                content: string,
-                createdAt: string,
-                updatedAt: string,
-                owner?: string | null,
-              } | null > | null,
-              nextToken?: string | null,
-            } | null,
-          } | null > | null,
-          nextToken?: string | null,
-        } | null,
+        owner?: string | null,
+        editors?: string | null,
       } | null > | null,
       nextToken?: string | null,
     } | null,
@@ -797,7 +613,7 @@ export type DeleteBoardMutation = {
     name: string,
     description?: string | null,
     owner?: string | null,
-    editors?: Array< string | null > | null,
+    editors?: Array< string > | null,
     visibility?: Visibility | null,
     isTemplate?: boolean | null,
     createdAt: string,
@@ -809,43 +625,25 @@ export type DeleteBoardMutation = {
         id: string,
         boardId: string,
         name: string,
-        owner?: string | null,
+        tickets?:  Array< {
+          __typename: "Ticket",
+          id: string,
+          columnId: string,
+          title: string,
+          description?: string | null,
+          labels?:  Array< {
+            __typename: "Label",
+            name: string,
+            color: string,
+          } > | null,
+          owner?: string | null,
+          ticketIndex: number,
+        } > | null,
         columnIndex: number,
         createdAt: string,
         updatedAt: string,
-        tickets?:  {
-          __typename: "ModelTicketConnection",
-          items?:  Array< {
-            __typename: "Ticket",
-            id: string,
-            columnId: string,
-            title: string,
-            description?: string | null,
-            labels?:  Array< {
-              __typename: "Label",
-              name: string,
-              color: string,
-            } | null > | null,
-            owner?: string | null,
-            ticketIndex: number,
-            createdAt: string,
-            updatedAt: string,
-            comments?:  {
-              __typename: "ModelCommentConnection",
-              items?:  Array< {
-                __typename: "Comment",
-                id: string,
-                ticketId: string,
-                content: string,
-                createdAt: string,
-                updatedAt: string,
-                owner?: string | null,
-              } | null > | null,
-              nextToken?: string | null,
-            } | null,
-          } | null > | null,
-          nextToken?: string | null,
-        } | null,
+        owner?: string | null,
+        editors?: string | null,
       } | null > | null,
       nextToken?: string | null,
     } | null,
@@ -863,43 +661,25 @@ export type CreateColumnMutation = {
     id: string,
     boardId: string,
     name: string,
-    owner?: string | null,
+    tickets?:  Array< {
+      __typename: "Ticket",
+      id: string,
+      columnId: string,
+      title: string,
+      description?: string | null,
+      labels?:  Array< {
+        __typename: "Label",
+        name: string,
+        color: string,
+      } > | null,
+      owner?: string | null,
+      ticketIndex: number,
+    } > | null,
     columnIndex: number,
     createdAt: string,
     updatedAt: string,
-    tickets?:  {
-      __typename: "ModelTicketConnection",
-      items?:  Array< {
-        __typename: "Ticket",
-        id: string,
-        columnId: string,
-        title: string,
-        description?: string | null,
-        labels?:  Array< {
-          __typename: "Label",
-          name: string,
-          color: string,
-        } | null > | null,
-        owner?: string | null,
-        ticketIndex: number,
-        createdAt: string,
-        updatedAt: string,
-        comments?:  {
-          __typename: "ModelCommentConnection",
-          items?:  Array< {
-            __typename: "Comment",
-            id: string,
-            ticketId: string,
-            content: string,
-            createdAt: string,
-            updatedAt: string,
-            owner?: string | null,
-          } | null > | null,
-          nextToken?: string | null,
-        } | null,
-      } | null > | null,
-      nextToken?: string | null,
-    } | null,
+    owner?: string | null,
+    editors?: string | null,
   } | null,
 };
 
@@ -914,43 +694,25 @@ export type UpdateColumnMutation = {
     id: string,
     boardId: string,
     name: string,
-    owner?: string | null,
+    tickets?:  Array< {
+      __typename: "Ticket",
+      id: string,
+      columnId: string,
+      title: string,
+      description?: string | null,
+      labels?:  Array< {
+        __typename: "Label",
+        name: string,
+        color: string,
+      } > | null,
+      owner?: string | null,
+      ticketIndex: number,
+    } > | null,
     columnIndex: number,
     createdAt: string,
     updatedAt: string,
-    tickets?:  {
-      __typename: "ModelTicketConnection",
-      items?:  Array< {
-        __typename: "Ticket",
-        id: string,
-        columnId: string,
-        title: string,
-        description?: string | null,
-        labels?:  Array< {
-          __typename: "Label",
-          name: string,
-          color: string,
-        } | null > | null,
-        owner?: string | null,
-        ticketIndex: number,
-        createdAt: string,
-        updatedAt: string,
-        comments?:  {
-          __typename: "ModelCommentConnection",
-          items?:  Array< {
-            __typename: "Comment",
-            id: string,
-            ticketId: string,
-            content: string,
-            createdAt: string,
-            updatedAt: string,
-            owner?: string | null,
-          } | null > | null,
-          nextToken?: string | null,
-        } | null,
-      } | null > | null,
-      nextToken?: string | null,
-    } | null,
+    owner?: string | null,
+    editors?: string | null,
   } | null,
 };
 
@@ -965,205 +727,25 @@ export type DeleteColumnMutation = {
     id: string,
     boardId: string,
     name: string,
-    owner?: string | null,
+    tickets?:  Array< {
+      __typename: "Ticket",
+      id: string,
+      columnId: string,
+      title: string,
+      description?: string | null,
+      labels?:  Array< {
+        __typename: "Label",
+        name: string,
+        color: string,
+      } > | null,
+      owner?: string | null,
+      ticketIndex: number,
+    } > | null,
     columnIndex: number,
     createdAt: string,
     updatedAt: string,
-    tickets?:  {
-      __typename: "ModelTicketConnection",
-      items?:  Array< {
-        __typename: "Ticket",
-        id: string,
-        columnId: string,
-        title: string,
-        description?: string | null,
-        labels?:  Array< {
-          __typename: "Label",
-          name: string,
-          color: string,
-        } | null > | null,
-        owner?: string | null,
-        ticketIndex: number,
-        createdAt: string,
-        updatedAt: string,
-        comments?:  {
-          __typename: "ModelCommentConnection",
-          items?:  Array< {
-            __typename: "Comment",
-            id: string,
-            ticketId: string,
-            content: string,
-            createdAt: string,
-            updatedAt: string,
-            owner?: string | null,
-          } | null > | null,
-          nextToken?: string | null,
-        } | null,
-      } | null > | null,
-      nextToken?: string | null,
-    } | null,
-  } | null,
-};
-
-export type CreateTicketMutationVariables = {
-  input?: CreateTicketInput,
-  condition?: ModelTicketConditionInput | null,
-};
-
-export type CreateTicketMutation = {
-  createTicket?:  {
-    __typename: "Ticket",
-    id: string,
-    columnId: string,
-    title: string,
-    description?: string | null,
-    labels?:  Array< {
-      __typename: "Label",
-      name: string,
-      color: string,
-    } | null > | null,
     owner?: string | null,
-    ticketIndex: number,
-    createdAt: string,
-    updatedAt: string,
-    comments?:  {
-      __typename: "ModelCommentConnection",
-      items?:  Array< {
-        __typename: "Comment",
-        id: string,
-        ticketId: string,
-        content: string,
-        createdAt: string,
-        updatedAt: string,
-        owner?: string | null,
-      } | null > | null,
-      nextToken?: string | null,
-    } | null,
-  } | null,
-};
-
-export type UpdateTicketMutationVariables = {
-  input?: UpdateTicketInput,
-  condition?: ModelTicketConditionInput | null,
-};
-
-export type UpdateTicketMutation = {
-  updateTicket?:  {
-    __typename: "Ticket",
-    id: string,
-    columnId: string,
-    title: string,
-    description?: string | null,
-    labels?:  Array< {
-      __typename: "Label",
-      name: string,
-      color: string,
-    } | null > | null,
-    owner?: string | null,
-    ticketIndex: number,
-    createdAt: string,
-    updatedAt: string,
-    comments?:  {
-      __typename: "ModelCommentConnection",
-      items?:  Array< {
-        __typename: "Comment",
-        id: string,
-        ticketId: string,
-        content: string,
-        createdAt: string,
-        updatedAt: string,
-        owner?: string | null,
-      } | null > | null,
-      nextToken?: string | null,
-    } | null,
-  } | null,
-};
-
-export type DeleteTicketMutationVariables = {
-  input?: DeleteTicketInput,
-  condition?: ModelTicketConditionInput | null,
-};
-
-export type DeleteTicketMutation = {
-  deleteTicket?:  {
-    __typename: "Ticket",
-    id: string,
-    columnId: string,
-    title: string,
-    description?: string | null,
-    labels?:  Array< {
-      __typename: "Label",
-      name: string,
-      color: string,
-    } | null > | null,
-    owner?: string | null,
-    ticketIndex: number,
-    createdAt: string,
-    updatedAt: string,
-    comments?:  {
-      __typename: "ModelCommentConnection",
-      items?:  Array< {
-        __typename: "Comment",
-        id: string,
-        ticketId: string,
-        content: string,
-        createdAt: string,
-        updatedAt: string,
-        owner?: string | null,
-      } | null > | null,
-      nextToken?: string | null,
-    } | null,
-  } | null,
-};
-
-export type CreateCommentMutationVariables = {
-  input?: CreateCommentInput,
-  condition?: ModelCommentConditionInput | null,
-};
-
-export type CreateCommentMutation = {
-  createComment?:  {
-    __typename: "Comment",
-    id: string,
-    ticketId: string,
-    content: string,
-    createdAt: string,
-    updatedAt: string,
-    owner?: string | null,
-  } | null,
-};
-
-export type UpdateCommentMutationVariables = {
-  input?: UpdateCommentInput,
-  condition?: ModelCommentConditionInput | null,
-};
-
-export type UpdateCommentMutation = {
-  updateComment?:  {
-    __typename: "Comment",
-    id: string,
-    ticketId: string,
-    content: string,
-    createdAt: string,
-    updatedAt: string,
-    owner?: string | null,
-  } | null,
-};
-
-export type DeleteCommentMutationVariables = {
-  input?: DeleteCommentInput,
-  condition?: ModelCommentConditionInput | null,
-};
-
-export type DeleteCommentMutation = {
-  deleteComment?:  {
-    __typename: "Comment",
-    id: string,
-    ticketId: string,
-    content: string,
-    createdAt: string,
-    updatedAt: string,
-    owner?: string | null,
+    editors?: string | null,
   } | null,
 };
 
@@ -1190,7 +772,7 @@ export type GetWorkspaceQuery = {
         name: string,
         description?: string | null,
         owner?: string | null,
-        editors?: Array< string | null > | null,
+        editors?: Array< string > | null,
         visibility?: Visibility | null,
         isTemplate?: boolean | null,
         createdAt: string,
@@ -1202,43 +784,25 @@ export type GetWorkspaceQuery = {
             id: string,
             boardId: string,
             name: string,
-            owner?: string | null,
+            tickets?:  Array< {
+              __typename: "Ticket",
+              id: string,
+              columnId: string,
+              title: string,
+              description?: string | null,
+              labels?:  Array< {
+                __typename: "Label",
+                name: string,
+                color: string,
+              } > | null,
+              owner?: string | null,
+              ticketIndex: number,
+            } > | null,
             columnIndex: number,
             createdAt: string,
             updatedAt: string,
-            tickets?:  {
-              __typename: "ModelTicketConnection",
-              items?:  Array< {
-                __typename: "Ticket",
-                id: string,
-                columnId: string,
-                title: string,
-                description?: string | null,
-                labels?:  Array< {
-                  __typename: "Label",
-                  name: string,
-                  color: string,
-                } | null > | null,
-                owner?: string | null,
-                ticketIndex: number,
-                createdAt: string,
-                updatedAt: string,
-                comments?:  {
-                  __typename: "ModelCommentConnection",
-                  items?:  Array< {
-                    __typename: "Comment",
-                    id: string,
-                    ticketId: string,
-                    content: string,
-                    createdAt: string,
-                    updatedAt: string,
-                    owner?: string | null,
-                  } | null > | null,
-                  nextToken?: string | null,
-                } | null,
-              } | null > | null,
-              nextToken?: string | null,
-            } | null,
+            owner?: string | null,
+            editors?: string | null,
           } | null > | null,
           nextToken?: string | null,
         } | null,
@@ -1275,7 +839,7 @@ export type ListWorkspacesQuery = {
           name: string,
           description?: string | null,
           owner?: string | null,
-          editors?: Array< string | null > | null,
+          editors?: Array< string > | null,
           visibility?: Visibility | null,
           isTemplate?: boolean | null,
           createdAt: string,
@@ -1287,43 +851,25 @@ export type ListWorkspacesQuery = {
               id: string,
               boardId: string,
               name: string,
-              owner?: string | null,
+              tickets?:  Array< {
+                __typename: "Ticket",
+                id: string,
+                columnId: string,
+                title: string,
+                description?: string | null,
+                labels?:  Array< {
+                  __typename: "Label",
+                  name: string,
+                  color: string,
+                } > | null,
+                owner?: string | null,
+                ticketIndex: number,
+              } > | null,
               columnIndex: number,
               createdAt: string,
               updatedAt: string,
-              tickets?:  {
-                __typename: "ModelTicketConnection",
-                items?:  Array< {
-                  __typename: "Ticket",
-                  id: string,
-                  columnId: string,
-                  title: string,
-                  description?: string | null,
-                  labels?:  Array< {
-                    __typename: "Label",
-                    name: string,
-                    color: string,
-                  } | null > | null,
-                  owner?: string | null,
-                  ticketIndex: number,
-                  createdAt: string,
-                  updatedAt: string,
-                  comments?:  {
-                    __typename: "ModelCommentConnection",
-                    items?:  Array< {
-                      __typename: "Comment",
-                      id: string,
-                      ticketId: string,
-                      content: string,
-                      createdAt: string,
-                      updatedAt: string,
-                      owner?: string | null,
-                    } | null > | null,
-                    nextToken?: string | null,
-                  } | null,
-                } | null > | null,
-                nextToken?: string | null,
-              } | null,
+              owner?: string | null,
+              editors?: string | null,
             } | null > | null,
             nextToken?: string | null,
           } | null,
@@ -1347,7 +893,7 @@ export type GetBoardQuery = {
     name: string,
     description?: string | null,
     owner?: string | null,
-    editors?: Array< string | null > | null,
+    editors?: Array< string > | null,
     visibility?: Visibility | null,
     isTemplate?: boolean | null,
     createdAt: string,
@@ -1359,43 +905,25 @@ export type GetBoardQuery = {
         id: string,
         boardId: string,
         name: string,
-        owner?: string | null,
+        tickets?:  Array< {
+          __typename: "Ticket",
+          id: string,
+          columnId: string,
+          title: string,
+          description?: string | null,
+          labels?:  Array< {
+            __typename: "Label",
+            name: string,
+            color: string,
+          } > | null,
+          owner?: string | null,
+          ticketIndex: number,
+        } > | null,
         columnIndex: number,
         createdAt: string,
         updatedAt: string,
-        tickets?:  {
-          __typename: "ModelTicketConnection",
-          items?:  Array< {
-            __typename: "Ticket",
-            id: string,
-            columnId: string,
-            title: string,
-            description?: string | null,
-            labels?:  Array< {
-              __typename: "Label",
-              name: string,
-              color: string,
-            } | null > | null,
-            owner?: string | null,
-            ticketIndex: number,
-            createdAt: string,
-            updatedAt: string,
-            comments?:  {
-              __typename: "ModelCommentConnection",
-              items?:  Array< {
-                __typename: "Comment",
-                id: string,
-                ticketId: string,
-                content: string,
-                createdAt: string,
-                updatedAt: string,
-                owner?: string | null,
-              } | null > | null,
-              nextToken?: string | null,
-            } | null,
-          } | null > | null,
-          nextToken?: string | null,
-        } | null,
+        owner?: string | null,
+        editors?: string | null,
       } | null > | null,
       nextToken?: string | null,
     } | null,
@@ -1418,7 +946,7 @@ export type ListBoardsQuery = {
       name: string,
       description?: string | null,
       owner?: string | null,
-      editors?: Array< string | null > | null,
+      editors?: Array< string > | null,
       visibility?: Visibility | null,
       isTemplate?: boolean | null,
       createdAt: string,
@@ -1430,43 +958,25 @@ export type ListBoardsQuery = {
           id: string,
           boardId: string,
           name: string,
-          owner?: string | null,
+          tickets?:  Array< {
+            __typename: "Ticket",
+            id: string,
+            columnId: string,
+            title: string,
+            description?: string | null,
+            labels?:  Array< {
+              __typename: "Label",
+              name: string,
+              color: string,
+            } > | null,
+            owner?: string | null,
+            ticketIndex: number,
+          } > | null,
           columnIndex: number,
           createdAt: string,
           updatedAt: string,
-          tickets?:  {
-            __typename: "ModelTicketConnection",
-            items?:  Array< {
-              __typename: "Ticket",
-              id: string,
-              columnId: string,
-              title: string,
-              description?: string | null,
-              labels?:  Array< {
-                __typename: "Label",
-                name: string,
-                color: string,
-              } | null > | null,
-              owner?: string | null,
-              ticketIndex: number,
-              createdAt: string,
-              updatedAt: string,
-              comments?:  {
-                __typename: "ModelCommentConnection",
-                items?:  Array< {
-                  __typename: "Comment",
-                  id: string,
-                  ticketId: string,
-                  content: string,
-                  createdAt: string,
-                  updatedAt: string,
-                  owner?: string | null,
-                } | null > | null,
-                nextToken?: string | null,
-              } | null,
-            } | null > | null,
-            nextToken?: string | null,
-          } | null,
+          owner?: string | null,
+          editors?: string | null,
         } | null > | null,
         nextToken?: string | null,
       } | null,
@@ -1485,43 +995,25 @@ export type GetColumnQuery = {
     id: string,
     boardId: string,
     name: string,
-    owner?: string | null,
+    tickets?:  Array< {
+      __typename: "Ticket",
+      id: string,
+      columnId: string,
+      title: string,
+      description?: string | null,
+      labels?:  Array< {
+        __typename: "Label",
+        name: string,
+        color: string,
+      } > | null,
+      owner?: string | null,
+      ticketIndex: number,
+    } > | null,
     columnIndex: number,
     createdAt: string,
     updatedAt: string,
-    tickets?:  {
-      __typename: "ModelTicketConnection",
-      items?:  Array< {
-        __typename: "Ticket",
-        id: string,
-        columnId: string,
-        title: string,
-        description?: string | null,
-        labels?:  Array< {
-          __typename: "Label",
-          name: string,
-          color: string,
-        } | null > | null,
-        owner?: string | null,
-        ticketIndex: number,
-        createdAt: string,
-        updatedAt: string,
-        comments?:  {
-          __typename: "ModelCommentConnection",
-          items?:  Array< {
-            __typename: "Comment",
-            id: string,
-            ticketId: string,
-            content: string,
-            createdAt: string,
-            updatedAt: string,
-            owner?: string | null,
-          } | null > | null,
-          nextToken?: string | null,
-        } | null,
-      } | null > | null,
-      nextToken?: string | null,
-    } | null,
+    owner?: string | null,
+    editors?: string | null,
   } | null,
 };
 
@@ -1539,159 +1031,25 @@ export type ListColumnsQuery = {
       id: string,
       boardId: string,
       name: string,
-      owner?: string | null,
+      tickets?:  Array< {
+        __typename: "Ticket",
+        id: string,
+        columnId: string,
+        title: string,
+        description?: string | null,
+        labels?:  Array< {
+          __typename: "Label",
+          name: string,
+          color: string,
+        } > | null,
+        owner?: string | null,
+        ticketIndex: number,
+      } > | null,
       columnIndex: number,
       createdAt: string,
       updatedAt: string,
-      tickets?:  {
-        __typename: "ModelTicketConnection",
-        items?:  Array< {
-          __typename: "Ticket",
-          id: string,
-          columnId: string,
-          title: string,
-          description?: string | null,
-          labels?:  Array< {
-            __typename: "Label",
-            name: string,
-            color: string,
-          } | null > | null,
-          owner?: string | null,
-          ticketIndex: number,
-          createdAt: string,
-          updatedAt: string,
-          comments?:  {
-            __typename: "ModelCommentConnection",
-            items?:  Array< {
-              __typename: "Comment",
-              id: string,
-              ticketId: string,
-              content: string,
-              createdAt: string,
-              updatedAt: string,
-              owner?: string | null,
-            } | null > | null,
-            nextToken?: string | null,
-          } | null,
-        } | null > | null,
-        nextToken?: string | null,
-      } | null,
-    } | null > | null,
-    nextToken?: string | null,
-  } | null,
-};
-
-export type GetTicketQueryVariables = {
-  id?: string,
-};
-
-export type GetTicketQuery = {
-  getTicket?:  {
-    __typename: "Ticket",
-    id: string,
-    columnId: string,
-    title: string,
-    description?: string | null,
-    labels?:  Array< {
-      __typename: "Label",
-      name: string,
-      color: string,
-    } | null > | null,
-    owner?: string | null,
-    ticketIndex: number,
-    createdAt: string,
-    updatedAt: string,
-    comments?:  {
-      __typename: "ModelCommentConnection",
-      items?:  Array< {
-        __typename: "Comment",
-        id: string,
-        ticketId: string,
-        content: string,
-        createdAt: string,
-        updatedAt: string,
-        owner?: string | null,
-      } | null > | null,
-      nextToken?: string | null,
-    } | null,
-  } | null,
-};
-
-export type ListTicketsQueryVariables = {
-  filter?: ModelTicketFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type ListTicketsQuery = {
-  listTickets?:  {
-    __typename: "ModelTicketConnection",
-    items?:  Array< {
-      __typename: "Ticket",
-      id: string,
-      columnId: string,
-      title: string,
-      description?: string | null,
-      labels?:  Array< {
-        __typename: "Label",
-        name: string,
-        color: string,
-      } | null > | null,
       owner?: string | null,
-      ticketIndex: number,
-      createdAt: string,
-      updatedAt: string,
-      comments?:  {
-        __typename: "ModelCommentConnection",
-        items?:  Array< {
-          __typename: "Comment",
-          id: string,
-          ticketId: string,
-          content: string,
-          createdAt: string,
-          updatedAt: string,
-          owner?: string | null,
-        } | null > | null,
-        nextToken?: string | null,
-      } | null,
-    } | null > | null,
-    nextToken?: string | null,
-  } | null,
-};
-
-export type GetCommentQueryVariables = {
-  id?: string,
-};
-
-export type GetCommentQuery = {
-  getComment?:  {
-    __typename: "Comment",
-    id: string,
-    ticketId: string,
-    content: string,
-    createdAt: string,
-    updatedAt: string,
-    owner?: string | null,
-  } | null,
-};
-
-export type ListCommentsQueryVariables = {
-  filter?: ModelCommentFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type ListCommentsQuery = {
-  listComments?:  {
-    __typename: "ModelCommentConnection",
-    items?:  Array< {
-      __typename: "Comment",
-      id: string,
-      ticketId: string,
-      content: string,
-      createdAt: string,
-      updatedAt: string,
-      owner?: string | null,
+      editors?: string | null,
     } | null > | null,
     nextToken?: string | null,
   } | null,
@@ -1721,7 +1079,7 @@ export type OnCreateWorkspaceSubscription = {
         name: string,
         description?: string | null,
         owner?: string | null,
-        editors?: Array< string | null > | null,
+        editors?: Array< string > | null,
         visibility?: Visibility | null,
         isTemplate?: boolean | null,
         createdAt: string,
@@ -1733,43 +1091,25 @@ export type OnCreateWorkspaceSubscription = {
             id: string,
             boardId: string,
             name: string,
-            owner?: string | null,
+            tickets?:  Array< {
+              __typename: "Ticket",
+              id: string,
+              columnId: string,
+              title: string,
+              description?: string | null,
+              labels?:  Array< {
+                __typename: "Label",
+                name: string,
+                color: string,
+              } > | null,
+              owner?: string | null,
+              ticketIndex: number,
+            } > | null,
             columnIndex: number,
             createdAt: string,
             updatedAt: string,
-            tickets?:  {
-              __typename: "ModelTicketConnection",
-              items?:  Array< {
-                __typename: "Ticket",
-                id: string,
-                columnId: string,
-                title: string,
-                description?: string | null,
-                labels?:  Array< {
-                  __typename: "Label",
-                  name: string,
-                  color: string,
-                } | null > | null,
-                owner?: string | null,
-                ticketIndex: number,
-                createdAt: string,
-                updatedAt: string,
-                comments?:  {
-                  __typename: "ModelCommentConnection",
-                  items?:  Array< {
-                    __typename: "Comment",
-                    id: string,
-                    ticketId: string,
-                    content: string,
-                    createdAt: string,
-                    updatedAt: string,
-                    owner?: string | null,
-                  } | null > | null,
-                  nextToken?: string | null,
-                } | null,
-              } | null > | null,
-              nextToken?: string | null,
-            } | null,
+            owner?: string | null,
+            editors?: string | null,
           } | null > | null,
           nextToken?: string | null,
         } | null,
@@ -1803,7 +1143,7 @@ export type OnUpdateWorkspaceSubscription = {
         name: string,
         description?: string | null,
         owner?: string | null,
-        editors?: Array< string | null > | null,
+        editors?: Array< string > | null,
         visibility?: Visibility | null,
         isTemplate?: boolean | null,
         createdAt: string,
@@ -1815,43 +1155,25 @@ export type OnUpdateWorkspaceSubscription = {
             id: string,
             boardId: string,
             name: string,
-            owner?: string | null,
+            tickets?:  Array< {
+              __typename: "Ticket",
+              id: string,
+              columnId: string,
+              title: string,
+              description?: string | null,
+              labels?:  Array< {
+                __typename: "Label",
+                name: string,
+                color: string,
+              } > | null,
+              owner?: string | null,
+              ticketIndex: number,
+            } > | null,
             columnIndex: number,
             createdAt: string,
             updatedAt: string,
-            tickets?:  {
-              __typename: "ModelTicketConnection",
-              items?:  Array< {
-                __typename: "Ticket",
-                id: string,
-                columnId: string,
-                title: string,
-                description?: string | null,
-                labels?:  Array< {
-                  __typename: "Label",
-                  name: string,
-                  color: string,
-                } | null > | null,
-                owner?: string | null,
-                ticketIndex: number,
-                createdAt: string,
-                updatedAt: string,
-                comments?:  {
-                  __typename: "ModelCommentConnection",
-                  items?:  Array< {
-                    __typename: "Comment",
-                    id: string,
-                    ticketId: string,
-                    content: string,
-                    createdAt: string,
-                    updatedAt: string,
-                    owner?: string | null,
-                  } | null > | null,
-                  nextToken?: string | null,
-                } | null,
-              } | null > | null,
-              nextToken?: string | null,
-            } | null,
+            owner?: string | null,
+            editors?: string | null,
           } | null > | null,
           nextToken?: string | null,
         } | null,
@@ -1885,7 +1207,7 @@ export type OnDeleteWorkspaceSubscription = {
         name: string,
         description?: string | null,
         owner?: string | null,
-        editors?: Array< string | null > | null,
+        editors?: Array< string > | null,
         visibility?: Visibility | null,
         isTemplate?: boolean | null,
         createdAt: string,
@@ -1897,43 +1219,25 @@ export type OnDeleteWorkspaceSubscription = {
             id: string,
             boardId: string,
             name: string,
-            owner?: string | null,
+            tickets?:  Array< {
+              __typename: "Ticket",
+              id: string,
+              columnId: string,
+              title: string,
+              description?: string | null,
+              labels?:  Array< {
+                __typename: "Label",
+                name: string,
+                color: string,
+              } > | null,
+              owner?: string | null,
+              ticketIndex: number,
+            } > | null,
             columnIndex: number,
             createdAt: string,
             updatedAt: string,
-            tickets?:  {
-              __typename: "ModelTicketConnection",
-              items?:  Array< {
-                __typename: "Ticket",
-                id: string,
-                columnId: string,
-                title: string,
-                description?: string | null,
-                labels?:  Array< {
-                  __typename: "Label",
-                  name: string,
-                  color: string,
-                } | null > | null,
-                owner?: string | null,
-                ticketIndex: number,
-                createdAt: string,
-                updatedAt: string,
-                comments?:  {
-                  __typename: "ModelCommentConnection",
-                  items?:  Array< {
-                    __typename: "Comment",
-                    id: string,
-                    ticketId: string,
-                    content: string,
-                    createdAt: string,
-                    updatedAt: string,
-                    owner?: string | null,
-                  } | null > | null,
-                  nextToken?: string | null,
-                } | null,
-              } | null > | null,
-              nextToken?: string | null,
-            } | null,
+            owner?: string | null,
+            editors?: string | null,
           } | null > | null,
           nextToken?: string | null,
         } | null,
@@ -1956,7 +1260,7 @@ export type OnCreateBoardSubscription = {
     name: string,
     description?: string | null,
     owner?: string | null,
-    editors?: Array< string | null > | null,
+    editors?: Array< string > | null,
     visibility?: Visibility | null,
     isTemplate?: boolean | null,
     createdAt: string,
@@ -1968,43 +1272,25 @@ export type OnCreateBoardSubscription = {
         id: string,
         boardId: string,
         name: string,
-        owner?: string | null,
+        tickets?:  Array< {
+          __typename: "Ticket",
+          id: string,
+          columnId: string,
+          title: string,
+          description?: string | null,
+          labels?:  Array< {
+            __typename: "Label",
+            name: string,
+            color: string,
+          } > | null,
+          owner?: string | null,
+          ticketIndex: number,
+        } > | null,
         columnIndex: number,
         createdAt: string,
         updatedAt: string,
-        tickets?:  {
-          __typename: "ModelTicketConnection",
-          items?:  Array< {
-            __typename: "Ticket",
-            id: string,
-            columnId: string,
-            title: string,
-            description?: string | null,
-            labels?:  Array< {
-              __typename: "Label",
-              name: string,
-              color: string,
-            } | null > | null,
-            owner?: string | null,
-            ticketIndex: number,
-            createdAt: string,
-            updatedAt: string,
-            comments?:  {
-              __typename: "ModelCommentConnection",
-              items?:  Array< {
-                __typename: "Comment",
-                id: string,
-                ticketId: string,
-                content: string,
-                createdAt: string,
-                updatedAt: string,
-                owner?: string | null,
-              } | null > | null,
-              nextToken?: string | null,
-            } | null,
-          } | null > | null,
-          nextToken?: string | null,
-        } | null,
+        owner?: string | null,
+        editors?: string | null,
       } | null > | null,
       nextToken?: string | null,
     } | null,
@@ -2024,7 +1310,7 @@ export type OnUpdateBoardSubscription = {
     name: string,
     description?: string | null,
     owner?: string | null,
-    editors?: Array< string | null > | null,
+    editors?: Array< string > | null,
     visibility?: Visibility | null,
     isTemplate?: boolean | null,
     createdAt: string,
@@ -2036,43 +1322,25 @@ export type OnUpdateBoardSubscription = {
         id: string,
         boardId: string,
         name: string,
-        owner?: string | null,
+        tickets?:  Array< {
+          __typename: "Ticket",
+          id: string,
+          columnId: string,
+          title: string,
+          description?: string | null,
+          labels?:  Array< {
+            __typename: "Label",
+            name: string,
+            color: string,
+          } > | null,
+          owner?: string | null,
+          ticketIndex: number,
+        } > | null,
         columnIndex: number,
         createdAt: string,
         updatedAt: string,
-        tickets?:  {
-          __typename: "ModelTicketConnection",
-          items?:  Array< {
-            __typename: "Ticket",
-            id: string,
-            columnId: string,
-            title: string,
-            description?: string | null,
-            labels?:  Array< {
-              __typename: "Label",
-              name: string,
-              color: string,
-            } | null > | null,
-            owner?: string | null,
-            ticketIndex: number,
-            createdAt: string,
-            updatedAt: string,
-            comments?:  {
-              __typename: "ModelCommentConnection",
-              items?:  Array< {
-                __typename: "Comment",
-                id: string,
-                ticketId: string,
-                content: string,
-                createdAt: string,
-                updatedAt: string,
-                owner?: string | null,
-              } | null > | null,
-              nextToken?: string | null,
-            } | null,
-          } | null > | null,
-          nextToken?: string | null,
-        } | null,
+        owner?: string | null,
+        editors?: string | null,
       } | null > | null,
       nextToken?: string | null,
     } | null,
@@ -2092,7 +1360,7 @@ export type OnDeleteBoardSubscription = {
     name: string,
     description?: string | null,
     owner?: string | null,
-    editors?: Array< string | null > | null,
+    editors?: Array< string > | null,
     visibility?: Visibility | null,
     isTemplate?: boolean | null,
     createdAt: string,
@@ -2104,43 +1372,25 @@ export type OnDeleteBoardSubscription = {
         id: string,
         boardId: string,
         name: string,
-        owner?: string | null,
+        tickets?:  Array< {
+          __typename: "Ticket",
+          id: string,
+          columnId: string,
+          title: string,
+          description?: string | null,
+          labels?:  Array< {
+            __typename: "Label",
+            name: string,
+            color: string,
+          } > | null,
+          owner?: string | null,
+          ticketIndex: number,
+        } > | null,
         columnIndex: number,
         createdAt: string,
         updatedAt: string,
-        tickets?:  {
-          __typename: "ModelTicketConnection",
-          items?:  Array< {
-            __typename: "Ticket",
-            id: string,
-            columnId: string,
-            title: string,
-            description?: string | null,
-            labels?:  Array< {
-              __typename: "Label",
-              name: string,
-              color: string,
-            } | null > | null,
-            owner?: string | null,
-            ticketIndex: number,
-            createdAt: string,
-            updatedAt: string,
-            comments?:  {
-              __typename: "ModelCommentConnection",
-              items?:  Array< {
-                __typename: "Comment",
-                id: string,
-                ticketId: string,
-                content: string,
-                createdAt: string,
-                updatedAt: string,
-                owner?: string | null,
-              } | null > | null,
-              nextToken?: string | null,
-            } | null,
-          } | null > | null,
-          nextToken?: string | null,
-        } | null,
+        owner?: string | null,
+        editors?: string | null,
       } | null > | null,
       nextToken?: string | null,
     } | null,
@@ -2149,6 +1399,7 @@ export type OnDeleteBoardSubscription = {
 
 export type OnCreateColumnSubscriptionVariables = {
   owner?: string,
+  editors?: string,
 };
 
 export type OnCreateColumnSubscription = {
@@ -2157,48 +1408,31 @@ export type OnCreateColumnSubscription = {
     id: string,
     boardId: string,
     name: string,
-    owner?: string | null,
+    tickets?:  Array< {
+      __typename: "Ticket",
+      id: string,
+      columnId: string,
+      title: string,
+      description?: string | null,
+      labels?:  Array< {
+        __typename: "Label",
+        name: string,
+        color: string,
+      } > | null,
+      owner?: string | null,
+      ticketIndex: number,
+    } > | null,
     columnIndex: number,
     createdAt: string,
     updatedAt: string,
-    tickets?:  {
-      __typename: "ModelTicketConnection",
-      items?:  Array< {
-        __typename: "Ticket",
-        id: string,
-        columnId: string,
-        title: string,
-        description?: string | null,
-        labels?:  Array< {
-          __typename: "Label",
-          name: string,
-          color: string,
-        } | null > | null,
-        owner?: string | null,
-        ticketIndex: number,
-        createdAt: string,
-        updatedAt: string,
-        comments?:  {
-          __typename: "ModelCommentConnection",
-          items?:  Array< {
-            __typename: "Comment",
-            id: string,
-            ticketId: string,
-            content: string,
-            createdAt: string,
-            updatedAt: string,
-            owner?: string | null,
-          } | null > | null,
-          nextToken?: string | null,
-        } | null,
-      } | null > | null,
-      nextToken?: string | null,
-    } | null,
+    owner?: string | null,
+    editors?: string | null,
   } | null,
 };
 
 export type OnUpdateColumnSubscriptionVariables = {
   owner?: string,
+  editors?: string,
 };
 
 export type OnUpdateColumnSubscription = {
@@ -2207,48 +1441,31 @@ export type OnUpdateColumnSubscription = {
     id: string,
     boardId: string,
     name: string,
-    owner?: string | null,
+    tickets?:  Array< {
+      __typename: "Ticket",
+      id: string,
+      columnId: string,
+      title: string,
+      description?: string | null,
+      labels?:  Array< {
+        __typename: "Label",
+        name: string,
+        color: string,
+      } > | null,
+      owner?: string | null,
+      ticketIndex: number,
+    } > | null,
     columnIndex: number,
     createdAt: string,
     updatedAt: string,
-    tickets?:  {
-      __typename: "ModelTicketConnection",
-      items?:  Array< {
-        __typename: "Ticket",
-        id: string,
-        columnId: string,
-        title: string,
-        description?: string | null,
-        labels?:  Array< {
-          __typename: "Label",
-          name: string,
-          color: string,
-        } | null > | null,
-        owner?: string | null,
-        ticketIndex: number,
-        createdAt: string,
-        updatedAt: string,
-        comments?:  {
-          __typename: "ModelCommentConnection",
-          items?:  Array< {
-            __typename: "Comment",
-            id: string,
-            ticketId: string,
-            content: string,
-            createdAt: string,
-            updatedAt: string,
-            owner?: string | null,
-          } | null > | null,
-          nextToken?: string | null,
-        } | null,
-      } | null > | null,
-      nextToken?: string | null,
-    } | null,
+    owner?: string | null,
+    editors?: string | null,
   } | null,
 };
 
 export type OnDeleteColumnSubscriptionVariables = {
   owner?: string,
+  editors?: string,
 };
 
 export type OnDeleteColumnSubscription = {
@@ -2257,198 +1474,24 @@ export type OnDeleteColumnSubscription = {
     id: string,
     boardId: string,
     name: string,
-    owner?: string | null,
+    tickets?:  Array< {
+      __typename: "Ticket",
+      id: string,
+      columnId: string,
+      title: string,
+      description?: string | null,
+      labels?:  Array< {
+        __typename: "Label",
+        name: string,
+        color: string,
+      } > | null,
+      owner?: string | null,
+      ticketIndex: number,
+    } > | null,
     columnIndex: number,
     createdAt: string,
     updatedAt: string,
-    tickets?:  {
-      __typename: "ModelTicketConnection",
-      items?:  Array< {
-        __typename: "Ticket",
-        id: string,
-        columnId: string,
-        title: string,
-        description?: string | null,
-        labels?:  Array< {
-          __typename: "Label",
-          name: string,
-          color: string,
-        } | null > | null,
-        owner?: string | null,
-        ticketIndex: number,
-        createdAt: string,
-        updatedAt: string,
-        comments?:  {
-          __typename: "ModelCommentConnection",
-          items?:  Array< {
-            __typename: "Comment",
-            id: string,
-            ticketId: string,
-            content: string,
-            createdAt: string,
-            updatedAt: string,
-            owner?: string | null,
-          } | null > | null,
-          nextToken?: string | null,
-        } | null,
-      } | null > | null,
-      nextToken?: string | null,
-    } | null,
-  } | null,
-};
-
-export type OnCreateTicketSubscriptionVariables = {
-  owner?: string,
-};
-
-export type OnCreateTicketSubscription = {
-  onCreateTicket?:  {
-    __typename: "Ticket",
-    id: string,
-    columnId: string,
-    title: string,
-    description?: string | null,
-    labels?:  Array< {
-      __typename: "Label",
-      name: string,
-      color: string,
-    } | null > | null,
     owner?: string | null,
-    ticketIndex: number,
-    createdAt: string,
-    updatedAt: string,
-    comments?:  {
-      __typename: "ModelCommentConnection",
-      items?:  Array< {
-        __typename: "Comment",
-        id: string,
-        ticketId: string,
-        content: string,
-        createdAt: string,
-        updatedAt: string,
-        owner?: string | null,
-      } | null > | null,
-      nextToken?: string | null,
-    } | null,
-  } | null,
-};
-
-export type OnUpdateTicketSubscriptionVariables = {
-  owner?: string,
-};
-
-export type OnUpdateTicketSubscription = {
-  onUpdateTicket?:  {
-    __typename: "Ticket",
-    id: string,
-    columnId: string,
-    title: string,
-    description?: string | null,
-    labels?:  Array< {
-      __typename: "Label",
-      name: string,
-      color: string,
-    } | null > | null,
-    owner?: string | null,
-    ticketIndex: number,
-    createdAt: string,
-    updatedAt: string,
-    comments?:  {
-      __typename: "ModelCommentConnection",
-      items?:  Array< {
-        __typename: "Comment",
-        id: string,
-        ticketId: string,
-        content: string,
-        createdAt: string,
-        updatedAt: string,
-        owner?: string | null,
-      } | null > | null,
-      nextToken?: string | null,
-    } | null,
-  } | null,
-};
-
-export type OnDeleteTicketSubscriptionVariables = {
-  owner?: string,
-};
-
-export type OnDeleteTicketSubscription = {
-  onDeleteTicket?:  {
-    __typename: "Ticket",
-    id: string,
-    columnId: string,
-    title: string,
-    description?: string | null,
-    labels?:  Array< {
-      __typename: "Label",
-      name: string,
-      color: string,
-    } | null > | null,
-    owner?: string | null,
-    ticketIndex: number,
-    createdAt: string,
-    updatedAt: string,
-    comments?:  {
-      __typename: "ModelCommentConnection",
-      items?:  Array< {
-        __typename: "Comment",
-        id: string,
-        ticketId: string,
-        content: string,
-        createdAt: string,
-        updatedAt: string,
-        owner?: string | null,
-      } | null > | null,
-      nextToken?: string | null,
-    } | null,
-  } | null,
-};
-
-export type OnCreateCommentSubscriptionVariables = {
-  owner?: string,
-};
-
-export type OnCreateCommentSubscription = {
-  onCreateComment?:  {
-    __typename: "Comment",
-    id: string,
-    ticketId: string,
-    content: string,
-    createdAt: string,
-    updatedAt: string,
-    owner?: string | null,
-  } | null,
-};
-
-export type OnUpdateCommentSubscriptionVariables = {
-  owner?: string,
-};
-
-export type OnUpdateCommentSubscription = {
-  onUpdateComment?:  {
-    __typename: "Comment",
-    id: string,
-    ticketId: string,
-    content: string,
-    createdAt: string,
-    updatedAt: string,
-    owner?: string | null,
-  } | null,
-};
-
-export type OnDeleteCommentSubscriptionVariables = {
-  owner?: string,
-};
-
-export type OnDeleteCommentSubscription = {
-  onDeleteComment?:  {
-    __typename: "Comment",
-    id: string,
-    ticketId: string,
-    content: string,
-    createdAt: string,
-    updatedAt: string,
-    owner?: string | null,
+    editors?: string | null,
   } | null,
 };

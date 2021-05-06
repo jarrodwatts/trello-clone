@@ -32,38 +32,23 @@ export const createWorkspace = /* GraphQL */ `
               id
               boardId
               name
-              owner
+              tickets {
+                id
+                columnId
+                title
+                description
+                labels {
+                  name
+                  color
+                }
+                owner
+                ticketIndex
+              }
               columnIndex
               createdAt
               updatedAt
-              tickets {
-                items {
-                  id
-                  columnId
-                  title
-                  description
-                  labels {
-                    name
-                    color
-                  }
-                  owner
-                  ticketIndex
-                  createdAt
-                  updatedAt
-                  comments {
-                    items {
-                      id
-                      ticketId
-                      content
-                      createdAt
-                      updatedAt
-                      owner
-                    }
-                    nextToken
-                  }
-                }
-                nextToken
-              }
+              owner
+              editors
             }
             nextToken
           }
@@ -103,38 +88,23 @@ export const updateWorkspace = /* GraphQL */ `
               id
               boardId
               name
-              owner
+              tickets {
+                id
+                columnId
+                title
+                description
+                labels {
+                  name
+                  color
+                }
+                owner
+                ticketIndex
+              }
               columnIndex
               createdAt
               updatedAt
-              tickets {
-                items {
-                  id
-                  columnId
-                  title
-                  description
-                  labels {
-                    name
-                    color
-                  }
-                  owner
-                  ticketIndex
-                  createdAt
-                  updatedAt
-                  comments {
-                    items {
-                      id
-                      ticketId
-                      content
-                      createdAt
-                      updatedAt
-                      owner
-                    }
-                    nextToken
-                  }
-                }
-                nextToken
-              }
+              owner
+              editors
             }
             nextToken
           }
@@ -174,38 +144,23 @@ export const deleteWorkspace = /* GraphQL */ `
               id
               boardId
               name
-              owner
+              tickets {
+                id
+                columnId
+                title
+                description
+                labels {
+                  name
+                  color
+                }
+                owner
+                ticketIndex
+              }
               columnIndex
               createdAt
               updatedAt
-              tickets {
-                items {
-                  id
-                  columnId
-                  title
-                  description
-                  labels {
-                    name
-                    color
-                  }
-                  owner
-                  ticketIndex
-                  createdAt
-                  updatedAt
-                  comments {
-                    items {
-                      id
-                      ticketId
-                      content
-                      createdAt
-                      updatedAt
-                      owner
-                    }
-                    nextToken
-                  }
-                }
-                nextToken
-              }
+              owner
+              editors
             }
             nextToken
           }
@@ -236,38 +191,23 @@ export const createBoard = /* GraphQL */ `
           id
           boardId
           name
-          owner
+          tickets {
+            id
+            columnId
+            title
+            description
+            labels {
+              name
+              color
+            }
+            owner
+            ticketIndex
+          }
           columnIndex
           createdAt
           updatedAt
-          tickets {
-            items {
-              id
-              columnId
-              title
-              description
-              labels {
-                name
-                color
-              }
-              owner
-              ticketIndex
-              createdAt
-              updatedAt
-              comments {
-                items {
-                  id
-                  ticketId
-                  content
-                  createdAt
-                  updatedAt
-                  owner
-                }
-                nextToken
-              }
-            }
-            nextToken
-          }
+          owner
+          editors
         }
         nextToken
       }
@@ -295,38 +235,23 @@ export const updateBoard = /* GraphQL */ `
           id
           boardId
           name
-          owner
+          tickets {
+            id
+            columnId
+            title
+            description
+            labels {
+              name
+              color
+            }
+            owner
+            ticketIndex
+          }
           columnIndex
           createdAt
           updatedAt
-          tickets {
-            items {
-              id
-              columnId
-              title
-              description
-              labels {
-                name
-                color
-              }
-              owner
-              ticketIndex
-              createdAt
-              updatedAt
-              comments {
-                items {
-                  id
-                  ticketId
-                  content
-                  createdAt
-                  updatedAt
-                  owner
-                }
-                nextToken
-              }
-            }
-            nextToken
-          }
+          owner
+          editors
         }
         nextToken
       }
@@ -354,38 +279,23 @@ export const deleteBoard = /* GraphQL */ `
           id
           boardId
           name
-          owner
+          tickets {
+            id
+            columnId
+            title
+            description
+            labels {
+              name
+              color
+            }
+            owner
+            ticketIndex
+          }
           columnIndex
           createdAt
           updatedAt
-          tickets {
-            items {
-              id
-              columnId
-              title
-              description
-              labels {
-                name
-                color
-              }
-              owner
-              ticketIndex
-              createdAt
-              updatedAt
-              comments {
-                items {
-                  id
-                  ticketId
-                  content
-                  createdAt
-                  updatedAt
-                  owner
-                }
-                nextToken
-              }
-            }
-            nextToken
-          }
+          owner
+          editors
         }
         nextToken
       }
@@ -401,38 +311,23 @@ export const createColumn = /* GraphQL */ `
       id
       boardId
       name
-      owner
+      tickets {
+        id
+        columnId
+        title
+        description
+        labels {
+          name
+          color
+        }
+        owner
+        ticketIndex
+      }
       columnIndex
       createdAt
       updatedAt
-      tickets {
-        items {
-          id
-          columnId
-          title
-          description
-          labels {
-            name
-            color
-          }
-          owner
-          ticketIndex
-          createdAt
-          updatedAt
-          comments {
-            items {
-              id
-              ticketId
-              content
-              createdAt
-              updatedAt
-              owner
-            }
-            nextToken
-          }
-        }
-        nextToken
-      }
+      owner
+      editors
     }
   }
 `;
@@ -445,38 +340,23 @@ export const updateColumn = /* GraphQL */ `
       id
       boardId
       name
-      owner
+      tickets {
+        id
+        columnId
+        title
+        description
+        labels {
+          name
+          color
+        }
+        owner
+        ticketIndex
+      }
       columnIndex
       createdAt
       updatedAt
-      tickets {
-        items {
-          id
-          columnId
-          title
-          description
-          labels {
-            name
-            color
-          }
-          owner
-          ticketIndex
-          createdAt
-          updatedAt
-          comments {
-            items {
-              id
-              ticketId
-              content
-              createdAt
-              updatedAt
-              owner
-            }
-            nextToken
-          }
-        }
-        nextToken
-      }
+      owner
+      editors
     }
   }
 `;
@@ -489,179 +369,23 @@ export const deleteColumn = /* GraphQL */ `
       id
       boardId
       name
-      owner
+      tickets {
+        id
+        columnId
+        title
+        description
+        labels {
+          name
+          color
+        }
+        owner
+        ticketIndex
+      }
       columnIndex
       createdAt
       updatedAt
-      tickets {
-        items {
-          id
-          columnId
-          title
-          description
-          labels {
-            name
-            color
-          }
-          owner
-          ticketIndex
-          createdAt
-          updatedAt
-          comments {
-            items {
-              id
-              ticketId
-              content
-              createdAt
-              updatedAt
-              owner
-            }
-            nextToken
-          }
-        }
-        nextToken
-      }
-    }
-  }
-`;
-export const createTicket = /* GraphQL */ `
-  mutation CreateTicket(
-    $input: CreateTicketInput!
-    $condition: ModelTicketConditionInput
-  ) {
-    createTicket(input: $input, condition: $condition) {
-      id
-      columnId
-      title
-      description
-      labels {
-        name
-        color
-      }
       owner
-      ticketIndex
-      createdAt
-      updatedAt
-      comments {
-        items {
-          id
-          ticketId
-          content
-          createdAt
-          updatedAt
-          owner
-        }
-        nextToken
-      }
-    }
-  }
-`;
-export const updateTicket = /* GraphQL */ `
-  mutation UpdateTicket(
-    $input: UpdateTicketInput!
-    $condition: ModelTicketConditionInput
-  ) {
-    updateTicket(input: $input, condition: $condition) {
-      id
-      columnId
-      title
-      description
-      labels {
-        name
-        color
-      }
-      owner
-      ticketIndex
-      createdAt
-      updatedAt
-      comments {
-        items {
-          id
-          ticketId
-          content
-          createdAt
-          updatedAt
-          owner
-        }
-        nextToken
-      }
-    }
-  }
-`;
-export const deleteTicket = /* GraphQL */ `
-  mutation DeleteTicket(
-    $input: DeleteTicketInput!
-    $condition: ModelTicketConditionInput
-  ) {
-    deleteTicket(input: $input, condition: $condition) {
-      id
-      columnId
-      title
-      description
-      labels {
-        name
-        color
-      }
-      owner
-      ticketIndex
-      createdAt
-      updatedAt
-      comments {
-        items {
-          id
-          ticketId
-          content
-          createdAt
-          updatedAt
-          owner
-        }
-        nextToken
-      }
-    }
-  }
-`;
-export const createComment = /* GraphQL */ `
-  mutation CreateComment(
-    $input: CreateCommentInput!
-    $condition: ModelCommentConditionInput
-  ) {
-    createComment(input: $input, condition: $condition) {
-      id
-      ticketId
-      content
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const updateComment = /* GraphQL */ `
-  mutation UpdateComment(
-    $input: UpdateCommentInput!
-    $condition: ModelCommentConditionInput
-  ) {
-    updateComment(input: $input, condition: $condition) {
-      id
-      ticketId
-      content
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const deleteComment = /* GraphQL */ `
-  mutation DeleteComment(
-    $input: DeleteCommentInput!
-    $condition: ModelCommentConditionInput
-  ) {
-    deleteComment(input: $input, condition: $condition) {
-      id
-      ticketId
-      content
-      createdAt
-      updatedAt
-      owner
+      editors
     }
   }
 `;

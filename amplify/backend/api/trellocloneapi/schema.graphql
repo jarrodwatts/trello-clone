@@ -23,7 +23,7 @@ type Workspace
   id: ID!
   name: String!
   description: String
-  boards: [Board] @connection(keyName: "byWorkspace", fields: ["id"])
+  boards: [Board!] @connection(keyName: "byWorkspace", fields: ["id"])
   members: [String]
   owner: String
 }
@@ -45,9 +45,9 @@ type Board
   workspaceId: ID!
   name: String!
   description: String
-  columns: [Column] @connection(keyName: "byBoard", fields: ["id"])
+  columns: [Column!]! @connection(keyName: "byBoard", fields: ["id"])
   owner: String
-  editors: [String]
+  editors: [String!]
   visibility: Visibility
   isTemplate: Boolean
 }
@@ -60,54 +60,25 @@ type Column
       # Owners of a column can perform any operations
       { allow: owner }
       # Editors of a column can perform any operations
-      #{ allow: owner, ownerField: "editors" }
+      { allow: owner, ownerField: "editors" }
     ]
   )
 {
   id: ID!
   boardId: ID!
   name: String!
-  tickets: [Ticket] @connection(keyName: "byColumn", fields: ["id"])
-  owner: String
+  tickets: [Ticket!]
   columnIndex: Int!
 }
 
-type Ticket
-@model
-@key(name: "byColumn", fields: ["columnId", "title"])
-@auth(
-  rules: [
-      # Owners of a ticket can perform any operations
-      { allow: owner }
-      # Editors of a ticket can perform any operations
-      #{ allow: owner, ownerField: "editors" }
-    ]
-)
-{
+type Ticket {
   id: ID!
   columnId: ID!
   title: String!
   description: String
-  comments: [Comment] @connection(keyName: "byTicket", fields: ["id"])
-  labels: [Label]
+  labels: [Label!]
   owner: String
   ticketIndex: Int!
-  #editors: [String]
-}
-
-type Comment 
-@model
-@key(name: "byTicket", fields: ["ticketId", "content"]) 
-@auth(
-    rules: [
-      # Owners of a comment can perform any operations
-      { allow: owner }
-    ]
-  )
-{
-  id: ID!
-  ticketId: ID!
-  content: String!
 }
 
 type Label {

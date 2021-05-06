@@ -8,7 +8,6 @@ export const getWorkspace = /* GraphQL */ `
       id
       name
       description
-      members
       owner
       createdAt
       updatedAt
@@ -19,7 +18,6 @@ export const getWorkspace = /* GraphQL */ `
           name
           description
           owner
-          editors
           visibility
           isTemplate
           createdAt
@@ -27,6 +25,7 @@ export const getWorkspace = /* GraphQL */ `
           columns {
             items {
               id
+              owner
               boardId
               name
               tickets {
@@ -38,13 +37,10 @@ export const getWorkspace = /* GraphQL */ `
                   name
                   color
                 }
-                owner
               }
               columnIndex
               createdAt
               updatedAt
-              owner
-              editors
             }
             nextToken
           }
@@ -65,7 +61,6 @@ export const listWorkspaces = /* GraphQL */ `
         id
         name
         description
-        members
         owner
         createdAt
         updatedAt
@@ -76,7 +71,6 @@ export const listWorkspaces = /* GraphQL */ `
             name
             description
             owner
-            editors
             visibility
             isTemplate
             createdAt
@@ -84,6 +78,7 @@ export const listWorkspaces = /* GraphQL */ `
             columns {
               items {
                 id
+                owner
                 boardId
                 name
                 tickets {
@@ -95,13 +90,10 @@ export const listWorkspaces = /* GraphQL */ `
                     name
                     color
                   }
-                  owner
                 }
                 columnIndex
                 createdAt
                 updatedAt
-                owner
-                editors
               }
               nextToken
             }
@@ -121,7 +113,6 @@ export const getBoard = /* GraphQL */ `
       name
       description
       owner
-      editors
       visibility
       isTemplate
       createdAt
@@ -129,6 +120,7 @@ export const getBoard = /* GraphQL */ `
       columns {
         items {
           id
+          owner
           boardId
           name
           tickets {
@@ -140,13 +132,10 @@ export const getBoard = /* GraphQL */ `
               name
               color
             }
-            owner
           }
           columnIndex
           createdAt
           updatedAt
-          owner
-          editors
         }
         nextToken
       }
@@ -166,7 +155,6 @@ export const listBoards = /* GraphQL */ `
         name
         description
         owner
-        editors
         visibility
         isTemplate
         createdAt
@@ -174,6 +162,7 @@ export const listBoards = /* GraphQL */ `
         columns {
           items {
             id
+            owner
             boardId
             name
             tickets {
@@ -185,13 +174,10 @@ export const listBoards = /* GraphQL */ `
                 name
                 color
               }
-              owner
             }
             columnIndex
             createdAt
             updatedAt
-            owner
-            editors
           }
           nextToken
         }
@@ -204,6 +190,7 @@ export const getColumn = /* GraphQL */ `
   query GetColumn($id: ID!) {
     getColumn(id: $id) {
       id
+      owner
       boardId
       name
       tickets {
@@ -215,13 +202,10 @@ export const getColumn = /* GraphQL */ `
           name
           color
         }
-        owner
       }
       columnIndex
       createdAt
       updatedAt
-      owner
-      editors
     }
   }
 `;
@@ -234,6 +218,7 @@ export const listColumns = /* GraphQL */ `
     listColumns(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        owner
         boardId
         name
         tickets {
@@ -245,13 +230,10 @@ export const listColumns = /* GraphQL */ `
             name
             color
           }
-          owner
         }
         columnIndex
         createdAt
         updatedAt
-        owner
-        editors
       }
       nextToken
     }

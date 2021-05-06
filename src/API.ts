@@ -6,7 +6,6 @@ export type CreateWorkspaceInput = {
   id?: string | null,
   name: string,
   description?: string | null,
-  members?: Array< string | null > | null,
   owner?: string | null,
 };
 
@@ -63,7 +62,6 @@ export type Workspace = {
   id?: string,
   name?: string,
   description?: string | null,
-  members?: Array< string | null > | null,
   owner?: string | null,
   createdAt?: string,
   updatedAt?: string,
@@ -83,7 +81,6 @@ export type Board = {
   name?: string,
   description?: string | null,
   owner?: string | null,
-  editors?: Array< string > | null,
   visibility?: Visibility | null,
   isTemplate?: boolean | null,
   createdAt?: string,
@@ -107,14 +104,13 @@ export type ModelColumnConnection = {
 export type Column = {
   __typename: "Column",
   id?: string,
+  owner?: string | null,
   boardId?: string,
   name?: string,
   tickets?:  Array<Ticket > | null,
   columnIndex?: number,
   createdAt?: string,
   updatedAt?: string,
-  owner?: string | null,
-  editors?: string | null,
 };
 
 export type Ticket = {
@@ -124,7 +120,6 @@ export type Ticket = {
   title?: string,
   description?: string | null,
   labels?:  Array<Label > | null,
-  owner?: string | null,
 };
 
 export type Label = {
@@ -137,7 +132,6 @@ export type UpdateWorkspaceInput = {
   id: string,
   name?: string | null,
   description?: string | null,
-  members?: Array< string | null > | null,
   owner?: string | null,
 };
 
@@ -151,7 +145,6 @@ export type CreateBoardInput = {
   name: string,
   description?: string | null,
   owner?: string | null,
-  editors?: Array< string > | null,
   visibility?: Visibility | null,
   isTemplate?: boolean | null,
 };
@@ -201,7 +194,6 @@ export type UpdateBoardInput = {
   name?: string | null,
   description?: string | null,
   owner?: string | null,
-  editors?: Array< string > | null,
   visibility?: Visibility | null,
   isTemplate?: boolean | null,
 };
@@ -212,6 +204,7 @@ export type DeleteBoardInput = {
 
 export type CreateColumnInput = {
   id?: string | null,
+  owner?: string | null,
   boardId: string,
   name: string,
   tickets?: Array< TicketInput > | null,
@@ -224,7 +217,6 @@ export type TicketInput = {
   title: string,
   description?: string | null,
   labels?: Array< LabelInput > | null,
-  owner?: string | null,
 };
 
 export type LabelInput = {
@@ -255,6 +247,7 @@ export type ModelIntInput = {
 
 export type UpdateColumnInput = {
   id: string,
+  owner?: string | null,
   boardId?: string | null,
   name?: string | null,
   tickets?: Array< TicketInput > | null,
@@ -269,7 +262,6 @@ export type ModelWorkspaceFilterInput = {
   id?: ModelIDInput | null,
   name?: ModelStringInput | null,
   description?: ModelStringInput | null,
-  members?: ModelStringInput | null,
   owner?: ModelStringInput | null,
   and?: Array< ModelWorkspaceFilterInput | null > | null,
   or?: Array< ModelWorkspaceFilterInput | null > | null,
@@ -288,7 +280,6 @@ export type ModelBoardFilterInput = {
   name?: ModelStringInput | null,
   description?: ModelStringInput | null,
   owner?: ModelStringInput | null,
-  editors?: ModelStringInput | null,
   visibility?: ModelVisibilityInput | null,
   isTemplate?: ModelBooleanInput | null,
   and?: Array< ModelBoardFilterInput | null > | null,
@@ -298,6 +289,7 @@ export type ModelBoardFilterInput = {
 
 export type ModelColumnFilterInput = {
   id?: ModelIDInput | null,
+  owner?: ModelStringInput | null,
   boardId?: ModelIDInput | null,
   name?: ModelStringInput | null,
   columnIndex?: ModelIntInput | null,
@@ -317,7 +309,6 @@ export type CreateWorkspaceMutation = {
     id: string,
     name: string,
     description?: string | null,
-    members?: Array< string | null > | null,
     owner?: string | null,
     createdAt: string,
     updatedAt: string,
@@ -330,7 +321,6 @@ export type CreateWorkspaceMutation = {
         name: string,
         description?: string | null,
         owner?: string | null,
-        editors?: Array< string > | null,
         visibility?: Visibility | null,
         isTemplate?: boolean | null,
         createdAt: string,
@@ -340,6 +330,7 @@ export type CreateWorkspaceMutation = {
           items?:  Array< {
             __typename: "Column",
             id: string,
+            owner?: string | null,
             boardId: string,
             name: string,
             tickets?:  Array< {
@@ -353,13 +344,10 @@ export type CreateWorkspaceMutation = {
                 name: string,
                 color: string,
               } > | null,
-              owner?: string | null,
             } > | null,
             columnIndex: number,
             createdAt: string,
             updatedAt: string,
-            owner?: string | null,
-            editors?: string | null,
           } | null > | null,
           nextToken?: string | null,
         } | null,
@@ -380,7 +368,6 @@ export type UpdateWorkspaceMutation = {
     id: string,
     name: string,
     description?: string | null,
-    members?: Array< string | null > | null,
     owner?: string | null,
     createdAt: string,
     updatedAt: string,
@@ -393,7 +380,6 @@ export type UpdateWorkspaceMutation = {
         name: string,
         description?: string | null,
         owner?: string | null,
-        editors?: Array< string > | null,
         visibility?: Visibility | null,
         isTemplate?: boolean | null,
         createdAt: string,
@@ -403,6 +389,7 @@ export type UpdateWorkspaceMutation = {
           items?:  Array< {
             __typename: "Column",
             id: string,
+            owner?: string | null,
             boardId: string,
             name: string,
             tickets?:  Array< {
@@ -416,13 +403,10 @@ export type UpdateWorkspaceMutation = {
                 name: string,
                 color: string,
               } > | null,
-              owner?: string | null,
             } > | null,
             columnIndex: number,
             createdAt: string,
             updatedAt: string,
-            owner?: string | null,
-            editors?: string | null,
           } | null > | null,
           nextToken?: string | null,
         } | null,
@@ -443,7 +427,6 @@ export type DeleteWorkspaceMutation = {
     id: string,
     name: string,
     description?: string | null,
-    members?: Array< string | null > | null,
     owner?: string | null,
     createdAt: string,
     updatedAt: string,
@@ -456,7 +439,6 @@ export type DeleteWorkspaceMutation = {
         name: string,
         description?: string | null,
         owner?: string | null,
-        editors?: Array< string > | null,
         visibility?: Visibility | null,
         isTemplate?: boolean | null,
         createdAt: string,
@@ -466,6 +448,7 @@ export type DeleteWorkspaceMutation = {
           items?:  Array< {
             __typename: "Column",
             id: string,
+            owner?: string | null,
             boardId: string,
             name: string,
             tickets?:  Array< {
@@ -479,13 +462,10 @@ export type DeleteWorkspaceMutation = {
                 name: string,
                 color: string,
               } > | null,
-              owner?: string | null,
             } > | null,
             columnIndex: number,
             createdAt: string,
             updatedAt: string,
-            owner?: string | null,
-            editors?: string | null,
           } | null > | null,
           nextToken?: string | null,
         } | null,
@@ -508,7 +488,6 @@ export type CreateBoardMutation = {
     name: string,
     description?: string | null,
     owner?: string | null,
-    editors?: Array< string > | null,
     visibility?: Visibility | null,
     isTemplate?: boolean | null,
     createdAt: string,
@@ -518,6 +497,7 @@ export type CreateBoardMutation = {
       items?:  Array< {
         __typename: "Column",
         id: string,
+        owner?: string | null,
         boardId: string,
         name: string,
         tickets?:  Array< {
@@ -531,13 +511,10 @@ export type CreateBoardMutation = {
             name: string,
             color: string,
           } > | null,
-          owner?: string | null,
         } > | null,
         columnIndex: number,
         createdAt: string,
         updatedAt: string,
-        owner?: string | null,
-        editors?: string | null,
       } | null > | null,
       nextToken?: string | null,
     } | null,
@@ -557,7 +534,6 @@ export type UpdateBoardMutation = {
     name: string,
     description?: string | null,
     owner?: string | null,
-    editors?: Array< string > | null,
     visibility?: Visibility | null,
     isTemplate?: boolean | null,
     createdAt: string,
@@ -567,6 +543,7 @@ export type UpdateBoardMutation = {
       items?:  Array< {
         __typename: "Column",
         id: string,
+        owner?: string | null,
         boardId: string,
         name: string,
         tickets?:  Array< {
@@ -580,13 +557,10 @@ export type UpdateBoardMutation = {
             name: string,
             color: string,
           } > | null,
-          owner?: string | null,
         } > | null,
         columnIndex: number,
         createdAt: string,
         updatedAt: string,
-        owner?: string | null,
-        editors?: string | null,
       } | null > | null,
       nextToken?: string | null,
     } | null,
@@ -606,7 +580,6 @@ export type DeleteBoardMutation = {
     name: string,
     description?: string | null,
     owner?: string | null,
-    editors?: Array< string > | null,
     visibility?: Visibility | null,
     isTemplate?: boolean | null,
     createdAt: string,
@@ -616,6 +589,7 @@ export type DeleteBoardMutation = {
       items?:  Array< {
         __typename: "Column",
         id: string,
+        owner?: string | null,
         boardId: string,
         name: string,
         tickets?:  Array< {
@@ -629,13 +603,10 @@ export type DeleteBoardMutation = {
             name: string,
             color: string,
           } > | null,
-          owner?: string | null,
         } > | null,
         columnIndex: number,
         createdAt: string,
         updatedAt: string,
-        owner?: string | null,
-        editors?: string | null,
       } | null > | null,
       nextToken?: string | null,
     } | null,
@@ -651,6 +622,7 @@ export type CreateColumnMutation = {
   createColumn?:  {
     __typename: "Column",
     id: string,
+    owner?: string | null,
     boardId: string,
     name: string,
     tickets?:  Array< {
@@ -664,13 +636,10 @@ export type CreateColumnMutation = {
         name: string,
         color: string,
       } > | null,
-      owner?: string | null,
     } > | null,
     columnIndex: number,
     createdAt: string,
     updatedAt: string,
-    owner?: string | null,
-    editors?: string | null,
   } | null,
 };
 
@@ -683,6 +652,7 @@ export type UpdateColumnMutation = {
   updateColumn?:  {
     __typename: "Column",
     id: string,
+    owner?: string | null,
     boardId: string,
     name: string,
     tickets?:  Array< {
@@ -696,13 +666,10 @@ export type UpdateColumnMutation = {
         name: string,
         color: string,
       } > | null,
-      owner?: string | null,
     } > | null,
     columnIndex: number,
     createdAt: string,
     updatedAt: string,
-    owner?: string | null,
-    editors?: string | null,
   } | null,
 };
 
@@ -715,6 +682,7 @@ export type DeleteColumnMutation = {
   deleteColumn?:  {
     __typename: "Column",
     id: string,
+    owner?: string | null,
     boardId: string,
     name: string,
     tickets?:  Array< {
@@ -728,13 +696,10 @@ export type DeleteColumnMutation = {
         name: string,
         color: string,
       } > | null,
-      owner?: string | null,
     } > | null,
     columnIndex: number,
     createdAt: string,
     updatedAt: string,
-    owner?: string | null,
-    editors?: string | null,
   } | null,
 };
 
@@ -748,7 +713,6 @@ export type GetWorkspaceQuery = {
     id: string,
     name: string,
     description?: string | null,
-    members?: Array< string | null > | null,
     owner?: string | null,
     createdAt: string,
     updatedAt: string,
@@ -761,7 +725,6 @@ export type GetWorkspaceQuery = {
         name: string,
         description?: string | null,
         owner?: string | null,
-        editors?: Array< string > | null,
         visibility?: Visibility | null,
         isTemplate?: boolean | null,
         createdAt: string,
@@ -771,6 +734,7 @@ export type GetWorkspaceQuery = {
           items?:  Array< {
             __typename: "Column",
             id: string,
+            owner?: string | null,
             boardId: string,
             name: string,
             tickets?:  Array< {
@@ -784,13 +748,10 @@ export type GetWorkspaceQuery = {
                 name: string,
                 color: string,
               } > | null,
-              owner?: string | null,
             } > | null,
             columnIndex: number,
             createdAt: string,
             updatedAt: string,
-            owner?: string | null,
-            editors?: string | null,
           } | null > | null,
           nextToken?: string | null,
         } | null,
@@ -814,7 +775,6 @@ export type ListWorkspacesQuery = {
       id: string,
       name: string,
       description?: string | null,
-      members?: Array< string | null > | null,
       owner?: string | null,
       createdAt: string,
       updatedAt: string,
@@ -827,7 +787,6 @@ export type ListWorkspacesQuery = {
           name: string,
           description?: string | null,
           owner?: string | null,
-          editors?: Array< string > | null,
           visibility?: Visibility | null,
           isTemplate?: boolean | null,
           createdAt: string,
@@ -837,6 +796,7 @@ export type ListWorkspacesQuery = {
             items?:  Array< {
               __typename: "Column",
               id: string,
+              owner?: string | null,
               boardId: string,
               name: string,
               tickets?:  Array< {
@@ -850,13 +810,10 @@ export type ListWorkspacesQuery = {
                   name: string,
                   color: string,
                 } > | null,
-                owner?: string | null,
               } > | null,
               columnIndex: number,
               createdAt: string,
               updatedAt: string,
-              owner?: string | null,
-              editors?: string | null,
             } | null > | null,
             nextToken?: string | null,
           } | null,
@@ -880,7 +837,6 @@ export type GetBoardQuery = {
     name: string,
     description?: string | null,
     owner?: string | null,
-    editors?: Array< string > | null,
     visibility?: Visibility | null,
     isTemplate?: boolean | null,
     createdAt: string,
@@ -890,6 +846,7 @@ export type GetBoardQuery = {
       items?:  Array< {
         __typename: "Column",
         id: string,
+        owner?: string | null,
         boardId: string,
         name: string,
         tickets?:  Array< {
@@ -903,13 +860,10 @@ export type GetBoardQuery = {
             name: string,
             color: string,
           } > | null,
-          owner?: string | null,
         } > | null,
         columnIndex: number,
         createdAt: string,
         updatedAt: string,
-        owner?: string | null,
-        editors?: string | null,
       } | null > | null,
       nextToken?: string | null,
     } | null,
@@ -932,7 +886,6 @@ export type ListBoardsQuery = {
       name: string,
       description?: string | null,
       owner?: string | null,
-      editors?: Array< string > | null,
       visibility?: Visibility | null,
       isTemplate?: boolean | null,
       createdAt: string,
@@ -942,6 +895,7 @@ export type ListBoardsQuery = {
         items?:  Array< {
           __typename: "Column",
           id: string,
+          owner?: string | null,
           boardId: string,
           name: string,
           tickets?:  Array< {
@@ -955,13 +909,10 @@ export type ListBoardsQuery = {
               name: string,
               color: string,
             } > | null,
-            owner?: string | null,
           } > | null,
           columnIndex: number,
           createdAt: string,
           updatedAt: string,
-          owner?: string | null,
-          editors?: string | null,
         } | null > | null,
         nextToken?: string | null,
       } | null,
@@ -978,6 +929,7 @@ export type GetColumnQuery = {
   getColumn?:  {
     __typename: "Column",
     id: string,
+    owner?: string | null,
     boardId: string,
     name: string,
     tickets?:  Array< {
@@ -991,13 +943,10 @@ export type GetColumnQuery = {
         name: string,
         color: string,
       } > | null,
-      owner?: string | null,
     } > | null,
     columnIndex: number,
     createdAt: string,
     updatedAt: string,
-    owner?: string | null,
-    editors?: string | null,
   } | null,
 };
 
@@ -1013,6 +962,7 @@ export type ListColumnsQuery = {
     items?:  Array< {
       __typename: "Column",
       id: string,
+      owner?: string | null,
       boardId: string,
       name: string,
       tickets?:  Array< {
@@ -1026,13 +976,10 @@ export type ListColumnsQuery = {
           name: string,
           color: string,
         } > | null,
-        owner?: string | null,
       } > | null,
       columnIndex: number,
       createdAt: string,
       updatedAt: string,
-      owner?: string | null,
-      editors?: string | null,
     } | null > | null,
     nextToken?: string | null,
   } | null,
@@ -1040,7 +987,6 @@ export type ListColumnsQuery = {
 
 export type OnCreateWorkspaceSubscriptionVariables = {
   owner?: string,
-  members?: string,
 };
 
 export type OnCreateWorkspaceSubscription = {
@@ -1049,7 +995,6 @@ export type OnCreateWorkspaceSubscription = {
     id: string,
     name: string,
     description?: string | null,
-    members?: Array< string | null > | null,
     owner?: string | null,
     createdAt: string,
     updatedAt: string,
@@ -1062,7 +1007,6 @@ export type OnCreateWorkspaceSubscription = {
         name: string,
         description?: string | null,
         owner?: string | null,
-        editors?: Array< string > | null,
         visibility?: Visibility | null,
         isTemplate?: boolean | null,
         createdAt: string,
@@ -1072,6 +1016,7 @@ export type OnCreateWorkspaceSubscription = {
           items?:  Array< {
             __typename: "Column",
             id: string,
+            owner?: string | null,
             boardId: string,
             name: string,
             tickets?:  Array< {
@@ -1085,13 +1030,10 @@ export type OnCreateWorkspaceSubscription = {
                 name: string,
                 color: string,
               } > | null,
-              owner?: string | null,
             } > | null,
             columnIndex: number,
             createdAt: string,
             updatedAt: string,
-            owner?: string | null,
-            editors?: string | null,
           } | null > | null,
           nextToken?: string | null,
         } | null,
@@ -1103,7 +1045,6 @@ export type OnCreateWorkspaceSubscription = {
 
 export type OnUpdateWorkspaceSubscriptionVariables = {
   owner?: string,
-  members?: string,
 };
 
 export type OnUpdateWorkspaceSubscription = {
@@ -1112,7 +1053,6 @@ export type OnUpdateWorkspaceSubscription = {
     id: string,
     name: string,
     description?: string | null,
-    members?: Array< string | null > | null,
     owner?: string | null,
     createdAt: string,
     updatedAt: string,
@@ -1125,7 +1065,6 @@ export type OnUpdateWorkspaceSubscription = {
         name: string,
         description?: string | null,
         owner?: string | null,
-        editors?: Array< string > | null,
         visibility?: Visibility | null,
         isTemplate?: boolean | null,
         createdAt: string,
@@ -1135,6 +1074,7 @@ export type OnUpdateWorkspaceSubscription = {
           items?:  Array< {
             __typename: "Column",
             id: string,
+            owner?: string | null,
             boardId: string,
             name: string,
             tickets?:  Array< {
@@ -1148,13 +1088,10 @@ export type OnUpdateWorkspaceSubscription = {
                 name: string,
                 color: string,
               } > | null,
-              owner?: string | null,
             } > | null,
             columnIndex: number,
             createdAt: string,
             updatedAt: string,
-            owner?: string | null,
-            editors?: string | null,
           } | null > | null,
           nextToken?: string | null,
         } | null,
@@ -1166,7 +1103,6 @@ export type OnUpdateWorkspaceSubscription = {
 
 export type OnDeleteWorkspaceSubscriptionVariables = {
   owner?: string,
-  members?: string,
 };
 
 export type OnDeleteWorkspaceSubscription = {
@@ -1175,7 +1111,6 @@ export type OnDeleteWorkspaceSubscription = {
     id: string,
     name: string,
     description?: string | null,
-    members?: Array< string | null > | null,
     owner?: string | null,
     createdAt: string,
     updatedAt: string,
@@ -1188,7 +1123,6 @@ export type OnDeleteWorkspaceSubscription = {
         name: string,
         description?: string | null,
         owner?: string | null,
-        editors?: Array< string > | null,
         visibility?: Visibility | null,
         isTemplate?: boolean | null,
         createdAt: string,
@@ -1198,6 +1132,7 @@ export type OnDeleteWorkspaceSubscription = {
           items?:  Array< {
             __typename: "Column",
             id: string,
+            owner?: string | null,
             boardId: string,
             name: string,
             tickets?:  Array< {
@@ -1211,13 +1146,10 @@ export type OnDeleteWorkspaceSubscription = {
                 name: string,
                 color: string,
               } > | null,
-              owner?: string | null,
             } > | null,
             columnIndex: number,
             createdAt: string,
             updatedAt: string,
-            owner?: string | null,
-            editors?: string | null,
           } | null > | null,
           nextToken?: string | null,
         } | null,
@@ -1229,7 +1161,6 @@ export type OnDeleteWorkspaceSubscription = {
 
 export type OnCreateBoardSubscriptionVariables = {
   owner?: string,
-  editors?: string,
 };
 
 export type OnCreateBoardSubscription = {
@@ -1240,7 +1171,6 @@ export type OnCreateBoardSubscription = {
     name: string,
     description?: string | null,
     owner?: string | null,
-    editors?: Array< string > | null,
     visibility?: Visibility | null,
     isTemplate?: boolean | null,
     createdAt: string,
@@ -1250,6 +1180,7 @@ export type OnCreateBoardSubscription = {
       items?:  Array< {
         __typename: "Column",
         id: string,
+        owner?: string | null,
         boardId: string,
         name: string,
         tickets?:  Array< {
@@ -1263,13 +1194,10 @@ export type OnCreateBoardSubscription = {
             name: string,
             color: string,
           } > | null,
-          owner?: string | null,
         } > | null,
         columnIndex: number,
         createdAt: string,
         updatedAt: string,
-        owner?: string | null,
-        editors?: string | null,
       } | null > | null,
       nextToken?: string | null,
     } | null,
@@ -1278,7 +1206,6 @@ export type OnCreateBoardSubscription = {
 
 export type OnUpdateBoardSubscriptionVariables = {
   owner?: string,
-  editors?: string,
 };
 
 export type OnUpdateBoardSubscription = {
@@ -1289,7 +1216,6 @@ export type OnUpdateBoardSubscription = {
     name: string,
     description?: string | null,
     owner?: string | null,
-    editors?: Array< string > | null,
     visibility?: Visibility | null,
     isTemplate?: boolean | null,
     createdAt: string,
@@ -1299,6 +1225,7 @@ export type OnUpdateBoardSubscription = {
       items?:  Array< {
         __typename: "Column",
         id: string,
+        owner?: string | null,
         boardId: string,
         name: string,
         tickets?:  Array< {
@@ -1312,13 +1239,10 @@ export type OnUpdateBoardSubscription = {
             name: string,
             color: string,
           } > | null,
-          owner?: string | null,
         } > | null,
         columnIndex: number,
         createdAt: string,
         updatedAt: string,
-        owner?: string | null,
-        editors?: string | null,
       } | null > | null,
       nextToken?: string | null,
     } | null,
@@ -1327,7 +1251,6 @@ export type OnUpdateBoardSubscription = {
 
 export type OnDeleteBoardSubscriptionVariables = {
   owner?: string,
-  editors?: string,
 };
 
 export type OnDeleteBoardSubscription = {
@@ -1338,7 +1261,6 @@ export type OnDeleteBoardSubscription = {
     name: string,
     description?: string | null,
     owner?: string | null,
-    editors?: Array< string > | null,
     visibility?: Visibility | null,
     isTemplate?: boolean | null,
     createdAt: string,
@@ -1348,6 +1270,7 @@ export type OnDeleteBoardSubscription = {
       items?:  Array< {
         __typename: "Column",
         id: string,
+        owner?: string | null,
         boardId: string,
         name: string,
         tickets?:  Array< {
@@ -1361,13 +1284,10 @@ export type OnDeleteBoardSubscription = {
             name: string,
             color: string,
           } > | null,
-          owner?: string | null,
         } > | null,
         columnIndex: number,
         createdAt: string,
         updatedAt: string,
-        owner?: string | null,
-        editors?: string | null,
       } | null > | null,
       nextToken?: string | null,
     } | null,
@@ -1376,13 +1296,13 @@ export type OnDeleteBoardSubscription = {
 
 export type OnCreateColumnSubscriptionVariables = {
   owner?: string,
-  editors?: string,
 };
 
 export type OnCreateColumnSubscription = {
   onCreateColumn?:  {
     __typename: "Column",
     id: string,
+    owner?: string | null,
     boardId: string,
     name: string,
     tickets?:  Array< {
@@ -1396,25 +1316,22 @@ export type OnCreateColumnSubscription = {
         name: string,
         color: string,
       } > | null,
-      owner?: string | null,
     } > | null,
     columnIndex: number,
     createdAt: string,
     updatedAt: string,
-    owner?: string | null,
-    editors?: string | null,
   } | null,
 };
 
 export type OnUpdateColumnSubscriptionVariables = {
   owner?: string,
-  editors?: string,
 };
 
 export type OnUpdateColumnSubscription = {
   onUpdateColumn?:  {
     __typename: "Column",
     id: string,
+    owner?: string | null,
     boardId: string,
     name: string,
     tickets?:  Array< {
@@ -1428,25 +1345,22 @@ export type OnUpdateColumnSubscription = {
         name: string,
         color: string,
       } > | null,
-      owner?: string | null,
     } > | null,
     columnIndex: number,
     createdAt: string,
     updatedAt: string,
-    owner?: string | null,
-    editors?: string | null,
   } | null,
 };
 
 export type OnDeleteColumnSubscriptionVariables = {
   owner?: string,
-  editors?: string,
 };
 
 export type OnDeleteColumnSubscription = {
   onDeleteColumn?:  {
     __typename: "Column",
     id: string,
+    owner?: string | null,
     boardId: string,
     name: string,
     tickets?:  Array< {
@@ -1460,12 +1374,9 @@ export type OnDeleteColumnSubscription = {
         name: string,
         color: string,
       } > | null,
-      owner?: string | null,
     } > | null,
     columnIndex: number,
     createdAt: string,
     updatedAt: string,
-    owner?: string | null,
-    editors?: string | null,
   } | null,
 };

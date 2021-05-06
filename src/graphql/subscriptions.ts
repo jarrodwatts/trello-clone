@@ -3,12 +3,11 @@
 // this is an auto generated file. This will be overwritten
 
 export const onCreateWorkspace = /* GraphQL */ `
-  subscription OnCreateWorkspace($owner: String!, $members: String!) {
-    onCreateWorkspace(owner: $owner, members: $members) {
+  subscription OnCreateWorkspace($owner: String!) {
+    onCreateWorkspace(owner: $owner) {
       id
       name
       description
-      members
       owner
       createdAt
       updatedAt
@@ -19,7 +18,6 @@ export const onCreateWorkspace = /* GraphQL */ `
           name
           description
           owner
-          editors
           visibility
           isTemplate
           createdAt
@@ -27,6 +25,7 @@ export const onCreateWorkspace = /* GraphQL */ `
           columns {
             items {
               id
+              owner
               boardId
               name
               tickets {
@@ -38,13 +37,10 @@ export const onCreateWorkspace = /* GraphQL */ `
                   name
                   color
                 }
-                owner
               }
               columnIndex
               createdAt
               updatedAt
-              owner
-              editors
             }
             nextToken
           }
@@ -55,12 +51,11 @@ export const onCreateWorkspace = /* GraphQL */ `
   }
 `;
 export const onUpdateWorkspace = /* GraphQL */ `
-  subscription OnUpdateWorkspace($owner: String!, $members: String!) {
-    onUpdateWorkspace(owner: $owner, members: $members) {
+  subscription OnUpdateWorkspace($owner: String!) {
+    onUpdateWorkspace(owner: $owner) {
       id
       name
       description
-      members
       owner
       createdAt
       updatedAt
@@ -71,7 +66,6 @@ export const onUpdateWorkspace = /* GraphQL */ `
           name
           description
           owner
-          editors
           visibility
           isTemplate
           createdAt
@@ -79,6 +73,7 @@ export const onUpdateWorkspace = /* GraphQL */ `
           columns {
             items {
               id
+              owner
               boardId
               name
               tickets {
@@ -90,13 +85,10 @@ export const onUpdateWorkspace = /* GraphQL */ `
                   name
                   color
                 }
-                owner
               }
               columnIndex
               createdAt
               updatedAt
-              owner
-              editors
             }
             nextToken
           }
@@ -107,12 +99,11 @@ export const onUpdateWorkspace = /* GraphQL */ `
   }
 `;
 export const onDeleteWorkspace = /* GraphQL */ `
-  subscription OnDeleteWorkspace($owner: String!, $members: String!) {
-    onDeleteWorkspace(owner: $owner, members: $members) {
+  subscription OnDeleteWorkspace($owner: String!) {
+    onDeleteWorkspace(owner: $owner) {
       id
       name
       description
-      members
       owner
       createdAt
       updatedAt
@@ -123,7 +114,6 @@ export const onDeleteWorkspace = /* GraphQL */ `
           name
           description
           owner
-          editors
           visibility
           isTemplate
           createdAt
@@ -131,6 +121,7 @@ export const onDeleteWorkspace = /* GraphQL */ `
           columns {
             items {
               id
+              owner
               boardId
               name
               tickets {
@@ -142,13 +133,10 @@ export const onDeleteWorkspace = /* GraphQL */ `
                   name
                   color
                 }
-                owner
               }
               columnIndex
               createdAt
               updatedAt
-              owner
-              editors
             }
             nextToken
           }
@@ -159,14 +147,13 @@ export const onDeleteWorkspace = /* GraphQL */ `
   }
 `;
 export const onCreateBoard = /* GraphQL */ `
-  subscription OnCreateBoard($owner: String!, $editors: String!) {
-    onCreateBoard(owner: $owner, editors: $editors) {
+  subscription OnCreateBoard($owner: String!) {
+    onCreateBoard(owner: $owner) {
       id
       workspaceId
       name
       description
       owner
-      editors
       visibility
       isTemplate
       createdAt
@@ -174,6 +161,7 @@ export const onCreateBoard = /* GraphQL */ `
       columns {
         items {
           id
+          owner
           boardId
           name
           tickets {
@@ -185,13 +173,10 @@ export const onCreateBoard = /* GraphQL */ `
               name
               color
             }
-            owner
           }
           columnIndex
           createdAt
           updatedAt
-          owner
-          editors
         }
         nextToken
       }
@@ -199,14 +184,13 @@ export const onCreateBoard = /* GraphQL */ `
   }
 `;
 export const onUpdateBoard = /* GraphQL */ `
-  subscription OnUpdateBoard($owner: String!, $editors: String!) {
-    onUpdateBoard(owner: $owner, editors: $editors) {
+  subscription OnUpdateBoard($owner: String!) {
+    onUpdateBoard(owner: $owner) {
       id
       workspaceId
       name
       description
       owner
-      editors
       visibility
       isTemplate
       createdAt
@@ -214,6 +198,7 @@ export const onUpdateBoard = /* GraphQL */ `
       columns {
         items {
           id
+          owner
           boardId
           name
           tickets {
@@ -225,13 +210,10 @@ export const onUpdateBoard = /* GraphQL */ `
               name
               color
             }
-            owner
           }
           columnIndex
           createdAt
           updatedAt
-          owner
-          editors
         }
         nextToken
       }
@@ -239,14 +221,13 @@ export const onUpdateBoard = /* GraphQL */ `
   }
 `;
 export const onDeleteBoard = /* GraphQL */ `
-  subscription OnDeleteBoard($owner: String!, $editors: String!) {
-    onDeleteBoard(owner: $owner, editors: $editors) {
+  subscription OnDeleteBoard($owner: String!) {
+    onDeleteBoard(owner: $owner) {
       id
       workspaceId
       name
       description
       owner
-      editors
       visibility
       isTemplate
       createdAt
@@ -254,6 +235,7 @@ export const onDeleteBoard = /* GraphQL */ `
       columns {
         items {
           id
+          owner
           boardId
           name
           tickets {
@@ -265,13 +247,10 @@ export const onDeleteBoard = /* GraphQL */ `
               name
               color
             }
-            owner
           }
           columnIndex
           createdAt
           updatedAt
-          owner
-          editors
         }
         nextToken
       }
@@ -279,9 +258,10 @@ export const onDeleteBoard = /* GraphQL */ `
   }
 `;
 export const onCreateColumn = /* GraphQL */ `
-  subscription OnCreateColumn($owner: String!, $editors: String!) {
-    onCreateColumn(owner: $owner, editors: $editors) {
+  subscription OnCreateColumn($owner: String!) {
+    onCreateColumn(owner: $owner) {
       id
+      owner
       boardId
       name
       tickets {
@@ -293,20 +273,18 @@ export const onCreateColumn = /* GraphQL */ `
           name
           color
         }
-        owner
       }
       columnIndex
       createdAt
       updatedAt
-      owner
-      editors
     }
   }
 `;
 export const onUpdateColumn = /* GraphQL */ `
-  subscription OnUpdateColumn($owner: String!, $editors: String!) {
-    onUpdateColumn(owner: $owner, editors: $editors) {
+  subscription OnUpdateColumn($owner: String!) {
+    onUpdateColumn(owner: $owner) {
       id
+      owner
       boardId
       name
       tickets {
@@ -318,20 +296,18 @@ export const onUpdateColumn = /* GraphQL */ `
           name
           color
         }
-        owner
       }
       columnIndex
       createdAt
       updatedAt
-      owner
-      editors
     }
   }
 `;
 export const onDeleteColumn = /* GraphQL */ `
-  subscription OnDeleteColumn($owner: String!, $editors: String!) {
-    onDeleteColumn(owner: $owner, editors: $editors) {
+  subscription OnDeleteColumn($owner: String!) {
+    onDeleteColumn(owner: $owner) {
       id
+      owner
       boardId
       name
       tickets {
@@ -343,13 +319,10 @@ export const onDeleteColumn = /* GraphQL */ `
           name
           color
         }
-        owner
       }
       columnIndex
       createdAt
       updatedAt
-      owner
-      editors
     }
   }
 `;

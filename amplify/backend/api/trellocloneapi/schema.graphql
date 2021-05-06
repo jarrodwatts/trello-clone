@@ -1,12 +1,8 @@
-# One Board can have many columns
-# One Column can have many tickets
-# One Ticket can have many comments
-# One Board can have One owner but many editors
-
-# CURRENT PROBLEMS:
-# - Teams can have multiple boards
-# - Teams have many members of different rank
-# - How do I get editors to inherit from the parent type
+# Unfortunately originally I was going to have the function for having many members in a workspace
+# And many editors of a board. However, I wanted to demonstrate how to use AWS Amplify subscriptions.
+# Half way through development I discovered AWS Amplify does not currently support multiple authorization rules
+# When using subscriptions :-(, so I've cut the multi-user features for the time being until that is added.
+# https://github.com/aws-amplify/amplify-js/issues/7579
 
 type Workspace
 @model
@@ -14,17 +10,12 @@ type Workspace
   rules: [
     # Owners of a workspace can perform any operations
     { allow: owner }
-    # Members of a workspace can only read the workspace.
-    {
-      allow: owner, ownerField: "members", operations: [read]
-    }
   ]
 ) {
   id: ID!
   name: String!
   description: String
   boards: [Board!] @connection(keyName: "byWorkspace", fields: ["id"])
-  members: [String]
   owner: String
 }
 
@@ -35,10 +26,6 @@ type Board
     rules: [
       # Owners of a board can perform any operations
       { allow: owner }
-      # Editors of a board cannot perform delete or create board mutations
-      {
-        allow: owner, ownerField: "editors", operations: [read, update]
-      }
     ]
   ) {
   id: ID!
@@ -47,7 +34,6 @@ type Board
   description: String
   columns: [Column!]! @connection(keyName: "byBoard", fields: ["id"])
   owner: String
-  editors: [String!]
   visibility: Visibility
   isTemplate: Boolean
 }
@@ -59,12 +45,11 @@ type Column
     rules: [
       # Owners of a column can perform any operations
       { allow: owner }
-      # Editors of a column can perform any operations
-      { allow: owner, ownerField: "editors" }
     ]
   )
 {
   id: ID!
+  owner: String
   boardId: ID!
   name: String!
   tickets: [Ticket!]
@@ -77,7 +62,6 @@ type Ticket {
   title: String!
   description: String
   labels: [Label!]
-  owner: String
 }
 
 type Label {

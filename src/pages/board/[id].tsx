@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { API, withSSRContext } from 'aws-amplify';
 import { GetServerSideProps } from 'next';
 import { getBoard } from '../../graphql/queries';
@@ -7,6 +7,7 @@ import {
   Column,
   GetBoardQuery,
   GetBoardQueryVariables,
+  OnUpdateColumnSubscription,
   TicketInput,
   UpdateColumnMutation,
   UpdateColumnMutationVariables,
@@ -20,6 +21,7 @@ import ColumnComponent from '../../components/boardview/Column';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { resetServerContext } from 'react-beautiful-dnd';
 import { updateColumn } from '../../graphql/mutations';
+import { onUpdateColumn } from '../../graphql/subscriptions';
 
 const useStyles = makeStyles((theme: Theme) => ({
   backgroundImage: {
@@ -42,16 +44,61 @@ interface Props {
 }
 
 export default function IndividualBoardPage({ board }: Props) {
-  // Extract out the columns and tickets into state and use the right type from the board prop
-  const [columns] = useState<Column[]>(board.columns?.items as Column[]);
-
-  console.log('Columns:', columns);
-
   // https://github.com/atlassian/react-beautiful-dnd/issues/1756
   resetServerContext();
 
+  // Extract out the columns and tickets into state and use the right type from the board prop
+  const [columns, setColumns] = useState<Column[]>(
+    board.columns?.items ? (board.columns.items as Column[]) : []
+  );
+
+  // Listen for column update mutations
+  useEffect(() => {
+    const onUpdateListener = API.graphql({
+      query: onUpdateColumn,
+      variables: {
+        owner: board.owner,
+      },
+      authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
+    });
+
+    // @ts-ignore : property subscribe doesn't exist for whatever reason in typescript
+    const subscriber = onUpdateListener.subscribe(
+      // De-structure the information it sends on an update
+      ({
+        value,
+      }: {
+        value: {
+          data: OnUpdateColumnSubscription;
+          errors: any[];
+        };
+      }) => {
+        const { data, errors } = value;
+
+        // If errors do nothing but log
+        if (errors) {
+          console.error([...errors]);
+        }
+
+        console.log(data);
+
+        const updatedColumns = columns.map((col) => {
+          if (col.id == data?.onUpdateColumn?.id) {
+            return data.onUpdateColumn as Column;
+          }
+          return col as Column;
+        });
+
+        // Else update the correct column in state.
+        setColumns(updatedColumns);
+      }
+    );
+
+    console.log(onUpdateListener);
+    console.log(subscriber);
+  }, []);
+
   const classes = useStyles();
-  console.log('Board:', board);
 
   const onDragEnd = async (result: DropResult): void => {
     const { source, destination } = result;
@@ -74,18 +121,27 @@ export default function IndividualBoardPage({ board }: Props) {
       const destinationColumn = columns.find(
         (c) => c.id === destination.droppableId
       );
+
+      console.log('Destination column:', destinationColumn);
+
+      console.log('Destinations tickets: ', destinationColumn.tickets);
       // Should always find it
       if (destinationColumn && destinationColumn.tickets) {
         const existingTickets = [...destinationColumn.tickets];
+        console.log(existingTickets);
         // remove it from the source index
         const [removed] = existingTickets.splice(source.index, 1);
+
+        console.log([removed]);
 
         // add it back to the destination index
         const newTickets = existingTickets.splice(
           destination.index,
           0,
-          removed
+          existingTickets.splice(source.index, 1)[0]
         ) as TicketInput[];
+
+        console.log('new tickets:', newTickets);
 
         // make a call to update the thang
         const input: UpdateColumnMutationVariables = {
@@ -94,6 +150,8 @@ export default function IndividualBoardPage({ board }: Props) {
             tickets: newTickets,
           },
         };
+
+        console.log('input:', input);
 
         (await API.graphql({
           query: updateColumn,
@@ -141,7 +199,12 @@ export default function IndividualBoardPage({ board }: Props) {
             spacing={1}
           >
             {columns.map((column) => (
-              <ColumnComponent column={column} key={column?.id} />
+              <ColumnComponent
+                column={column}
+                setColumns={setColumns}
+                allColumns={columns}
+                key={column?.id}
+              />
             ))}
           </Grid>
         </DragDropContext>

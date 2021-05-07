@@ -15,9 +15,6 @@ import ProfileMenu from '../ProfileMenu';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-      flexGrow: 1,
-    },
     userBarHeight: {
       minHeight: '40px',
       maxHeight: '40px',
@@ -56,16 +53,17 @@ export default function UserHeader({ st }: Props): ReactElement {
 
   if (user) {
     return (
-      <div className={classes.root}>
-        {/* TODO: Set Background color to transparent and change elevation on scroll */}
+      <React.Fragment>
         <AppBar
-          position='static'
+          position='fixed'
           elevation={0}
           className={classes.userBarHeight}
           style={
             st === 'blue'
               ? { backgroundColor: '#026AA7' }
-              : { backgroundColor: 'rgba(0,0,0,.32)' }
+              : {
+                  backgroundColor: 'rgba(0,0,0,.32)',
+                }
           }
         >
           <Grid
@@ -170,7 +168,10 @@ export default function UserHeader({ st }: Props): ReactElement {
             </Grid>
           </Grid>
         </AppBar>
-      </div>
+
+        {/* Padding to put items below the header */}
+        <div style={{ minHeight: '40px' }}></div>
+      </React.Fragment>
     );
   } else {
     return <GuestHeader />;

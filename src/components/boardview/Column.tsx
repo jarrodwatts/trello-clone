@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import { Button, Grid, Typography } from '@material-ui/core';
+import { ButtonBase, Grid, Typography } from '@material-ui/core';
 import {
   Column,
   Ticket,
@@ -14,6 +14,7 @@ import { API } from 'aws-amplify';
 import { GRAPHQL_AUTH_MODE } from '@aws-amplify/api';
 import { v4 as uuidv4 } from 'uuid';
 import { updateColumn } from '../../graphql/mutations';
+import AddIcon from '@material-ui/icons/Add';
 
 const useStyles = makeStyles((theme: Theme) => ({
   column: {
@@ -27,10 +28,26 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginLeft: '8px',
   },
   name: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 600,
-    marginBottom: '4px',
-    marginLeft: '16px',
+    lineHeight: '24px',
+    color: '#172b4d',
+    marginLeft: '8px',
+  },
+  addIconSmall: {
+    maxHeight: '16px',
+    maxWidth: '16px',
+    color: '#5e6c84',
+    marginRight: '4px',
+  },
+  addText: {
+    color: '#5e6c84',
+    fontSize: '14px',
+  },
+  addButton: {
+    marginLeft: '8px',
+    paddingTop: '8px',
+    paddingBottom: '8px',
   },
 }));
 
@@ -61,10 +78,6 @@ export default function ColumnComponent({
     } else {
       updatedTickets = [newTicket as Ticket];
     }
-    // setColumn({
-    //   ...stateColumn,
-    //   tickets: updatedTickets,
-    // });
 
     const updatedColumns = allColumns.map((c) => {
       if (c.id === column.id) {
@@ -99,7 +112,9 @@ export default function ColumnComponent({
 
   return (
     <Grid container direction='column' className={classes.column}>
-      <Typography className={classes.name}>{column?.name}</Typography>
+      <div style={{ maxHeight: '40px', minHeight: '40px' }}>
+        <Typography className={classes.name}>{column?.name}</Typography>
+      </div>
       {/* @ts-ignore: Why does Amplify think column.id can be null...? It can't. In the schema it MUST be there.*/}
       <Droppable droppableId={column.id}>
         {(provided, snapshot) => (
@@ -116,10 +131,18 @@ export default function ColumnComponent({
         )}
       </Droppable>
 
-      {/* Button to add a ticket */}
-      <Button onClick={addTicketToColumn} variant='text'>
-        Add One brah
-      </Button>
+      <ButtonBase onClick={addTicketToColumn} className={classes.addButton}>
+        <Grid container direction='row' alignItems='center'>
+          <Grid item>
+            <AddIcon className={classes.addIconSmall} color='inherit' />
+          </Grid>
+          <Grid item>
+            <Typography className={classes.addText}>
+              Add another card
+            </Typography>
+          </Grid>
+        </Grid>
+      </ButtonBase>
     </Grid>
   );
 }

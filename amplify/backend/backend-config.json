@@ -1,6 +1,6 @@
 {
   "auth": {
-    "trelloclone398beca0": {
+    "trelloclone4746a536": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
@@ -14,20 +14,12 @@
       "output": {
         "authConfig": {
           "defaultAuthentication": {
-            "authenticationType": "API_KEY",
-            "apiKeyConfig": {
-              "apiKeyExpirationDays": 365,
-              "description": "API Key Access to trellocloneapi"
+            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+            "userPoolConfig": {
+              "userPoolId": "authtrelloclone4746a536"
             }
           },
-          "additionalAuthenticationProviders": [
-            {
-              "authenticationType": "AMAZON_COGNITO_USER_POOLS",
-              "userPoolConfig": {
-                "userPoolId": "authtrelloclone398beca0"
-              }
-            }
-          ]
+          "additionalAuthenticationProviders": []
         }
       }
     }

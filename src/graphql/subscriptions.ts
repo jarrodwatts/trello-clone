@@ -3,14 +3,11 @@
 // this is an auto generated file. This will be overwritten
 
 export const onCreateWorkspace = /* GraphQL */ `
-  subscription OnCreateWorkspace($owner: String!) {
-    onCreateWorkspace(owner: $owner) {
+  subscription OnCreateWorkspace($owner: String!, $editors: String!) {
+    onCreateWorkspace(owner: $owner, editors: $editors) {
       id
       name
       description
-      owner
-      createdAt
-      updatedAt
       boards {
         items {
           id
@@ -18,48 +15,28 @@ export const onCreateWorkspace = /* GraphQL */ `
           name
           description
           owner
+          editors
           visibility
           isTemplate
           image
           createdAt
           updatedAt
-          columns {
-            items {
-              id
-              owner
-              boardId
-              name
-              tickets {
-                id
-                columnId
-                title
-                description
-                labels {
-                  name
-                  color
-                }
-              }
-              columnIndex
-              createdAt
-              updatedAt
-            }
-            nextToken
-          }
         }
         nextToken
       }
+      owner
+      editors
+      createdAt
+      updatedAt
     }
   }
 `;
 export const onUpdateWorkspace = /* GraphQL */ `
-  subscription OnUpdateWorkspace($owner: String!) {
-    onUpdateWorkspace(owner: $owner) {
+  subscription OnUpdateWorkspace($owner: String!, $editors: String!) {
+    onUpdateWorkspace(owner: $owner, editors: $editors) {
       id
       name
       description
-      owner
-      createdAt
-      updatedAt
       boards {
         items {
           id
@@ -67,48 +44,28 @@ export const onUpdateWorkspace = /* GraphQL */ `
           name
           description
           owner
+          editors
           visibility
           isTemplate
           image
           createdAt
           updatedAt
-          columns {
-            items {
-              id
-              owner
-              boardId
-              name
-              tickets {
-                id
-                columnId
-                title
-                description
-                labels {
-                  name
-                  color
-                }
-              }
-              columnIndex
-              createdAt
-              updatedAt
-            }
-            nextToken
-          }
         }
         nextToken
       }
+      owner
+      editors
+      createdAt
+      updatedAt
     }
   }
 `;
 export const onDeleteWorkspace = /* GraphQL */ `
-  subscription OnDeleteWorkspace($owner: String!) {
-    onDeleteWorkspace(owner: $owner) {
+  subscription OnDeleteWorkspace($owner: String!, $editors: String!) {
+    onDeleteWorkspace(owner: $owner, editors: $editors) {
       id
       name
       description
-      owner
-      createdAt
-      updatedAt
       boards {
         items {
           id
@@ -116,150 +73,106 @@ export const onDeleteWorkspace = /* GraphQL */ `
           name
           description
           owner
+          editors
           visibility
           isTemplate
           image
           createdAt
           updatedAt
-          columns {
-            items {
-              id
-              owner
-              boardId
-              name
-              tickets {
-                id
-                columnId
-                title
-                description
-                labels {
-                  name
-                  color
-                }
-              }
-              columnIndex
-              createdAt
-              updatedAt
-            }
-            nextToken
-          }
         }
         nextToken
       }
+      owner
+      editors
+      createdAt
+      updatedAt
     }
   }
 `;
 export const onCreateBoard = /* GraphQL */ `
-  subscription OnCreateBoard($owner: String!) {
-    onCreateBoard(owner: $owner) {
+  subscription OnCreateBoard($owner: String!, $editors: String!) {
+    onCreateBoard(owner: $owner, editors: $editors) {
       id
       workspaceId
       name
       description
-      owner
-      visibility
-      isTemplate
-      image
-      createdAt
-      updatedAt
       columns {
         items {
           id
           owner
           boardId
           name
-          tickets {
-            id
-            columnId
-            title
-            description
-            labels {
-              name
-              color
-            }
-          }
           columnIndex
           createdAt
           updatedAt
         }
         nextToken
       }
+      owner
+      editors
+      visibility
+      isTemplate
+      image
+      createdAt
+      updatedAt
     }
   }
 `;
 export const onUpdateBoard = /* GraphQL */ `
-  subscription OnUpdateBoard($owner: String!) {
-    onUpdateBoard(owner: $owner) {
+  subscription OnUpdateBoard($owner: String!, $editors: String!) {
+    onUpdateBoard(owner: $owner, editors: $editors) {
       id
       workspaceId
       name
       description
-      owner
-      visibility
-      isTemplate
-      image
-      createdAt
-      updatedAt
       columns {
         items {
           id
           owner
           boardId
           name
-          tickets {
-            id
-            columnId
-            title
-            description
-            labels {
-              name
-              color
-            }
-          }
           columnIndex
           createdAt
           updatedAt
         }
         nextToken
       }
+      owner
+      editors
+      visibility
+      isTemplate
+      image
+      createdAt
+      updatedAt
     }
   }
 `;
 export const onDeleteBoard = /* GraphQL */ `
-  subscription OnDeleteBoard($owner: String!) {
-    onDeleteBoard(owner: $owner) {
+  subscription OnDeleteBoard($owner: String!, $editors: String!) {
+    onDeleteBoard(owner: $owner, editors: $editors) {
       id
       workspaceId
       name
       description
-      owner
-      visibility
-      isTemplate
-      image
-      createdAt
-      updatedAt
       columns {
         items {
           id
           owner
           boardId
           name
-          tickets {
-            id
-            columnId
-            title
-            description
-            labels {
-              name
-              color
-            }
-          }
           columnIndex
           createdAt
           updatedAt
         }
         nextToken
       }
+      owner
+      editors
+      visibility
+      isTemplate
+      image
+      createdAt
+      updatedAt
     }
   }
 `;

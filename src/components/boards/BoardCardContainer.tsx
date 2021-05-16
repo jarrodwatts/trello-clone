@@ -19,7 +19,7 @@ export default function BoardCardContainer({
   console.log(workspace);
   return (
     <Grid container style={{ marginTop: '4px' }} spacing={2}>
-      {boards.map((board) => (
+      {boards?.map((board) => (
         <Grid
           item
           key={board.id}

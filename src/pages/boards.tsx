@@ -14,6 +14,8 @@ import { API } from 'aws-amplify';
 import { Workspace, ListWorkspacesQuery } from '../API';
 import { listWorkspaces } from '../graphql/queries';
 import { GRAPHQL_AUTH_MODE } from '@aws-amplify/api';
+import AddIcon from '@material-ui/icons/Add';
+import CreateWorkspacePopup from '../components/boards/CreateWorkspacePopup';
 
 const useStyles = makeStyles((theme: Theme) => ({
   topPad: {
@@ -44,6 +46,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: 13,
     color: '#5e6c84',
   },
+  addIconSmall: {
+    maxHeight: '24px',
+    maxWidth: '24px',
+    color: '#5e6c84',
+  },
 }));
 
 interface Props {}
@@ -53,8 +60,16 @@ interface Props {}
 // while fetching the data from the API on the client side.
 export default function Boards({}: Props): ReactElement {
   const classes = useStyles();
-
   const [userWorkspaces, setUserWorkspaces] = useState<Workspace[]>([]);
+  const [openCreate, setOpenCreate] = useState(false);
+
+  const handleClose = () => {
+    setOpenCreate(false);
+  };
+
+  const handleClickOpen = () => {
+    setOpenCreate(true);
+  };
 
   useEffect(() => {
     getUserWorkspaces();
@@ -107,7 +122,24 @@ export default function Boards({}: Props): ReactElement {
             </Grid>
 
             <Grid container direction='column'>
-              <Typography className={classes.thinLight}>WORKSPACES</Typography>
+              <Grid container direction='row' justify='space-between'>
+                <Grid item>
+                  <Typography className={classes.thinLight}>
+                    WORKSPACES
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <ButtonBase onClick={handleClickOpen}>
+                    <AddIcon className={classes.addIconSmall} color='inherit' />
+                  </ButtonBase>
+                  <CreateWorkspacePopup
+                    open={openCreate}
+                    workspaces={userWorkspaces}
+                    setWorkspaces={setUserWorkspaces}
+                    handleClose={handleClose}
+                  />
+                </Grid>
+              </Grid>
             </Grid>
           </Grid>
 

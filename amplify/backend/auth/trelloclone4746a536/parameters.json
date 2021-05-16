@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "trelloclone398beca0_identitypool_398beca0",
+    "identityPoolName": "trelloclone4746a536_identitypool_4746a536",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "trello398beca0",
-    "userPoolName": "trelloclone398beca0_userpool_398beca0",
+    "resourceNameTruncated": "trello4746a536",
+    "userPoolName": "trelloclone4746a536_userpool_4746a536",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -12,7 +12,7 @@
     ],
     "smsAuthenticationMessage": "Your authentication code is {####}",
     "smsVerificationMessage": "Your verification code is {####}",
-    "emailVerificationSubject": "Verify your email for Craplo",
+    "emailVerificationSubject": "Your verification code",
     "emailVerificationMessage": "Your verification code is {####}",
     "defaultPasswordPolicy": false,
     "passwordPolicyMinLength": 8,
@@ -28,10 +28,10 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "trello398beca0_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "trello4746a536_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "398beca0",
-    "resourceName": "trelloclone398beca0",
+    "sharedId": "4746a536",
+    "resourceName": "trelloclone4746a536",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [
@@ -51,7 +51,7 @@
         "email"
     ],
     "triggers": "{}",
-    "hostedUIDomainName": "trelloclone398beca0-398beca0",
+    "hostedUIDomainName": "trelloclone4746a536-4746a536",
     "authProvidersUserPool": [
         "Facebook",
         "Google"
@@ -64,6 +64,7 @@
     "parentStack": {
         "Ref": "AWS::StackId"
     },
+    "breakCircularDependency": true,
     "permissions": [],
     "dependsOn": []
 }

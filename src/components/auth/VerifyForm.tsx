@@ -76,7 +76,6 @@ export default function VerifyForm({
     if (email) {
       try {
         await Auth.resendSignUp(email);
-        console.log('code resent successfully');
         setResent(true);
       } catch (err) {
         console.error('error resending code: ', err);

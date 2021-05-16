@@ -52,7 +52,8 @@ export default function BoardCard({ board }: Props): ReactElement {
     >
       <div className={classes.container}>
         <Image
-          src='/boards/beach.jpg'
+          src={`/boards/${board.image}.jpg`}
+          alt={board.image}
           layout='responsive'
           height={96}
           width={206}

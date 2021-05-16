@@ -39,10 +39,10 @@ export default function AllWorkspacesContainer({
             </Grid>
           </Grid>
 
-          {/* Workspace Board Cards (only if a workspace has boards) */}
-          {workspace.boards && (
-            <BoardCardContainer boards={workspace.boards.items as Board[]} />
-          )}
+          <BoardCardContainer
+            boards={workspace?.boards?.items as Board[]}
+            workspace={workspace}
+          />
         </Grid>
       ))}
     </div>

@@ -20,6 +20,7 @@ export const onCreateWorkspace = /* GraphQL */ `
           owner
           visibility
           isTemplate
+          image
           createdAt
           updatedAt
           columns {
@@ -68,6 +69,7 @@ export const onUpdateWorkspace = /* GraphQL */ `
           owner
           visibility
           isTemplate
+          image
           createdAt
           updatedAt
           columns {
@@ -116,6 +118,7 @@ export const onDeleteWorkspace = /* GraphQL */ `
           owner
           visibility
           isTemplate
+          image
           createdAt
           updatedAt
           columns {
@@ -156,6 +159,7 @@ export const onCreateBoard = /* GraphQL */ `
       owner
       visibility
       isTemplate
+      image
       createdAt
       updatedAt
       columns {
@@ -193,6 +197,7 @@ export const onUpdateBoard = /* GraphQL */ `
       owner
       visibility
       isTemplate
+      image
       createdAt
       updatedAt
       columns {
@@ -230,6 +235,7 @@ export const onDeleteBoard = /* GraphQL */ `
       owner
       visibility
       isTemplate
+      image
       createdAt
       updatedAt
       columns {

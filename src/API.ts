@@ -83,6 +83,7 @@ export type Board = {
   owner?: string | null,
   visibility?: Visibility | null,
   isTemplate?: boolean | null,
+  image?: string,
   createdAt?: string,
   updatedAt?: string,
   columns?: ModelColumnConnection,
@@ -147,6 +148,7 @@ export type CreateBoardInput = {
   owner?: string | null,
   visibility?: Visibility | null,
   isTemplate?: boolean | null,
+  image: string,
 };
 
 export type ModelBoardConditionInput = {
@@ -155,6 +157,7 @@ export type ModelBoardConditionInput = {
   description?: ModelStringInput | null,
   visibility?: ModelVisibilityInput | null,
   isTemplate?: ModelBooleanInput | null,
+  image?: ModelStringInput | null,
   and?: Array< ModelBoardConditionInput | null > | null,
   or?: Array< ModelBoardConditionInput | null > | null,
   not?: ModelBoardConditionInput | null,
@@ -196,6 +199,7 @@ export type UpdateBoardInput = {
   owner?: string | null,
   visibility?: Visibility | null,
   isTemplate?: boolean | null,
+  image?: string | null,
 };
 
 export type DeleteBoardInput = {
@@ -282,6 +286,7 @@ export type ModelBoardFilterInput = {
   owner?: ModelStringInput | null,
   visibility?: ModelVisibilityInput | null,
   isTemplate?: ModelBooleanInput | null,
+  image?: ModelStringInput | null,
   and?: Array< ModelBoardFilterInput | null > | null,
   or?: Array< ModelBoardFilterInput | null > | null,
   not?: ModelBoardFilterInput | null,
@@ -323,6 +328,7 @@ export type CreateWorkspaceMutation = {
         owner?: string | null,
         visibility?: Visibility | null,
         isTemplate?: boolean | null,
+        image: string,
         createdAt: string,
         updatedAt: string,
         columns?:  {
@@ -382,6 +388,7 @@ export type UpdateWorkspaceMutation = {
         owner?: string | null,
         visibility?: Visibility | null,
         isTemplate?: boolean | null,
+        image: string,
         createdAt: string,
         updatedAt: string,
         columns?:  {
@@ -441,6 +448,7 @@ export type DeleteWorkspaceMutation = {
         owner?: string | null,
         visibility?: Visibility | null,
         isTemplate?: boolean | null,
+        image: string,
         createdAt: string,
         updatedAt: string,
         columns?:  {
@@ -490,6 +498,7 @@ export type CreateBoardMutation = {
     owner?: string | null,
     visibility?: Visibility | null,
     isTemplate?: boolean | null,
+    image: string,
     createdAt: string,
     updatedAt: string,
     columns?:  {
@@ -536,6 +545,7 @@ export type UpdateBoardMutation = {
     owner?: string | null,
     visibility?: Visibility | null,
     isTemplate?: boolean | null,
+    image: string,
     createdAt: string,
     updatedAt: string,
     columns?:  {
@@ -582,6 +592,7 @@ export type DeleteBoardMutation = {
     owner?: string | null,
     visibility?: Visibility | null,
     isTemplate?: boolean | null,
+    image: string,
     createdAt: string,
     updatedAt: string,
     columns?:  {
@@ -727,6 +738,7 @@ export type GetWorkspaceQuery = {
         owner?: string | null,
         visibility?: Visibility | null,
         isTemplate?: boolean | null,
+        image: string,
         createdAt: string,
         updatedAt: string,
         columns?:  {
@@ -789,6 +801,7 @@ export type ListWorkspacesQuery = {
           owner?: string | null,
           visibility?: Visibility | null,
           isTemplate?: boolean | null,
+          image: string,
           createdAt: string,
           updatedAt: string,
           columns?:  {
@@ -839,6 +852,7 @@ export type GetBoardQuery = {
     owner?: string | null,
     visibility?: Visibility | null,
     isTemplate?: boolean | null,
+    image: string,
     createdAt: string,
     updatedAt: string,
     columns?:  {
@@ -888,6 +902,7 @@ export type ListBoardsQuery = {
       owner?: string | null,
       visibility?: Visibility | null,
       isTemplate?: boolean | null,
+      image: string,
       createdAt: string,
       updatedAt: string,
       columns?:  {
@@ -1009,6 +1024,7 @@ export type OnCreateWorkspaceSubscription = {
         owner?: string | null,
         visibility?: Visibility | null,
         isTemplate?: boolean | null,
+        image: string,
         createdAt: string,
         updatedAt: string,
         columns?:  {
@@ -1067,6 +1083,7 @@ export type OnUpdateWorkspaceSubscription = {
         owner?: string | null,
         visibility?: Visibility | null,
         isTemplate?: boolean | null,
+        image: string,
         createdAt: string,
         updatedAt: string,
         columns?:  {
@@ -1125,6 +1142,7 @@ export type OnDeleteWorkspaceSubscription = {
         owner?: string | null,
         visibility?: Visibility | null,
         isTemplate?: boolean | null,
+        image: string,
         createdAt: string,
         updatedAt: string,
         columns?:  {
@@ -1173,6 +1191,7 @@ export type OnCreateBoardSubscription = {
     owner?: string | null,
     visibility?: Visibility | null,
     isTemplate?: boolean | null,
+    image: string,
     createdAt: string,
     updatedAt: string,
     columns?:  {
@@ -1218,6 +1237,7 @@ export type OnUpdateBoardSubscription = {
     owner?: string | null,
     visibility?: Visibility | null,
     isTemplate?: boolean | null,
+    image: string,
     createdAt: string,
     updatedAt: string,
     columns?:  {
@@ -1263,6 +1283,7 @@ export type OnDeleteBoardSubscription = {
     owner?: string | null,
     visibility?: Visibility | null,
     isTemplate?: boolean | null,
+    image: string,
     createdAt: string,
     updatedAt: string,
     columns?:  {

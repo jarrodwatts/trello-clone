@@ -12,6 +12,7 @@ import AddIcon from '@material-ui/icons/Add';
 import { useUser } from '../../context/AuthContext';
 import GuestHeader from './GuestHeader';
 import ProfileMenu from '../ProfileMenu';
+import { useRouter } from 'next/router';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -41,6 +42,7 @@ interface Props {
 
 export default function UserHeader({ st }: Props): ReactElement {
   const classes = useStyles();
+  const router = useRouter();
   const { user } = useUser();
 
   const backgroundStyle = () => {
@@ -83,6 +85,7 @@ export default function UserHeader({ st }: Props): ReactElement {
             </Grid>
             <Grid item>
               <ButtonBase
+                onClick={() => router.push(`/`)}
                 className={classes.iconButton}
                 style={backgroundStyle()}
               >
@@ -91,6 +94,7 @@ export default function UserHeader({ st }: Props): ReactElement {
             </Grid>
             <Grid item>
               <ButtonBase
+                onClick={() => router.push(`/boards`)}
                 className={classes.iconButton}
                 style={backgroundStyle()}
               >

@@ -9,6 +9,7 @@ export default function Index() {
   const router = useRouter();
   const { user } = useUser();
 
+  // TODO: Change this to be a serverside re-direct
   // Re-route signed in users to /boards
   if (user) {
     router.push(`/boards`);

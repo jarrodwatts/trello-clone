@@ -32,16 +32,12 @@ export default function AuthContext({ children }: Props): ReactElement {
     try {
       const user = await Auth.currentAuthenticatedUser();
       if (user) {
-        console.log('Yes user');
         setUser(user);
       }
     } catch (error) {
-      console.log('No user');
       setUser(null);
     }
   }
-
-  console.log('From context:', user);
 
   return (
     <UserContext.Provider

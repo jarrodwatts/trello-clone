@@ -8,9 +8,6 @@ export const getWorkspace = /* GraphQL */ `
       id
       name
       description
-      owner
-      createdAt
-      updatedAt
       boards {
         items {
           id
@@ -18,36 +15,19 @@ export const getWorkspace = /* GraphQL */ `
           name
           description
           owner
+          editors
           visibility
           isTemplate
           image
           createdAt
           updatedAt
-          columns {
-            items {
-              id
-              owner
-              boardId
-              name
-              tickets {
-                id
-                columnId
-                title
-                description
-                labels {
-                  name
-                  color
-                }
-              }
-              columnIndex
-              createdAt
-              updatedAt
-            }
-            nextToken
-          }
         }
         nextToken
       }
+      owner
+      editors
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -62,46 +42,13 @@ export const listWorkspaces = /* GraphQL */ `
         id
         name
         description
-        owner
-        createdAt
-        updatedAt
         boards {
-          items {
-            id
-            workspaceId
-            name
-            description
-            owner
-            visibility
-            isTemplate
-            image
-            createdAt
-            updatedAt
-            columns {
-              items {
-                id
-                owner
-                boardId
-                name
-                tickets {
-                  id
-                  columnId
-                  title
-                  description
-                  labels {
-                    name
-                    color
-                  }
-                }
-                columnIndex
-                createdAt
-                updatedAt
-              }
-              nextToken
-            }
-          }
           nextToken
         }
+        owner
+        editors
+        createdAt
+        updatedAt
       }
       nextToken
     }
@@ -114,34 +61,25 @@ export const getBoard = /* GraphQL */ `
       workspaceId
       name
       description
-      owner
-      visibility
-      isTemplate
-      image
-      createdAt
-      updatedAt
       columns {
         items {
           id
           owner
           boardId
           name
-          tickets {
-            id
-            columnId
-            title
-            description
-            labels {
-              name
-              color
-            }
-          }
           columnIndex
           createdAt
           updatedAt
         }
         nextToken
       }
+      owner
+      editors
+      visibility
+      isTemplate
+      image
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -157,34 +95,16 @@ export const listBoards = /* GraphQL */ `
         workspaceId
         name
         description
+        columns {
+          nextToken
+        }
         owner
+        editors
         visibility
         isTemplate
         image
         createdAt
         updatedAt
-        columns {
-          items {
-            id
-            owner
-            boardId
-            name
-            tickets {
-              id
-              columnId
-              title
-              description
-              labels {
-                name
-                color
-              }
-            }
-            columnIndex
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
       }
       nextToken
     }
@@ -230,10 +150,6 @@ export const listColumns = /* GraphQL */ `
           columnId
           title
           description
-          labels {
-            name
-            color
-          }
         }
         columnIndex
         createdAt

@@ -1,15 +1,10 @@
-# Unfortunately originally I was going to have the function for having many members in a workspace
-# And many editors of a board. However, I wanted to demonstrate how to use AWS Amplify subscriptions.
-# Half way through development I discovered AWS Amplify does not currently support multiple authorization rules
-# When using subscriptions :-(, so I've cut the multi-user features for the time being until that is added.
-# https://github.com/aws-amplify/amplify-js/issues/7579
-
 type Workspace
 @model
 @auth(
   rules: [
     # Owners of a workspace can perform any operations
     { allow: owner }
+    { allow: owner, ownerField: "editors", operations: [read] }
   ]
 ) {
   id: ID!
@@ -17,6 +12,7 @@ type Workspace
   description: String
   boards: [Board!] @connection(keyName: "byWorkspace", fields: ["id"])
   owner: String
+  editors: [String!]
 }
 
 type Board
@@ -26,6 +22,7 @@ type Board
     rules: [
       # Owners of a board can perform any operations
       { allow: owner }
+      { allow: owner, ownerField: "editors", operations: [create, read, update, delete] }
     ]
   ) {
   id: ID!
@@ -34,6 +31,7 @@ type Board
   description: String
   columns: [Column!]! @connection(keyName: "byBoard", fields: ["id"])
   owner: String
+  editors: [String!]
   visibility: Visibility
   isTemplate: Boolean
   image: String!

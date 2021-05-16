@@ -13,14 +13,16 @@
     },
     "auth": {
       "enablecaseinsensitivity": true,
-      "useinclusiveterminology": true
+      "useinclusiveterminology": true,
+      "breakcirculardependency": true
     },
     "codegen": {
       "useappsyncmodelgenplugin": true,
       "usedocsgeneratorplugin": true,
       "usetypesgeneratorplugin": true,
       "cleangeneratedmodelsdirectory": true,
-      "retaincasestyle": true
+      "retaincasestyle": true,
+      "addtimestampfields": true
     },
     "appsync": {
       "generategraphqlpermissions": true

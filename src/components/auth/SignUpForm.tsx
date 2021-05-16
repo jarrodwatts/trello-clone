@@ -44,7 +44,7 @@ interface SignUpInput {
 
 export default function SignUpForm(): ReactElement {
   const classes = useStyles();
-  const [phase, setPhase] = useState<string>('2');
+  const [phase, setPhase] = useState<string>('1');
   const [userEmail, setUserEmail] = useState<string>('');
   const { control, register, handleSubmit } = useForm<SignUpInput>();
 

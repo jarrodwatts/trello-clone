@@ -11,9 +11,6 @@ export const createWorkspace = /* GraphQL */ `
       id
       name
       description
-      owner
-      createdAt
-      updatedAt
       boards {
         items {
           id
@@ -21,36 +18,19 @@ export const createWorkspace = /* GraphQL */ `
           name
           description
           owner
+          editors
           visibility
           isTemplate
           image
           createdAt
           updatedAt
-          columns {
-            items {
-              id
-              owner
-              boardId
-              name
-              tickets {
-                id
-                columnId
-                title
-                description
-                labels {
-                  name
-                  color
-                }
-              }
-              columnIndex
-              createdAt
-              updatedAt
-            }
-            nextToken
-          }
         }
         nextToken
       }
+      owner
+      editors
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -63,9 +43,6 @@ export const updateWorkspace = /* GraphQL */ `
       id
       name
       description
-      owner
-      createdAt
-      updatedAt
       boards {
         items {
           id
@@ -73,36 +50,19 @@ export const updateWorkspace = /* GraphQL */ `
           name
           description
           owner
+          editors
           visibility
           isTemplate
           image
           createdAt
           updatedAt
-          columns {
-            items {
-              id
-              owner
-              boardId
-              name
-              tickets {
-                id
-                columnId
-                title
-                description
-                labels {
-                  name
-                  color
-                }
-              }
-              columnIndex
-              createdAt
-              updatedAt
-            }
-            nextToken
-          }
         }
         nextToken
       }
+      owner
+      editors
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -115,9 +75,6 @@ export const deleteWorkspace = /* GraphQL */ `
       id
       name
       description
-      owner
-      createdAt
-      updatedAt
       boards {
         items {
           id
@@ -125,36 +82,19 @@ export const deleteWorkspace = /* GraphQL */ `
           name
           description
           owner
+          editors
           visibility
           isTemplate
           image
           createdAt
           updatedAt
-          columns {
-            items {
-              id
-              owner
-              boardId
-              name
-              tickets {
-                id
-                columnId
-                title
-                description
-                labels {
-                  name
-                  color
-                }
-              }
-              columnIndex
-              createdAt
-              updatedAt
-            }
-            nextToken
-          }
         }
         nextToken
       }
+      owner
+      editors
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -168,34 +108,25 @@ export const createBoard = /* GraphQL */ `
       workspaceId
       name
       description
-      owner
-      visibility
-      isTemplate
-      image
-      createdAt
-      updatedAt
       columns {
         items {
           id
           owner
           boardId
           name
-          tickets {
-            id
-            columnId
-            title
-            description
-            labels {
-              name
-              color
-            }
-          }
           columnIndex
           createdAt
           updatedAt
         }
         nextToken
       }
+      owner
+      editors
+      visibility
+      isTemplate
+      image
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -209,34 +140,25 @@ export const updateBoard = /* GraphQL */ `
       workspaceId
       name
       description
-      owner
-      visibility
-      isTemplate
-      image
-      createdAt
-      updatedAt
       columns {
         items {
           id
           owner
           boardId
           name
-          tickets {
-            id
-            columnId
-            title
-            description
-            labels {
-              name
-              color
-            }
-          }
           columnIndex
           createdAt
           updatedAt
         }
         nextToken
       }
+      owner
+      editors
+      visibility
+      isTemplate
+      image
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -250,34 +172,25 @@ export const deleteBoard = /* GraphQL */ `
       workspaceId
       name
       description
-      owner
-      visibility
-      isTemplate
-      image
-      createdAt
-      updatedAt
       columns {
         items {
           id
           owner
           boardId
           name
-          tickets {
-            id
-            columnId
-            title
-            description
-            labels {
-              name
-              color
-            }
-          }
           columnIndex
           createdAt
           updatedAt
         }
         nextToken
       }
+      owner
+      editors
+      visibility
+      isTemplate
+      image
+      createdAt
+      updatedAt
     }
   }
 `;

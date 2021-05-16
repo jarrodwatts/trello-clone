@@ -36,6 +36,7 @@ type Board
   owner: String
   visibility: Visibility
   isTemplate: Boolean
+  image: String!
 }
 
 type Column 

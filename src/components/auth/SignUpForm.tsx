@@ -49,9 +49,8 @@ export default function SignUpForm(): ReactElement {
   const { control, register, handleSubmit } = useForm<SignUpInput>();
 
   const onSubmit = async (data: SignUpInput) => {
-    const signUpAttempt = await trySignUp(data);
+    await trySignUp(data);
     setUserEmail(data.email);
-    console.log(signUpAttempt);
     setPhase('2'); // move to verify screen
   };
 

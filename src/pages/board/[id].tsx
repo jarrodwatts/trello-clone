@@ -81,7 +81,6 @@ export default function IndividualBoardPage({ board }: Props) {
       if (destinationColumn && destinationColumn.tickets) {
         // Make the change in state:
         const tickets = Array.from([...destinationColumn.tickets]);
-        console.log('Existing tickets:', tickets);
         const [removed] = tickets.splice(source.index, 1);
         tickets.splice(destination.index, 0, removed);
         setColumns(
@@ -179,7 +178,7 @@ export default function IndividualBoardPage({ board }: Props) {
       <div className={classes.backgroundImage}>
         <Image
           alt={board.name}
-          src='/boards/beach.jpg'
+          src={`/boards/${board.image}.jpg`}
           layout='fill'
           objectFit='cover'
           quality={100}

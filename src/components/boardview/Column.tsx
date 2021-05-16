@@ -96,15 +96,12 @@ export default function ColumnComponent({
         tickets: updatedTickets as TicketInput[],
       },
     };
-
-    console.log('Trying to update from Column');
     try {
-      const updated = (await API.graphql({
+      (await API.graphql({
         query: updateColumn,
         variables: input,
         authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
       })) as UpdateColumnMutation;
-      console.log('Finished updating without error:', updated);
     } catch (error) {
       console.error(error);
     }

@@ -20,6 +20,7 @@ export const getWorkspace = /* GraphQL */ `
           owner
           visibility
           isTemplate
+          image
           createdAt
           updatedAt
           columns {
@@ -73,6 +74,7 @@ export const listWorkspaces = /* GraphQL */ `
             owner
             visibility
             isTemplate
+            image
             createdAt
             updatedAt
             columns {
@@ -115,6 +117,7 @@ export const getBoard = /* GraphQL */ `
       owner
       visibility
       isTemplate
+      image
       createdAt
       updatedAt
       columns {
@@ -157,6 +160,7 @@ export const listBoards = /* GraphQL */ `
         owner
         visibility
         isTemplate
+        image
         createdAt
         updatedAt
         columns {

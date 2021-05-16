@@ -58,8 +58,6 @@ export default function AddColumn({
       columnIndex: allColumns.length,
     };
 
-    console.log(input);
-
     setColumns([...allColumns, input as Column]);
 
     (await API.graphql({

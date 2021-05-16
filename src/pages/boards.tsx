@@ -69,7 +69,6 @@ export default function Boards({}: Props): ReactElement {
         data: ListWorkspacesQuery;
         errors: any[];
       };
-      console.log(workspaces);
 
       if (workspaces.errors) {
         return [];
@@ -81,7 +80,6 @@ export default function Boards({}: Props): ReactElement {
       return [];
     }
   }
-  console.log('workspaces:', userWorkspaces);
 
   return (
     <div>

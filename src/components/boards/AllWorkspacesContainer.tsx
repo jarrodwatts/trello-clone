@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { Avatar, Grid, Typography } from '@material-ui/core';
-import { Board, Workspace } from '../../API';
+import { Workspace } from '../../API';
 import BoardCardContainer from './BoardCardContainer';
 import randomGradient from '../../lib/randomGradient';
 
@@ -39,10 +39,7 @@ export default function AllWorkspacesContainer({
             </Grid>
           </Grid>
 
-          <BoardCardContainer
-            boards={workspace?.boards?.items as Board[]}
-            workspace={workspace}
-          />
+          <BoardCardContainer workspace={workspace} />
         </Grid>
       ))}
     </div>

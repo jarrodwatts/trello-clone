@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   cardText: {
     color: '#172b4d',
     fontWeight: 400,
-    fontSize: 14,
+    fontSize: 16,
   },
   container: {
     position: 'relative',
@@ -21,6 +21,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     textAlign: 'center',
     height: '100%',
     width: '100%',
+    minHeight: '96px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 4,
   },
 }));
 

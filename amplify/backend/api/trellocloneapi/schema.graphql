@@ -3,8 +3,8 @@ type Workspace
 @auth(
   rules: [
     # Owners of a workspace can perform any operations
-    { allow: owner }
-    { allow: owner, ownerField: "editors", operations: [read] }
+    { allow: owner, identityClaim: "email", ownerField: "owner" }
+    { allow: owner, identityClaim: "email", ownerField: "editors", operations: [read] }
   ]
 ) {
   id: ID!
@@ -21,8 +21,8 @@ type Board
 @auth(
     rules: [
       # Owners of a board can perform any operations
-      { allow: owner }
-      { allow: owner, ownerField: "editors", operations: [create, read, update, delete] }
+      { allow: owner, ownerField: "owner", identityClaim: "email" }
+      { allow: owner, ownerField: "editors", identityClaim: "email", operations: [create, read, update, delete] }
     ]
   ) {
   id: ID!
@@ -42,6 +42,7 @@ type Column
 @key(name: "byBoard", fields: ["boardId", "name"])
 @auth(
     rules: [
+      # TODO: Inherit auth with a connection..
       # Owners of a column can perform any operations
       { allow: owner }
     ]

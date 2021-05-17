@@ -14,6 +14,28 @@ export const onCreateWorkspace = /* GraphQL */ `
           workspaceId
           name
           description
+          columns {
+            items {
+              id
+              owner
+              boardId
+              name
+              tickets {
+                id
+                columnId
+                title
+                description
+                labels {
+                  name
+                  color
+                }
+              }
+              columnIndex
+              createdAt
+              updatedAt
+            }
+            nextToken
+          }
           owner
           editors
           visibility
@@ -43,6 +65,28 @@ export const onUpdateWorkspace = /* GraphQL */ `
           workspaceId
           name
           description
+          columns {
+            items {
+              id
+              owner
+              boardId
+              name
+              tickets {
+                id
+                columnId
+                title
+                description
+                labels {
+                  name
+                  color
+                }
+              }
+              columnIndex
+              createdAt
+              updatedAt
+            }
+            nextToken
+          }
           owner
           editors
           visibility
@@ -72,6 +116,28 @@ export const onDeleteWorkspace = /* GraphQL */ `
           workspaceId
           name
           description
+          columns {
+            items {
+              id
+              owner
+              boardId
+              name
+              tickets {
+                id
+                columnId
+                title
+                description
+                labels {
+                  name
+                  color
+                }
+              }
+              columnIndex
+              createdAt
+              updatedAt
+            }
+            nextToken
+          }
           owner
           editors
           visibility
@@ -102,6 +168,16 @@ export const onCreateBoard = /* GraphQL */ `
           owner
           boardId
           name
+          tickets {
+            id
+            columnId
+            title
+            description
+            labels {
+              name
+              color
+            }
+          }
           columnIndex
           createdAt
           updatedAt
@@ -131,6 +207,16 @@ export const onUpdateBoard = /* GraphQL */ `
           owner
           boardId
           name
+          tickets {
+            id
+            columnId
+            title
+            description
+            labels {
+              name
+              color
+            }
+          }
           columnIndex
           createdAt
           updatedAt
@@ -160,6 +246,16 @@ export const onDeleteBoard = /* GraphQL */ `
           owner
           boardId
           name
+          tickets {
+            id
+            columnId
+            title
+            description
+            labels {
+              name
+              color
+            }
+          }
           columnIndex
           createdAt
           updatedAt

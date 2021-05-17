@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-import { API, withSSRContext } from 'aws-amplify';
-import { GetServerSideProps } from 'next';
+import React, { ReactElement, useState } from 'react';
+import { API } from 'aws-amplify';
 import { getBoard } from '../../graphql/queries';
 import {
   Board,
@@ -22,6 +21,8 @@ import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { resetServerContext } from 'react-beautiful-dnd';
 import { updateColumn } from '../../graphql/mutations';
 import AddColumn from '../../components/boardview/AddColumn';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 const useStyles = makeStyles((theme: Theme) => ({
   backgroundImage: {
@@ -39,25 +40,48 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-interface Props {
-  board: Board;
-}
-
-export default function IndividualBoardPage({ board }: Props) {
+/**
+ * This file is so messy - I should clean it up bu
+ * @return {ReactElement}
+ */
+export default function IndividualBoardPage(): ReactElement {
+  const router = useRouter();
+  const classes = useStyles();
+  const { id } = router.query;
   // https://github.com/atlassian/react-beautiful-dnd/issues/1756
   resetServerContext();
 
-  // Extract out the columns and tickets into state and use the right type from the board prop
+  const [board, setBoard] = useState<Board>();
   const [columns, setColumns] = useState<Column[]>(
-    board.columns?.items
-      ? (board.columns.items.sort(
-          // @ts-ignore : again...
-          (a, b) => a?.columnIndex - b?.columnIndex
-        ) as Column[])
+    board
+      ? board.columns?.items
+        ? (board.columns.items.sort(
+            // @ts-ignore : again...
+            (a, b) => a?.columnIndex - b?.columnIndex
+          ) as Column[])
+        : []
       : []
   );
 
-  const classes = useStyles();
+  useEffect(() => {
+    fetchBoardData();
+  }, []);
+
+  // Fetch data for the board client-side
+  const fetchBoardData = async (): Promise<Board> => {
+    const input: GetBoardQueryVariables = {
+      id: id as string,
+    };
+
+    const response = (await API.graphql({
+      query: getBoard,
+      variables: input,
+      authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
+    })) as { data: GetBoardQuery; errors: any[] };
+
+    setBoard(response.data.getBoard as Board);
+    return response.data.getBoard as Board;
+  };
 
   const onDragEnd = async (result: DropResult): Promise<void> => {
     const { source, destination } = result;
@@ -173,53 +197,62 @@ export default function IndividualBoardPage({ board }: Props) {
     }
   };
 
-  return (
-    <React.Fragment>
-      <div className={classes.backgroundImage}>
-        <Image
-          alt={board.name}
-          src={`/boards/${board.image}.jpg`}
-          layout='fill'
-          objectFit='cover'
-          quality={100}
-        />
-      </div>
-      <UserHeader st={'grey'} />
-      <div style={{ padding: '16px' }}>
-        <Typography variant='h5' className={classes.title}>
-          {board.name}
-        </Typography>
+  if (board) {
+    return (
+      <React.Fragment>
+        <div className={classes.backgroundImage}>
+          <Image
+            alt={board?.name}
+            src={`/boards/${board?.image}.jpg`}
+            layout='fill'
+            objectFit='cover'
+            quality={100}
+          />
+        </div>
+        <UserHeader st={'grey'} />
+        <div style={{ padding: '16px' }}>
+          <Typography variant='h5' className={classes.title}>
+            {board?.name}
+          </Typography>
 
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Grid
-            container
-            direction='row'
-            alignItems='flex-start'
-            justify='flex-start'
-            wrap='nowrap'
-            spacing={1}
-          >
-            {columns.map((column) => (
-              <ColumnComponent
-                column={column}
-                setColumns={setColumns}
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Grid
+              container
+              direction='row'
+              alignItems='flex-start'
+              justify='flex-start'
+              wrap='nowrap'
+              spacing={1}
+            >
+              {columns.map((column) => (
+                <ColumnComponent
+                  column={column}
+                  setColumns={setColumns}
+                  allColumns={columns}
+                  key={column?.id}
+                />
+              ))}
+              <AddColumn
                 allColumns={columns}
-                key={column?.id}
+                setColumns={setColumns}
+                // @ts-ignore
+                boardId={board.id}
               />
-            ))}
-            <AddColumn
-              allColumns={columns}
-              setColumns={setColumns}
-              // @ts-ignore
-              boardId={board.id}
-            />
-          </Grid>
-        </DragDropContext>
-      </div>
-    </React.Fragment>
-  );
+            </Grid>
+          </DragDropContext>
+        </div>
+      </React.Fragment>
+    );
+  } else {
+    return <div>Loading...</div>;
+  }
 }
 
+// Unfortunately, server-side rendering for "email" as the ownerField is also bugged at the moment.
+// Email isn't exposed in SSR so it can't detect a user to make an authenticated request - sad :(
+// View the content of _app.js for the link to the GitHub
+
+/** 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { req } = context;
   const SSR = withSSRContext({ req });
@@ -240,3 +273,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
   };
 };
+*/

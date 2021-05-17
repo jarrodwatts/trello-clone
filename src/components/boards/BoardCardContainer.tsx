@@ -6,28 +6,24 @@ import useStyles from '../../hooks/useStyles';
 import AddBoardCard from './AddBoardCard';
 
 interface Props {
-  boards: Board[];
   workspace: Workspace;
 }
 
-export default function BoardCardContainer({
-  boards,
-  workspace,
-}: Props): ReactElement {
+export default function BoardCardContainer({ workspace }: Props): ReactElement {
   const classes = useStyles();
 
-  console.log(workspace);
   return (
     <Grid container style={{ marginTop: '4px' }} spacing={2}>
-      {boards?.map((board) => (
+      {workspace.boards?.items?.map((board) => (
         <Grid
           item
+          // @ts-ignore
           key={board.id}
           xs={6}
           md={3}
           className={classes.boardImageRounding}
         >
-          <BoardCard board={board} />
+          <BoardCard board={board as Board} />
         </Grid>
       ))}
 

@@ -14,6 +14,28 @@ export const getWorkspace = /* GraphQL */ `
           workspaceId
           name
           description
+          columns {
+            items {
+              id
+              owner
+              boardId
+              name
+              tickets {
+                id
+                columnId
+                title
+                description
+                labels {
+                  name
+                  color
+                }
+              }
+              columnIndex
+              createdAt
+              updatedAt
+            }
+            nextToken
+          }
           owner
           editors
           visibility
@@ -43,6 +65,41 @@ export const listWorkspaces = /* GraphQL */ `
         name
         description
         boards {
+          items {
+            id
+            workspaceId
+            name
+            description
+            columns {
+              items {
+                id
+                owner
+                boardId
+                name
+                tickets {
+                  id
+                  columnId
+                  title
+                  description
+                  labels {
+                    name
+                    color
+                  }
+                }
+                columnIndex
+                createdAt
+                updatedAt
+              }
+              nextToken
+            }
+            owner
+            editors
+            visibility
+            isTemplate
+            image
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         owner
@@ -67,6 +124,16 @@ export const getBoard = /* GraphQL */ `
           owner
           boardId
           name
+          tickets {
+            id
+            columnId
+            title
+            description
+            labels {
+              name
+              color
+            }
+          }
           columnIndex
           createdAt
           updatedAt
@@ -96,6 +163,25 @@ export const listBoards = /* GraphQL */ `
         name
         description
         columns {
+          items {
+            id
+            owner
+            boardId
+            name
+            tickets {
+              id
+              columnId
+              title
+              description
+              labels {
+                name
+                color
+              }
+            }
+            columnIndex
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         owner
@@ -150,6 +236,10 @@ export const listColumns = /* GraphQL */ `
           columnId
           title
           description
+          labels {
+            name
+            color
+          }
         }
         columnIndex
         createdAt

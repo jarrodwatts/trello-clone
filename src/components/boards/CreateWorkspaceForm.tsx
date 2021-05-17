@@ -12,6 +12,7 @@ import {
 import { useRouter } from 'next/router';
 import { API } from 'aws-amplify';
 import { createWorkspace, updateWorkspace } from '../../graphql/mutations';
+import InviteSuccess from './InviteSuccess';
 
 const useStyles = makeStyles((theme: Theme) => ({
   form: {
@@ -56,19 +57,27 @@ const useStyles = makeStyles((theme: Theme) => ({
 interface Props {
   workspaces: Workspace[];
   setWorkspaces: React.Dispatch<React.SetStateAction<Workspace[]>>;
+  startingPhase?: string;
+  inviteToThisWorkspace?: Workspace;
 }
 
 export default function CreateWorkspaceForm({
   workspaces,
   setWorkspaces,
+  startingPhase,
+  inviteToThisWorkspace,
 }: Props): ReactElement {
   const classes = useStyles();
   const router = useRouter();
   const [name, setName] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [memberName, setMemberName] = useState<string>('');
-  const [phase, setPhase] = useState<string>('create');
-  const [createdWorkspace, setCreatedWorksapce] = useState<Workspace>();
+  const [phase, setPhase] = useState<string>(startingPhase || 'create');
+  const [createdWorkspace, setCreatedWorksapce] = useState<Workspace | null>(
+    inviteToThisWorkspace ? inviteToThisWorkspace : null
+  );
+  const [showSnackbarSuccess, setShowSnackbar] = useState<boolean>(false);
+  const [lastAddedMember, setLastAddedMember] = useState<string>('');
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -87,20 +96,22 @@ export default function CreateWorkspaceForm({
     })) as { data: CreateWorkspaceMutation; errors: any[] };
 
     if (!newWorkspace.errors) {
+      setPhase('invite');
       setWorkspaces([
         ...workspaces,
         newWorkspace.data.createWorkspace as Workspace,
       ]);
       setCreatedWorksapce(newWorkspace.data.createWorkspace as Workspace);
-      setPhase('invite');
     }
   };
 
   const inviteUser = async (e: React.FormEvent<HTMLFormElement>) => {
-    console.log('Add:', memberName);
     e.preventDefault();
+    console.log('added:', memberName);
 
     if (createdWorkspace) {
+      console.log('existin editors:', createdWorkspace.editors);
+
       const existingWorkspace = createdWorkspace as Workspace;
       const newEditors = existingWorkspace.editors
         ? [...existingWorkspace.editors, memberName]
@@ -112,11 +123,22 @@ export default function CreateWorkspaceForm({
         editors: newEditors,
       };
 
-      (await API.graphql({
-        query: updateWorkspace,
-        variables: { input: updatedWorkspaceInput },
-        authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
-      })) as UpdateWorkspaceMutation;
+      try {
+        const newWorkpace = (await API.graphql({
+          query: updateWorkspace,
+          variables: { input: updatedWorkspaceInput },
+          authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
+        })) as { data: UpdateWorkspaceMutation };
+
+        setLastAddedMember(memberName);
+        setShowSnackbar(true);
+        setMemberName('');
+        setCreatedWorksapce(newWorkpace.data.updateWorkspace as Workspace);
+      } catch (error) {
+        console.error(error);
+      }
+
+      console.log('added:', memberName);
     }
   };
 
@@ -201,7 +223,8 @@ export default function CreateWorkspaceForm({
       <Grid container direction='column' justify='center'>
         <Grid item>
           <Typography component='h1' className={classes.title}>
-            Invite Your Team!
+            Invite Your Team{' '}
+            {inviteToThisWorkspace ? `to ${inviteToThisWorkspace.name}` : ''}!
           </Typography>
         </Grid>
         <Grid item>
@@ -246,7 +269,6 @@ export default function CreateWorkspaceForm({
                 to invite and add them! They will be able to view this
                 workspace&apos;s boards.
               </Typography>
-
               <Button
                 type='submit'
                 fullWidth
@@ -255,7 +277,12 @@ export default function CreateWorkspaceForm({
               >
                 Invite to Workspace
               </Button>
-
+              {/* Show Snack Bar when invite success */}
+              <InviteSuccess
+                memberName={lastAddedMember}
+                open={showSnackbarSuccess}
+                toggleOpen={setShowSnackbar}
+              />
               <Button
                 variant='text'
                 color='inherit'

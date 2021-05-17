@@ -7,10 +7,27 @@ import theme from '../theme';
 import AuthContext from '../context/AuthContext';
 
 // import and configure amplify on all pages.
-import Amplify from 'aws-amplify';
+import Amplify, { Auth } from 'aws-amplify';
 import awsconfig from '../aws-exports';
 
-Amplify.configure({ ...awsconfig, ssr: true });
+Amplify.configure({
+  ...awsconfig,
+  // https://github.com/aws-amplify/amplify-cli/issues/3794
+  // This allows us to use email as the "owner" claim rather than sub by default.
+  // BUT... prevents us from making server-side requests with the API.....
+  // There is a PR for that here. For now we will make this trade-off.
+  // https://github.com/aws-amplify/amplify-js/pull/7827
+  graphql_headers: async () => {
+    try {
+      const token = (await Auth.currentSession()).idToken.jwtToken;
+      return { Authorization: token };
+    } catch (e) {
+      console.error(e);
+      return {};
+    }
+  },
+  ssr: true,
+});
 
 function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {

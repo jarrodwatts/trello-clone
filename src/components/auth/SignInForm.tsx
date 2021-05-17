@@ -47,8 +47,11 @@ export default function SignInForm(): ReactElement {
   const { control, register, handleSubmit } = useForm<SignInInput>();
 
   const onSubmit = async (data: SignInInput) => {
-    await trySignIn(data);
-    router.push(`/boards`);
+    const attempt = await trySignIn(data);
+    if (attempt) {
+      // TODO: Show error message on failure
+      router.push(`/boards`);
+    }
   };
 
   const trySignIn = async (data: SignInInput) => {

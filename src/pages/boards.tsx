@@ -16,6 +16,7 @@ import { listWorkspaces } from '../graphql/queries';
 import { GRAPHQL_AUTH_MODE } from '@aws-amplify/api';
 import AddIcon from '@material-ui/icons/Add';
 import CreateWorkspacePopup from '../components/boards/CreateWorkspacePopup';
+import CreateWorkspaceForm from '../components/boards/CreateWorkspaceForm';
 
 const useStyles = makeStyles((theme: Theme) => ({
   topPad: {
@@ -145,6 +146,22 @@ export default function Boards({}: Props): ReactElement {
 
           {/* Main Section */}
           <Grid item sm={9}>
+            {/* Show create workspace component if no workspaces */}
+            {userWorkspaces.length === 0 && (
+              <CreateWorkspaceForm
+                workspaces={userWorkspaces}
+                setWorkspaces={setUserWorkspaces}
+              />
+            )}
+
+            {userWorkspaces.length === 1 && !userWorkspaces[0].editors && (
+              <CreateWorkspaceForm
+                workspaces={userWorkspaces}
+                setWorkspaces={setUserWorkspaces}
+                startingPhase={'invite'}
+                inviteToThisWorkspace={userWorkspaces[0]}
+              />
+            )}
             {/* Map over workspaces */}
             <AllWorkspacesContainer workspaces={userWorkspaces} />
           </Grid>

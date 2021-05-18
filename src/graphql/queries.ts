@@ -15,26 +15,20 @@ export const getWorkspace = /* GraphQL */ `
           name
           description
           columns {
-            items {
+            id
+            boardId
+            name
+            tickets {
               id
-              owner
-              boardId
-              name
-              tickets {
-                id
-                columnId
-                title
-                description
-                labels {
-                  name
-                  color
-                }
+              columnId
+              title
+              description
+              labels {
+                name
+                color
               }
-              columnIndex
-              createdAt
-              updatedAt
             }
-            nextToken
+            columnIndex
           }
           owner
           editors
@@ -71,26 +65,20 @@ export const listWorkspaces = /* GraphQL */ `
             name
             description
             columns {
-              items {
+              id
+              boardId
+              name
+              tickets {
                 id
-                owner
-                boardId
-                name
-                tickets {
-                  id
-                  columnId
-                  title
-                  description
-                  labels {
-                    name
-                    color
-                  }
+                columnId
+                title
+                description
+                labels {
+                  name
+                  color
                 }
-                columnIndex
-                createdAt
-                updatedAt
               }
-              nextToken
+              columnIndex
             }
             owner
             editors
@@ -119,26 +107,20 @@ export const getBoard = /* GraphQL */ `
       name
       description
       columns {
-        items {
+        id
+        boardId
+        name
+        tickets {
           id
-          owner
-          boardId
-          name
-          tickets {
-            id
-            columnId
-            title
-            description
-            labels {
-              name
-              color
-            }
+          columnId
+          title
+          description
+          labels {
+            name
+            color
           }
-          columnIndex
-          createdAt
-          updatedAt
         }
-        nextToken
+        columnIndex
       }
       owner
       editors
@@ -163,85 +145,26 @@ export const listBoards = /* GraphQL */ `
         name
         description
         columns {
-          items {
+          id
+          boardId
+          name
+          tickets {
             id
-            owner
-            boardId
-            name
-            tickets {
-              id
-              columnId
-              title
-              description
-              labels {
-                name
-                color
-              }
+            columnId
+            title
+            description
+            labels {
+              name
+              color
             }
-            columnIndex
-            createdAt
-            updatedAt
           }
-          nextToken
+          columnIndex
         }
         owner
         editors
         visibility
         isTemplate
         image
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
-export const getColumn = /* GraphQL */ `
-  query GetColumn($id: ID!) {
-    getColumn(id: $id) {
-      id
-      owner
-      boardId
-      name
-      tickets {
-        id
-        columnId
-        title
-        description
-        labels {
-          name
-          color
-        }
-      }
-      columnIndex
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listColumns = /* GraphQL */ `
-  query ListColumns(
-    $filter: ModelColumnFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listColumns(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        owner
-        boardId
-        name
-        tickets {
-          id
-          columnId
-          title
-          description
-          labels {
-            name
-            color
-          }
-        }
-        columnIndex
         createdAt
         updatedAt
       }

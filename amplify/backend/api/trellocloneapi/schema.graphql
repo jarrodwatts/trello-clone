@@ -29,7 +29,7 @@ type Board
   workspaceId: ID!
   name: String!
   description: String
-  columns: [Column!]! @connection(keyName: "byBoard", fields: ["id"])
+  columns: [Column!]! 
   owner: String
   editors: [String!]
   visibility: Visibility
@@ -38,18 +38,8 @@ type Board
 }
 
 type Column 
-@model
-@key(name: "byBoard", fields: ["boardId", "name"])
-@auth(
-    rules: [
-      # TODO: Inherit auth with a connection..
-      # Owners of a column can perform any operations
-      { allow: owner }
-    ]
-  )
 {
   id: ID!
-  owner: String
   boardId: ID!
   name: String!
   tickets: [Ticket!]

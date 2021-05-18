@@ -61,6 +61,7 @@ export default function AddBoardCard({ workspace }: Props): ReactElement {
       workspaceId: workspace.id,
       name: boardName,
       image: getRandomImage(),
+      columns: [],
     };
 
     console.log(createBoardInput);

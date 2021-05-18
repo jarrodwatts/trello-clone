@@ -15,26 +15,20 @@ export const onCreateWorkspace = /* GraphQL */ `
           name
           description
           columns {
-            items {
+            id
+            boardId
+            name
+            tickets {
               id
-              owner
-              boardId
-              name
-              tickets {
-                id
-                columnId
-                title
-                description
-                labels {
-                  name
-                  color
-                }
+              columnId
+              title
+              description
+              labels {
+                name
+                color
               }
-              columnIndex
-              createdAt
-              updatedAt
             }
-            nextToken
+            columnIndex
           }
           owner
           editors
@@ -66,26 +60,20 @@ export const onUpdateWorkspace = /* GraphQL */ `
           name
           description
           columns {
-            items {
+            id
+            boardId
+            name
+            tickets {
               id
-              owner
-              boardId
-              name
-              tickets {
-                id
-                columnId
-                title
-                description
-                labels {
-                  name
-                  color
-                }
+              columnId
+              title
+              description
+              labels {
+                name
+                color
               }
-              columnIndex
-              createdAt
-              updatedAt
             }
-            nextToken
+            columnIndex
           }
           owner
           editors
@@ -117,26 +105,20 @@ export const onDeleteWorkspace = /* GraphQL */ `
           name
           description
           columns {
-            items {
+            id
+            boardId
+            name
+            tickets {
               id
-              owner
-              boardId
-              name
-              tickets {
-                id
-                columnId
-                title
-                description
-                labels {
-                  name
-                  color
-                }
+              columnId
+              title
+              description
+              labels {
+                name
+                color
               }
-              columnIndex
-              createdAt
-              updatedAt
             }
-            nextToken
+            columnIndex
           }
           owner
           editors
@@ -163,26 +145,20 @@ export const onCreateBoard = /* GraphQL */ `
       name
       description
       columns {
-        items {
+        id
+        boardId
+        name
+        tickets {
           id
-          owner
-          boardId
-          name
-          tickets {
-            id
-            columnId
-            title
-            description
-            labels {
-              name
-              color
-            }
+          columnId
+          title
+          description
+          labels {
+            name
+            color
           }
-          columnIndex
-          createdAt
-          updatedAt
         }
-        nextToken
+        columnIndex
       }
       owner
       editors
@@ -202,26 +178,20 @@ export const onUpdateBoard = /* GraphQL */ `
       name
       description
       columns {
-        items {
+        id
+        boardId
+        name
+        tickets {
           id
-          owner
-          boardId
-          name
-          tickets {
-            id
-            columnId
-            title
-            description
-            labels {
-              name
-              color
-            }
+          columnId
+          title
+          description
+          labels {
+            name
+            color
           }
-          columnIndex
-          createdAt
-          updatedAt
         }
-        nextToken
+        columnIndex
       }
       owner
       editors
@@ -241,101 +211,26 @@ export const onDeleteBoard = /* GraphQL */ `
       name
       description
       columns {
-        items {
+        id
+        boardId
+        name
+        tickets {
           id
-          owner
-          boardId
-          name
-          tickets {
-            id
-            columnId
-            title
-            description
-            labels {
-              name
-              color
-            }
+          columnId
+          title
+          description
+          labels {
+            name
+            color
           }
-          columnIndex
-          createdAt
-          updatedAt
         }
-        nextToken
+        columnIndex
       }
       owner
       editors
       visibility
       isTemplate
       image
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onCreateColumn = /* GraphQL */ `
-  subscription OnCreateColumn($owner: String!) {
-    onCreateColumn(owner: $owner) {
-      id
-      owner
-      boardId
-      name
-      tickets {
-        id
-        columnId
-        title
-        description
-        labels {
-          name
-          color
-        }
-      }
-      columnIndex
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onUpdateColumn = /* GraphQL */ `
-  subscription OnUpdateColumn($owner: String!) {
-    onUpdateColumn(owner: $owner) {
-      id
-      owner
-      boardId
-      name
-      tickets {
-        id
-        columnId
-        title
-        description
-        labels {
-          name
-          color
-        }
-      }
-      columnIndex
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onDeleteColumn = /* GraphQL */ `
-  subscription OnDeleteColumn($owner: String!) {
-    onDeleteColumn(owner: $owner) {
-      id
-      owner
-      boardId
-      name
-      tickets {
-        id
-        columnId
-        title
-        description
-        labels {
-          name
-          color
-        }
-      }
-      columnIndex
       createdAt
       updatedAt
     }

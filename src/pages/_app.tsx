@@ -19,6 +19,7 @@ Amplify.configure({
   // https://github.com/aws-amplify/amplify-js/pull/7827
   graphql_headers: async () => {
     try {
+      // @ts-ignore: idToken doesn't exist but it really does
       const token = (await Auth.currentSession()).idToken.jwtToken;
       return { Authorization: token };
     } catch (e) {

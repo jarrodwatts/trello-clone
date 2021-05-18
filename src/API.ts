@@ -82,7 +82,7 @@ export type Board = {
   workspaceId?: string,
   name?: string,
   description?: string | null,
-  columns?: ModelColumnConnection,
+  columns?:  Array<Column >,
   owner?: string | null,
   editors?: Array< string > | null,
   visibility?: Visibility | null,
@@ -92,22 +92,13 @@ export type Board = {
   updatedAt?: string,
 };
 
-export type ModelColumnConnection = {
-  __typename: "ModelColumnConnection",
-  items?:  Array<Column | null > | null,
-  nextToken?: string | null,
-};
-
 export type Column = {
   __typename: "Column",
   id?: string,
-  owner?: string | null,
   boardId?: string,
   name?: string,
   tickets?:  Array<Ticket > | null,
   columnIndex?: number,
-  createdAt?: string,
-  updatedAt?: string,
 };
 
 export type Ticket = {
@@ -149,11 +140,33 @@ export type CreateBoardInput = {
   workspaceId: string,
   name: string,
   description?: string | null,
+  columns: Array< ColumnInput >,
   owner?: string | null,
   editors?: Array< string > | null,
   visibility?: Visibility | null,
   isTemplate?: boolean | null,
   image: string,
+};
+
+export type ColumnInput = {
+  id: string,
+  boardId: string,
+  name: string,
+  tickets?: Array< TicketInput > | null,
+  columnIndex: number,
+};
+
+export type TicketInput = {
+  id: string,
+  columnId: string,
+  title: string,
+  description?: string | null,
+  labels?: Array< LabelInput > | null,
+};
+
+export type LabelInput = {
+  name: string,
+  color: string,
 };
 
 export type ModelBoardConditionInput = {
@@ -201,6 +214,7 @@ export type UpdateBoardInput = {
   workspaceId?: string | null,
   name?: string | null,
   description?: string | null,
+  columns?: Array< ColumnInput > | null,
   owner?: string | null,
   editors?: Array< string > | null,
   visibility?: Visibility | null,
@@ -209,62 +223,6 @@ export type UpdateBoardInput = {
 };
 
 export type DeleteBoardInput = {
-  id?: string | null,
-};
-
-export type CreateColumnInput = {
-  id?: string | null,
-  owner?: string | null,
-  boardId: string,
-  name: string,
-  tickets?: Array< TicketInput > | null,
-  columnIndex: number,
-};
-
-export type TicketInput = {
-  id: string,
-  columnId: string,
-  title: string,
-  description?: string | null,
-  labels?: Array< LabelInput > | null,
-};
-
-export type LabelInput = {
-  name: string,
-  color: string,
-};
-
-export type ModelColumnConditionInput = {
-  boardId?: ModelIDInput | null,
-  name?: ModelStringInput | null,
-  columnIndex?: ModelIntInput | null,
-  and?: Array< ModelColumnConditionInput | null > | null,
-  or?: Array< ModelColumnConditionInput | null > | null,
-  not?: ModelColumnConditionInput | null,
-};
-
-export type ModelIntInput = {
-  ne?: number | null,
-  eq?: number | null,
-  le?: number | null,
-  lt?: number | null,
-  ge?: number | null,
-  gt?: number | null,
-  between?: Array< number | null > | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
-};
-
-export type UpdateColumnInput = {
-  id: string,
-  owner?: string | null,
-  boardId?: string | null,
-  name?: string | null,
-  tickets?: Array< TicketInput > | null,
-  columnIndex?: number | null,
-};
-
-export type DeleteColumnInput = {
   id?: string | null,
 };
 
@@ -300,17 +258,6 @@ export type ModelBoardFilterInput = {
   not?: ModelBoardFilterInput | null,
 };
 
-export type ModelColumnFilterInput = {
-  id?: ModelIDInput | null,
-  owner?: ModelStringInput | null,
-  boardId?: ModelIDInput | null,
-  name?: ModelStringInput | null,
-  columnIndex?: ModelIntInput | null,
-  and?: Array< ModelColumnFilterInput | null > | null,
-  or?: Array< ModelColumnFilterInput | null > | null,
-  not?: ModelColumnFilterInput | null,
-};
-
 export type CreateWorkspaceMutationVariables = {
   input?: CreateWorkspaceInput,
   condition?: ModelWorkspaceConditionInput | null,
@@ -330,32 +277,25 @@ export type CreateWorkspaceMutation = {
         workspaceId: string,
         name: string,
         description?: string | null,
-        columns?:  {
-          __typename: "ModelColumnConnection",
-          items?:  Array< {
-            __typename: "Column",
+        columns:  Array< {
+          __typename: "Column",
+          id: string,
+          boardId: string,
+          name: string,
+          tickets?:  Array< {
+            __typename: "Ticket",
             id: string,
-            owner?: string | null,
-            boardId: string,
-            name: string,
-            tickets?:  Array< {
-              __typename: "Ticket",
-              id: string,
-              columnId: string,
-              title: string,
-              description?: string | null,
-              labels?:  Array< {
-                __typename: "Label",
-                name: string,
-                color: string,
-              } > | null,
+            columnId: string,
+            title: string,
+            description?: string | null,
+            labels?:  Array< {
+              __typename: "Label",
+              name: string,
+              color: string,
             } > | null,
-            columnIndex: number,
-            createdAt: string,
-            updatedAt: string,
-          } | null > | null,
-          nextToken?: string | null,
-        } | null,
+          } > | null,
+          columnIndex: number,
+        } >,
         owner?: string | null,
         editors?: Array< string > | null,
         visibility?: Visibility | null,
@@ -392,32 +332,25 @@ export type UpdateWorkspaceMutation = {
         workspaceId: string,
         name: string,
         description?: string | null,
-        columns?:  {
-          __typename: "ModelColumnConnection",
-          items?:  Array< {
-            __typename: "Column",
+        columns:  Array< {
+          __typename: "Column",
+          id: string,
+          boardId: string,
+          name: string,
+          tickets?:  Array< {
+            __typename: "Ticket",
             id: string,
-            owner?: string | null,
-            boardId: string,
-            name: string,
-            tickets?:  Array< {
-              __typename: "Ticket",
-              id: string,
-              columnId: string,
-              title: string,
-              description?: string | null,
-              labels?:  Array< {
-                __typename: "Label",
-                name: string,
-                color: string,
-              } > | null,
+            columnId: string,
+            title: string,
+            description?: string | null,
+            labels?:  Array< {
+              __typename: "Label",
+              name: string,
+              color: string,
             } > | null,
-            columnIndex: number,
-            createdAt: string,
-            updatedAt: string,
-          } | null > | null,
-          nextToken?: string | null,
-        } | null,
+          } > | null,
+          columnIndex: number,
+        } >,
         owner?: string | null,
         editors?: Array< string > | null,
         visibility?: Visibility | null,
@@ -454,32 +387,25 @@ export type DeleteWorkspaceMutation = {
         workspaceId: string,
         name: string,
         description?: string | null,
-        columns?:  {
-          __typename: "ModelColumnConnection",
-          items?:  Array< {
-            __typename: "Column",
+        columns:  Array< {
+          __typename: "Column",
+          id: string,
+          boardId: string,
+          name: string,
+          tickets?:  Array< {
+            __typename: "Ticket",
             id: string,
-            owner?: string | null,
-            boardId: string,
-            name: string,
-            tickets?:  Array< {
-              __typename: "Ticket",
-              id: string,
-              columnId: string,
-              title: string,
-              description?: string | null,
-              labels?:  Array< {
-                __typename: "Label",
-                name: string,
-                color: string,
-              } > | null,
+            columnId: string,
+            title: string,
+            description?: string | null,
+            labels?:  Array< {
+              __typename: "Label",
+              name: string,
+              color: string,
             } > | null,
-            columnIndex: number,
-            createdAt: string,
-            updatedAt: string,
-          } | null > | null,
-          nextToken?: string | null,
-        } | null,
+          } > | null,
+          columnIndex: number,
+        } >,
         owner?: string | null,
         editors?: Array< string > | null,
         visibility?: Visibility | null,
@@ -509,32 +435,25 @@ export type CreateBoardMutation = {
     workspaceId: string,
     name: string,
     description?: string | null,
-    columns?:  {
-      __typename: "ModelColumnConnection",
-      items?:  Array< {
-        __typename: "Column",
+    columns:  Array< {
+      __typename: "Column",
+      id: string,
+      boardId: string,
+      name: string,
+      tickets?:  Array< {
+        __typename: "Ticket",
         id: string,
-        owner?: string | null,
-        boardId: string,
-        name: string,
-        tickets?:  Array< {
-          __typename: "Ticket",
-          id: string,
-          columnId: string,
-          title: string,
-          description?: string | null,
-          labels?:  Array< {
-            __typename: "Label",
-            name: string,
-            color: string,
-          } > | null,
+        columnId: string,
+        title: string,
+        description?: string | null,
+        labels?:  Array< {
+          __typename: "Label",
+          name: string,
+          color: string,
         } > | null,
-        columnIndex: number,
-        createdAt: string,
-        updatedAt: string,
-      } | null > | null,
-      nextToken?: string | null,
-    } | null,
+      } > | null,
+      columnIndex: number,
+    } >,
     owner?: string | null,
     editors?: Array< string > | null,
     visibility?: Visibility | null,
@@ -557,32 +476,25 @@ export type UpdateBoardMutation = {
     workspaceId: string,
     name: string,
     description?: string | null,
-    columns?:  {
-      __typename: "ModelColumnConnection",
-      items?:  Array< {
-        __typename: "Column",
+    columns:  Array< {
+      __typename: "Column",
+      id: string,
+      boardId: string,
+      name: string,
+      tickets?:  Array< {
+        __typename: "Ticket",
         id: string,
-        owner?: string | null,
-        boardId: string,
-        name: string,
-        tickets?:  Array< {
-          __typename: "Ticket",
-          id: string,
-          columnId: string,
-          title: string,
-          description?: string | null,
-          labels?:  Array< {
-            __typename: "Label",
-            name: string,
-            color: string,
-          } > | null,
+        columnId: string,
+        title: string,
+        description?: string | null,
+        labels?:  Array< {
+          __typename: "Label",
+          name: string,
+          color: string,
         } > | null,
-        columnIndex: number,
-        createdAt: string,
-        updatedAt: string,
-      } | null > | null,
-      nextToken?: string | null,
-    } | null,
+      } > | null,
+      columnIndex: number,
+    } >,
     owner?: string | null,
     editors?: Array< string > | null,
     visibility?: Visibility | null,
@@ -605,127 +517,30 @@ export type DeleteBoardMutation = {
     workspaceId: string,
     name: string,
     description?: string | null,
-    columns?:  {
-      __typename: "ModelColumnConnection",
-      items?:  Array< {
-        __typename: "Column",
+    columns:  Array< {
+      __typename: "Column",
+      id: string,
+      boardId: string,
+      name: string,
+      tickets?:  Array< {
+        __typename: "Ticket",
         id: string,
-        owner?: string | null,
-        boardId: string,
-        name: string,
-        tickets?:  Array< {
-          __typename: "Ticket",
-          id: string,
-          columnId: string,
-          title: string,
-          description?: string | null,
-          labels?:  Array< {
-            __typename: "Label",
-            name: string,
-            color: string,
-          } > | null,
+        columnId: string,
+        title: string,
+        description?: string | null,
+        labels?:  Array< {
+          __typename: "Label",
+          name: string,
+          color: string,
         } > | null,
-        columnIndex: number,
-        createdAt: string,
-        updatedAt: string,
-      } | null > | null,
-      nextToken?: string | null,
-    } | null,
+      } > | null,
+      columnIndex: number,
+    } >,
     owner?: string | null,
     editors?: Array< string > | null,
     visibility?: Visibility | null,
     isTemplate?: boolean | null,
     image: string,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type CreateColumnMutationVariables = {
-  input?: CreateColumnInput,
-  condition?: ModelColumnConditionInput | null,
-};
-
-export type CreateColumnMutation = {
-  createColumn?:  {
-    __typename: "Column",
-    id: string,
-    owner?: string | null,
-    boardId: string,
-    name: string,
-    tickets?:  Array< {
-      __typename: "Ticket",
-      id: string,
-      columnId: string,
-      title: string,
-      description?: string | null,
-      labels?:  Array< {
-        __typename: "Label",
-        name: string,
-        color: string,
-      } > | null,
-    } > | null,
-    columnIndex: number,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type UpdateColumnMutationVariables = {
-  input?: UpdateColumnInput,
-  condition?: ModelColumnConditionInput | null,
-};
-
-export type UpdateColumnMutation = {
-  updateColumn?:  {
-    __typename: "Column",
-    id: string,
-    owner?: string | null,
-    boardId: string,
-    name: string,
-    tickets?:  Array< {
-      __typename: "Ticket",
-      id: string,
-      columnId: string,
-      title: string,
-      description?: string | null,
-      labels?:  Array< {
-        __typename: "Label",
-        name: string,
-        color: string,
-      } > | null,
-    } > | null,
-    columnIndex: number,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type DeleteColumnMutationVariables = {
-  input?: DeleteColumnInput,
-  condition?: ModelColumnConditionInput | null,
-};
-
-export type DeleteColumnMutation = {
-  deleteColumn?:  {
-    __typename: "Column",
-    id: string,
-    owner?: string | null,
-    boardId: string,
-    name: string,
-    tickets?:  Array< {
-      __typename: "Ticket",
-      id: string,
-      columnId: string,
-      title: string,
-      description?: string | null,
-      labels?:  Array< {
-        __typename: "Label",
-        name: string,
-        color: string,
-      } > | null,
-    } > | null,
-    columnIndex: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -749,32 +564,25 @@ export type GetWorkspaceQuery = {
         workspaceId: string,
         name: string,
         description?: string | null,
-        columns?:  {
-          __typename: "ModelColumnConnection",
-          items?:  Array< {
-            __typename: "Column",
+        columns:  Array< {
+          __typename: "Column",
+          id: string,
+          boardId: string,
+          name: string,
+          tickets?:  Array< {
+            __typename: "Ticket",
             id: string,
-            owner?: string | null,
-            boardId: string,
-            name: string,
-            tickets?:  Array< {
-              __typename: "Ticket",
-              id: string,
-              columnId: string,
-              title: string,
-              description?: string | null,
-              labels?:  Array< {
-                __typename: "Label",
-                name: string,
-                color: string,
-              } > | null,
+            columnId: string,
+            title: string,
+            description?: string | null,
+            labels?:  Array< {
+              __typename: "Label",
+              name: string,
+              color: string,
             } > | null,
-            columnIndex: number,
-            createdAt: string,
-            updatedAt: string,
-          } | null > | null,
-          nextToken?: string | null,
-        } | null,
+          } > | null,
+          columnIndex: number,
+        } >,
         owner?: string | null,
         editors?: Array< string > | null,
         visibility?: Visibility | null,
@@ -814,32 +622,25 @@ export type ListWorkspacesQuery = {
           workspaceId: string,
           name: string,
           description?: string | null,
-          columns?:  {
-            __typename: "ModelColumnConnection",
-            items?:  Array< {
-              __typename: "Column",
+          columns:  Array< {
+            __typename: "Column",
+            id: string,
+            boardId: string,
+            name: string,
+            tickets?:  Array< {
+              __typename: "Ticket",
               id: string,
-              owner?: string | null,
-              boardId: string,
-              name: string,
-              tickets?:  Array< {
-                __typename: "Ticket",
-                id: string,
-                columnId: string,
-                title: string,
-                description?: string | null,
-                labels?:  Array< {
-                  __typename: "Label",
-                  name: string,
-                  color: string,
-                } > | null,
+              columnId: string,
+              title: string,
+              description?: string | null,
+              labels?:  Array< {
+                __typename: "Label",
+                name: string,
+                color: string,
               } > | null,
-              columnIndex: number,
-              createdAt: string,
-              updatedAt: string,
-            } | null > | null,
-            nextToken?: string | null,
-          } | null,
+            } > | null,
+            columnIndex: number,
+          } >,
           owner?: string | null,
           editors?: Array< string > | null,
           visibility?: Visibility | null,
@@ -870,32 +671,25 @@ export type GetBoardQuery = {
     workspaceId: string,
     name: string,
     description?: string | null,
-    columns?:  {
-      __typename: "ModelColumnConnection",
-      items?:  Array< {
-        __typename: "Column",
+    columns:  Array< {
+      __typename: "Column",
+      id: string,
+      boardId: string,
+      name: string,
+      tickets?:  Array< {
+        __typename: "Ticket",
         id: string,
-        owner?: string | null,
-        boardId: string,
-        name: string,
-        tickets?:  Array< {
-          __typename: "Ticket",
-          id: string,
-          columnId: string,
-          title: string,
-          description?: string | null,
-          labels?:  Array< {
-            __typename: "Label",
-            name: string,
-            color: string,
-          } > | null,
+        columnId: string,
+        title: string,
+        description?: string | null,
+        labels?:  Array< {
+          __typename: "Label",
+          name: string,
+          color: string,
         } > | null,
-        columnIndex: number,
-        createdAt: string,
-        updatedAt: string,
-      } | null > | null,
-      nextToken?: string | null,
-    } | null,
+      } > | null,
+      columnIndex: number,
+    } >,
     owner?: string | null,
     editors?: Array< string > | null,
     visibility?: Visibility | null,
@@ -921,101 +715,30 @@ export type ListBoardsQuery = {
       workspaceId: string,
       name: string,
       description?: string | null,
-      columns?:  {
-        __typename: "ModelColumnConnection",
-        items?:  Array< {
-          __typename: "Column",
+      columns:  Array< {
+        __typename: "Column",
+        id: string,
+        boardId: string,
+        name: string,
+        tickets?:  Array< {
+          __typename: "Ticket",
           id: string,
-          owner?: string | null,
-          boardId: string,
-          name: string,
-          tickets?:  Array< {
-            __typename: "Ticket",
-            id: string,
-            columnId: string,
-            title: string,
-            description?: string | null,
-            labels?:  Array< {
-              __typename: "Label",
-              name: string,
-              color: string,
-            } > | null,
+          columnId: string,
+          title: string,
+          description?: string | null,
+          labels?:  Array< {
+            __typename: "Label",
+            name: string,
+            color: string,
           } > | null,
-          columnIndex: number,
-          createdAt: string,
-          updatedAt: string,
-        } | null > | null,
-        nextToken?: string | null,
-      } | null,
+        } > | null,
+        columnIndex: number,
+      } >,
       owner?: string | null,
       editors?: Array< string > | null,
       visibility?: Visibility | null,
       isTemplate?: boolean | null,
       image: string,
-      createdAt: string,
-      updatedAt: string,
-    } | null > | null,
-    nextToken?: string | null,
-  } | null,
-};
-
-export type GetColumnQueryVariables = {
-  id?: string,
-};
-
-export type GetColumnQuery = {
-  getColumn?:  {
-    __typename: "Column",
-    id: string,
-    owner?: string | null,
-    boardId: string,
-    name: string,
-    tickets?:  Array< {
-      __typename: "Ticket",
-      id: string,
-      columnId: string,
-      title: string,
-      description?: string | null,
-      labels?:  Array< {
-        __typename: "Label",
-        name: string,
-        color: string,
-      } > | null,
-    } > | null,
-    columnIndex: number,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type ListColumnsQueryVariables = {
-  filter?: ModelColumnFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type ListColumnsQuery = {
-  listColumns?:  {
-    __typename: "ModelColumnConnection",
-    items?:  Array< {
-      __typename: "Column",
-      id: string,
-      owner?: string | null,
-      boardId: string,
-      name: string,
-      tickets?:  Array< {
-        __typename: "Ticket",
-        id: string,
-        columnId: string,
-        title: string,
-        description?: string | null,
-        labels?:  Array< {
-          __typename: "Label",
-          name: string,
-          color: string,
-        } > | null,
-      } > | null,
-      columnIndex: number,
       createdAt: string,
       updatedAt: string,
     } | null > | null,
@@ -1042,32 +765,25 @@ export type OnCreateWorkspaceSubscription = {
         workspaceId: string,
         name: string,
         description?: string | null,
-        columns?:  {
-          __typename: "ModelColumnConnection",
-          items?:  Array< {
-            __typename: "Column",
+        columns:  Array< {
+          __typename: "Column",
+          id: string,
+          boardId: string,
+          name: string,
+          tickets?:  Array< {
+            __typename: "Ticket",
             id: string,
-            owner?: string | null,
-            boardId: string,
-            name: string,
-            tickets?:  Array< {
-              __typename: "Ticket",
-              id: string,
-              columnId: string,
-              title: string,
-              description?: string | null,
-              labels?:  Array< {
-                __typename: "Label",
-                name: string,
-                color: string,
-              } > | null,
+            columnId: string,
+            title: string,
+            description?: string | null,
+            labels?:  Array< {
+              __typename: "Label",
+              name: string,
+              color: string,
             } > | null,
-            columnIndex: number,
-            createdAt: string,
-            updatedAt: string,
-          } | null > | null,
-          nextToken?: string | null,
-        } | null,
+          } > | null,
+          columnIndex: number,
+        } >,
         owner?: string | null,
         editors?: Array< string > | null,
         visibility?: Visibility | null,
@@ -1104,32 +820,25 @@ export type OnUpdateWorkspaceSubscription = {
         workspaceId: string,
         name: string,
         description?: string | null,
-        columns?:  {
-          __typename: "ModelColumnConnection",
-          items?:  Array< {
-            __typename: "Column",
+        columns:  Array< {
+          __typename: "Column",
+          id: string,
+          boardId: string,
+          name: string,
+          tickets?:  Array< {
+            __typename: "Ticket",
             id: string,
-            owner?: string | null,
-            boardId: string,
-            name: string,
-            tickets?:  Array< {
-              __typename: "Ticket",
-              id: string,
-              columnId: string,
-              title: string,
-              description?: string | null,
-              labels?:  Array< {
-                __typename: "Label",
-                name: string,
-                color: string,
-              } > | null,
+            columnId: string,
+            title: string,
+            description?: string | null,
+            labels?:  Array< {
+              __typename: "Label",
+              name: string,
+              color: string,
             } > | null,
-            columnIndex: number,
-            createdAt: string,
-            updatedAt: string,
-          } | null > | null,
-          nextToken?: string | null,
-        } | null,
+          } > | null,
+          columnIndex: number,
+        } >,
         owner?: string | null,
         editors?: Array< string > | null,
         visibility?: Visibility | null,
@@ -1166,32 +875,25 @@ export type OnDeleteWorkspaceSubscription = {
         workspaceId: string,
         name: string,
         description?: string | null,
-        columns?:  {
-          __typename: "ModelColumnConnection",
-          items?:  Array< {
-            __typename: "Column",
+        columns:  Array< {
+          __typename: "Column",
+          id: string,
+          boardId: string,
+          name: string,
+          tickets?:  Array< {
+            __typename: "Ticket",
             id: string,
-            owner?: string | null,
-            boardId: string,
-            name: string,
-            tickets?:  Array< {
-              __typename: "Ticket",
-              id: string,
-              columnId: string,
-              title: string,
-              description?: string | null,
-              labels?:  Array< {
-                __typename: "Label",
-                name: string,
-                color: string,
-              } > | null,
+            columnId: string,
+            title: string,
+            description?: string | null,
+            labels?:  Array< {
+              __typename: "Label",
+              name: string,
+              color: string,
             } > | null,
-            columnIndex: number,
-            createdAt: string,
-            updatedAt: string,
-          } | null > | null,
-          nextToken?: string | null,
-        } | null,
+          } > | null,
+          columnIndex: number,
+        } >,
         owner?: string | null,
         editors?: Array< string > | null,
         visibility?: Visibility | null,
@@ -1221,32 +923,25 @@ export type OnCreateBoardSubscription = {
     workspaceId: string,
     name: string,
     description?: string | null,
-    columns?:  {
-      __typename: "ModelColumnConnection",
-      items?:  Array< {
-        __typename: "Column",
+    columns:  Array< {
+      __typename: "Column",
+      id: string,
+      boardId: string,
+      name: string,
+      tickets?:  Array< {
+        __typename: "Ticket",
         id: string,
-        owner?: string | null,
-        boardId: string,
-        name: string,
-        tickets?:  Array< {
-          __typename: "Ticket",
-          id: string,
-          columnId: string,
-          title: string,
-          description?: string | null,
-          labels?:  Array< {
-            __typename: "Label",
-            name: string,
-            color: string,
-          } > | null,
+        columnId: string,
+        title: string,
+        description?: string | null,
+        labels?:  Array< {
+          __typename: "Label",
+          name: string,
+          color: string,
         } > | null,
-        columnIndex: number,
-        createdAt: string,
-        updatedAt: string,
-      } | null > | null,
-      nextToken?: string | null,
-    } | null,
+      } > | null,
+      columnIndex: number,
+    } >,
     owner?: string | null,
     editors?: Array< string > | null,
     visibility?: Visibility | null,
@@ -1269,32 +964,25 @@ export type OnUpdateBoardSubscription = {
     workspaceId: string,
     name: string,
     description?: string | null,
-    columns?:  {
-      __typename: "ModelColumnConnection",
-      items?:  Array< {
-        __typename: "Column",
+    columns:  Array< {
+      __typename: "Column",
+      id: string,
+      boardId: string,
+      name: string,
+      tickets?:  Array< {
+        __typename: "Ticket",
         id: string,
-        owner?: string | null,
-        boardId: string,
-        name: string,
-        tickets?:  Array< {
-          __typename: "Ticket",
-          id: string,
-          columnId: string,
-          title: string,
-          description?: string | null,
-          labels?:  Array< {
-            __typename: "Label",
-            name: string,
-            color: string,
-          } > | null,
+        columnId: string,
+        title: string,
+        description?: string | null,
+        labels?:  Array< {
+          __typename: "Label",
+          name: string,
+          color: string,
         } > | null,
-        columnIndex: number,
-        createdAt: string,
-        updatedAt: string,
-      } | null > | null,
-      nextToken?: string | null,
-    } | null,
+      } > | null,
+      columnIndex: number,
+    } >,
     owner?: string | null,
     editors?: Array< string > | null,
     visibility?: Visibility | null,
@@ -1317,124 +1005,30 @@ export type OnDeleteBoardSubscription = {
     workspaceId: string,
     name: string,
     description?: string | null,
-    columns?:  {
-      __typename: "ModelColumnConnection",
-      items?:  Array< {
-        __typename: "Column",
+    columns:  Array< {
+      __typename: "Column",
+      id: string,
+      boardId: string,
+      name: string,
+      tickets?:  Array< {
+        __typename: "Ticket",
         id: string,
-        owner?: string | null,
-        boardId: string,
-        name: string,
-        tickets?:  Array< {
-          __typename: "Ticket",
-          id: string,
-          columnId: string,
-          title: string,
-          description?: string | null,
-          labels?:  Array< {
-            __typename: "Label",
-            name: string,
-            color: string,
-          } > | null,
+        columnId: string,
+        title: string,
+        description?: string | null,
+        labels?:  Array< {
+          __typename: "Label",
+          name: string,
+          color: string,
         } > | null,
-        columnIndex: number,
-        createdAt: string,
-        updatedAt: string,
-      } | null > | null,
-      nextToken?: string | null,
-    } | null,
+      } > | null,
+      columnIndex: number,
+    } >,
     owner?: string | null,
     editors?: Array< string > | null,
     visibility?: Visibility | null,
     isTemplate?: boolean | null,
     image: string,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnCreateColumnSubscriptionVariables = {
-  owner?: string,
-};
-
-export type OnCreateColumnSubscription = {
-  onCreateColumn?:  {
-    __typename: "Column",
-    id: string,
-    owner?: string | null,
-    boardId: string,
-    name: string,
-    tickets?:  Array< {
-      __typename: "Ticket",
-      id: string,
-      columnId: string,
-      title: string,
-      description?: string | null,
-      labels?:  Array< {
-        __typename: "Label",
-        name: string,
-        color: string,
-      } > | null,
-    } > | null,
-    columnIndex: number,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnUpdateColumnSubscriptionVariables = {
-  owner?: string,
-};
-
-export type OnUpdateColumnSubscription = {
-  onUpdateColumn?:  {
-    __typename: "Column",
-    id: string,
-    owner?: string | null,
-    boardId: string,
-    name: string,
-    tickets?:  Array< {
-      __typename: "Ticket",
-      id: string,
-      columnId: string,
-      title: string,
-      description?: string | null,
-      labels?:  Array< {
-        __typename: "Label",
-        name: string,
-        color: string,
-      } > | null,
-    } > | null,
-    columnIndex: number,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnDeleteColumnSubscriptionVariables = {
-  owner?: string,
-};
-
-export type OnDeleteColumnSubscription = {
-  onDeleteColumn?:  {
-    __typename: "Column",
-    id: string,
-    owner?: string | null,
-    boardId: string,
-    name: string,
-    tickets?:  Array< {
-      __typename: "Ticket",
-      id: string,
-      columnId: string,
-      title: string,
-      description?: string | null,
-      labels?:  Array< {
-        __typename: "Label",
-        name: string,
-        color: string,
-      } > | null,
-    } > | null,
-    columnIndex: number,
     createdAt: string,
     updatedAt: string,
   } | null,

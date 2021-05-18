@@ -1,11 +1,18 @@
 import React, { ReactElement } from 'react';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { ButtonBase, Grid, Typography } from '@material-ui/core';
-import { Column } from '../../API';
+import {
+  Board,
+  Column,
+  ColumnInput,
+  UpdateBoardInput,
+  UpdateBoardMutation,
+} from '../../API';
 import AddIcon from '@material-ui/icons/Add';
 import { GRAPHQL_AUTH_MODE } from '@aws-amplify/api';
 import { API } from 'aws-amplify';
 import { v4 as uuidv4 } from 'uuid';
+import { updateBoard } from '../../graphql/mutations';
 
 const useStyles = makeStyles((theme: Theme) => ({
   addIconSmall: {
@@ -36,34 +43,43 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 interface Props {
-  setColumns: React.Dispatch<React.SetStateAction<Column[]>>;
-  allColumns: Column[];
-  boardId: string;
+  setBoard: React.Dispatch<React.SetStateAction<Board | null>>;
+  board: Board;
 }
 
-export default function AddColumn({
-  setColumns,
-  allColumns,
-  boardId,
-}: Props): ReactElement {
+export default function AddColumn({ setBoard, board }: Props): ReactElement {
   const classes = useStyles();
 
   const addList = async () => {
-    const input: CreateColumnInput = {
+    const newColumn: ColumnInput = {
       id: uuidv4(),
-      boardId: boardId,
+      // @ts-ignore id won't be null...
+      boardId: board.id,
       name: ' ',
       tickets: [],
-      columnIndex: allColumns.length,
+      columnIndex: board.columns ? board.columns.length : 0,
     };
 
-    setColumns([...allColumns, input as Column]);
+    const newBoard = {
+      ...board,
+      columns: board.columns
+        ? ([...board.columns, newColumn as Column] as Column[])
+        : ([newColumn as Column] as Column[]),
+    };
+
+    setBoard(newBoard);
+
+    const input: UpdateBoardInput = {
+      // @ts-ignore never will be null
+      id: board.id,
+      columns: newBoard.columns as ColumnInput[],
+    };
 
     (await API.graphql({
-      query: createColumn,
+      query: updateBoard,
       variables: { input: input },
       authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
-    })) as { data: CreateColumnMutation; errors: any[] };
+    })) as { data: UpdateBoardMutation; errors: any[] };
   };
 
   return (

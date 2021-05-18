@@ -8,7 +8,6 @@ import {
   GetBoardQuery,
   GetBoardQueryVariables,
   Ticket,
-  TicketInput,
   UpdateBoardInput,
   UpdateBoardMutation,
 } from '../../API';
@@ -52,26 +51,32 @@ export default function IndividualBoardPage(): ReactElement {
   // https://github.com/atlassian/react-beautiful-dnd/issues/1756
   resetServerContext();
 
-  const [board, setBoard] = useState<Board>();
+  const [board, setBoard] = useState<Board | null>(null);
 
   useEffect(() => {
-    fetchBoardData();
-  }, []);
+    if (id && !board) {
+      fetchBoardData();
+    }
+  }, [id]);
 
   // Fetch data for the board client-side
-  const fetchBoardData = async (): Promise<Board> => {
+  const fetchBoardData = async (): Promise<Board | void> => {
     const input: GetBoardQueryVariables = {
       id: id as string,
     };
 
-    const response = (await API.graphql({
-      query: getBoard,
-      variables: input,
-      authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
-    })) as { data: GetBoardQuery; errors: any[] };
+    try {
+      const response = (await API.graphql({
+        query: getBoard,
+        variables: input,
+        authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
+      })) as { data: GetBoardQuery; errors: any[] };
 
-    setBoard(response.data.getBoard as Board);
-    return response.data.getBoard as Board;
+      setBoard(response.data.getBoard as Board);
+      return response.data.getBoard as Board;
+    } catch (error) {
+      console.error(error);
+    }
   };
   if (board) {
     const onDragEnd = async (result: DropResult): Promise<void> => {
@@ -110,9 +115,15 @@ export default function IndividualBoardPage(): ReactElement {
 
           setBoard(newBoard);
 
+          const input: UpdateBoardInput = {
+            // @ts-ignore id wont be null wtf
+            id: board.id,
+            columns: newBoard.columns as ColumnInput[],
+          };
+
           (await API.graphql({
             query: updateBoard,
-            variables: { input: newBoard },
+            variables: { input: input },
             authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
           })) as UpdateBoardMutation;
         }
@@ -165,9 +176,15 @@ export default function IndividualBoardPage(): ReactElement {
 
         setBoard(newBoard);
 
+        const input: UpdateBoardInput = {
+          // @ts-ignore id wont be null wtf
+          id: board.id,
+          columns: newBoard.columns as ColumnInput[],
+        };
+
         (await API.graphql({
           query: updateBoard,
-          variables: { input: newBoard },
+          variables: { input: input },
           authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
         })) as UpdateBoardMutation;
       }
@@ -202,17 +219,12 @@ export default function IndividualBoardPage(): ReactElement {
               {board.columns?.map((column) => (
                 <ColumnComponent
                   column={column}
+                  board={board}
                   setBoard={setBoard}
-                  allColumns={board.columns}
                   key={column?.id}
                 />
               ))}
-              <AddColumn
-                allColumns={board.columns}
-                setBoard={setBoard}
-                // @ts-ignore
-                boardId={board.id}
-              />
+              <AddColumn board={board} setBoard={setBoard} />
             </Grid>
           </DragDropContext>
         </div>

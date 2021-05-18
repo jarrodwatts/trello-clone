@@ -2,19 +2,21 @@ import React, { ReactElement } from 'react';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { ButtonBase, Grid, Typography } from '@material-ui/core';
 import {
+  Board,
   Column,
+  ColumnInput,
   Ticket,
   TicketInput,
-  UpdateColumnMutation,
-  UpdateColumnMutationVariables,
+  UpdateBoardInput,
+  UpdateBoardMutation,
 } from '../../API';
 import TicketComponent from './Ticket';
 import { Droppable } from 'react-beautiful-dnd';
 import { API } from 'aws-amplify';
 import { GRAPHQL_AUTH_MODE } from '@aws-amplify/api';
 import { v4 as uuidv4 } from 'uuid';
-import { updateColumn } from '../../graphql/mutations';
 import AddIcon from '@material-ui/icons/Add';
+import { updateBoard } from '../../graphql/mutations';
 
 const useStyles = makeStyles((theme: Theme) => ({
   column: {
@@ -53,14 +55,14 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 interface Props {
   column: Column;
-  setColumns: React.Dispatch<React.SetStateAction<Column[]>>;
-  allColumns: Column[];
+  board: Board;
+  setBoard: React.Dispatch<React.SetStateAction<Board | null>>;
 }
 
 export default function ColumnComponent({
   column,
-  setColumns,
-  allColumns,
+  board,
+  setBoard,
 }: Props): ReactElement {
   const classes = useStyles();
 
@@ -73,35 +75,39 @@ export default function ColumnComponent({
     };
 
     let updatedTickets: Ticket[];
+
     if (column.tickets) {
       updatedTickets = [...column.tickets, newTicket as Ticket];
     } else {
       updatedTickets = [newTicket as Ticket];
     }
 
-    const updatedColumns = allColumns.map((c) => {
+    const updatedColumns = board.columns?.map((c) => {
       if (c.id === column.id) {
         return { ...c, tickets: updatedTickets };
       }
       return c;
     });
 
-    setColumns(updatedColumns);
-
-    // update by pushing the whole of the column to the update mutation
-    const input: UpdateColumnMutationVariables = {
-      input: {
-        // @ts-ignore shouldn't be undefined ever
-        id: column.id,
-        tickets: updatedTickets as TicketInput[],
-      },
+    const newBoard = {
+      ...board,
+      columns: updatedColumns,
     };
+
+    setBoard(newBoard);
+
+    const input: UpdateBoardInput = {
+      // @ts-ignore WHYYYYYYYY
+      id: board.id,
+      columns: newBoard.columns as ColumnInput[],
+    };
+
     try {
       (await API.graphql({
-        query: updateColumn,
-        variables: input,
+        query: updateBoard,
+        variables: { input: input },
         authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
-      })) as UpdateColumnMutation;
+      })) as UpdateBoardMutation;
     } catch (error) {
       console.error(error);
     }
@@ -121,7 +127,14 @@ export default function ColumnComponent({
             // style={getListStyle(snapshot.isDraggingOver)}
           >
             {column?.tickets?.map((ticket, key) => (
-              <TicketComponent key={ticket?.id} ticket={ticket} keyProp={key} />
+              <TicketComponent
+                key={ticket?.id}
+                ticket={ticket}
+                keyProp={key}
+                board={board}
+                setBoard={setBoard}
+                column={column}
+              />
             ))}
             {provided.placeholder}
           </div>

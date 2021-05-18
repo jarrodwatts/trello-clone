@@ -1,9 +1,8 @@
 import React, { ReactElement } from 'react';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { ButtonBase, Grid, Typography } from '@material-ui/core';
-import { Column, CreateColumnInput, CreateColumnMutation } from '../../API';
+import { Column } from '../../API';
 import AddIcon from '@material-ui/icons/Add';
-import { createColumn } from '../../graphql/mutations';
 import { GRAPHQL_AUTH_MODE } from '@aws-amplify/api';
 import { API } from 'aws-amplify';
 import { v4 as uuidv4 } from 'uuid';

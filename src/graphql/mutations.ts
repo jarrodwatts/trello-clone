@@ -18,26 +18,20 @@ export const createWorkspace = /* GraphQL */ `
           name
           description
           columns {
-            items {
+            id
+            boardId
+            name
+            tickets {
               id
-              owner
-              boardId
-              name
-              tickets {
-                id
-                columnId
-                title
-                description
-                labels {
-                  name
-                  color
-                }
+              columnId
+              title
+              description
+              labels {
+                name
+                color
               }
-              columnIndex
-              createdAt
-              updatedAt
             }
-            nextToken
+            columnIndex
           }
           owner
           editors
@@ -72,26 +66,20 @@ export const updateWorkspace = /* GraphQL */ `
           name
           description
           columns {
-            items {
+            id
+            boardId
+            name
+            tickets {
               id
-              owner
-              boardId
-              name
-              tickets {
-                id
-                columnId
-                title
-                description
-                labels {
-                  name
-                  color
-                }
+              columnId
+              title
+              description
+              labels {
+                name
+                color
               }
-              columnIndex
-              createdAt
-              updatedAt
             }
-            nextToken
+            columnIndex
           }
           owner
           editors
@@ -126,26 +114,20 @@ export const deleteWorkspace = /* GraphQL */ `
           name
           description
           columns {
-            items {
+            id
+            boardId
+            name
+            tickets {
               id
-              owner
-              boardId
-              name
-              tickets {
-                id
-                columnId
-                title
-                description
-                labels {
-                  name
-                  color
-                }
+              columnId
+              title
+              description
+              labels {
+                name
+                color
               }
-              columnIndex
-              createdAt
-              updatedAt
             }
-            nextToken
+            columnIndex
           }
           owner
           editors
@@ -175,26 +157,20 @@ export const createBoard = /* GraphQL */ `
       name
       description
       columns {
-        items {
+        id
+        boardId
+        name
+        tickets {
           id
-          owner
-          boardId
-          name
-          tickets {
-            id
-            columnId
-            title
-            description
-            labels {
-              name
-              color
-            }
+          columnId
+          title
+          description
+          labels {
+            name
+            color
           }
-          columnIndex
-          createdAt
-          updatedAt
         }
-        nextToken
+        columnIndex
       }
       owner
       editors
@@ -217,26 +193,20 @@ export const updateBoard = /* GraphQL */ `
       name
       description
       columns {
-        items {
+        id
+        boardId
+        name
+        tickets {
           id
-          owner
-          boardId
-          name
-          tickets {
-            id
-            columnId
-            title
-            description
-            labels {
-              name
-              color
-            }
+          columnId
+          title
+          description
+          labels {
+            name
+            color
           }
-          columnIndex
-          createdAt
-          updatedAt
         }
-        nextToken
+        columnIndex
       }
       owner
       editors
@@ -259,110 +229,26 @@ export const deleteBoard = /* GraphQL */ `
       name
       description
       columns {
-        items {
+        id
+        boardId
+        name
+        tickets {
           id
-          owner
-          boardId
-          name
-          tickets {
-            id
-            columnId
-            title
-            description
-            labels {
-              name
-              color
-            }
+          columnId
+          title
+          description
+          labels {
+            name
+            color
           }
-          columnIndex
-          createdAt
-          updatedAt
         }
-        nextToken
+        columnIndex
       }
       owner
       editors
       visibility
       isTemplate
       image
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const createColumn = /* GraphQL */ `
-  mutation CreateColumn(
-    $input: CreateColumnInput!
-    $condition: ModelColumnConditionInput
-  ) {
-    createColumn(input: $input, condition: $condition) {
-      id
-      owner
-      boardId
-      name
-      tickets {
-        id
-        columnId
-        title
-        description
-        labels {
-          name
-          color
-        }
-      }
-      columnIndex
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updateColumn = /* GraphQL */ `
-  mutation UpdateColumn(
-    $input: UpdateColumnInput!
-    $condition: ModelColumnConditionInput
-  ) {
-    updateColumn(input: $input, condition: $condition) {
-      id
-      owner
-      boardId
-      name
-      tickets {
-        id
-        columnId
-        title
-        description
-        labels {
-          name
-          color
-        }
-      }
-      columnIndex
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteColumn = /* GraphQL */ `
-  mutation DeleteColumn(
-    $input: DeleteColumnInput!
-    $condition: ModelColumnConditionInput
-  ) {
-    deleteColumn(input: $input, condition: $condition) {
-      id
-      owner
-      boardId
-      name
-      tickets {
-        id
-        columnId
-        title
-        description
-        labels {
-          name
-          color
-        }
-      }
-      columnIndex
       createdAt
       updatedAt
     }

@@ -59,6 +59,7 @@ interface Props {}
 // We could use getServerSideProps to make the GQL call to list all workspaces here.
 // I don't want to stop the entire page loading while we do that though, so we are loading what we can,
 // while fetching the data from the API on the client side.
+// Update - we can't actually do serverside authenticated requests due to a bug (see _app.js)
 export default function Boards({}: Props): ReactElement {
   const classes = useStyles();
   const [userWorkspaces, setUserWorkspaces] = useState<Workspace[]>([]);

@@ -1,10 +1,11 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import { Button, Grid, Paper, Typography } from '@material-ui/core';
-import { Ticket } from '../../API';
+import { Button, ButtonBase, Grid, Paper, Typography } from '@material-ui/core';
+import { Board, Column, Ticket } from '../../API';
 import { Draggable } from 'react-beautiful-dnd';
 import CreateIcon from '@material-ui/icons/Create';
 import ViewHeadlineIcon from '@material-ui/icons/ViewHeadline';
+import EditTicketPopup from './EditTicketPopup';
 
 const useStyles = makeStyles((theme: Theme) => ({
   ticket: {
@@ -30,58 +31,88 @@ const useStyles = makeStyles((theme: Theme) => ({
 interface Props {
   ticket: Ticket;
   keyProp: number;
+  board: Board;
+  setBoard: React.Dispatch<React.SetStateAction<Board | null>>;
+  column: Column;
 }
 
 export default function TicketComponent({
   ticket,
   keyProp,
+  board,
+  setBoard,
+  column,
 }: Props): ReactElement {
   const classes = useStyles();
 
+  const [openEdit, setOpenEdit] = useState(false);
+
+  const handleClose = () => {
+    setOpenEdit(false);
+  };
+
+  const handleClickOpen = () => {
+    setOpenEdit(true);
+  };
+
   return (
-    <Draggable
-      key={ticket?.id}
-      // @ts-ignore : Again, ticket id cannot be null idk why it is saying this.
-      draggableId={ticket?.id}
-      index={keyProp}
-      onClick={() => console.log('clicked ', ticket.id)}
-    >
-      {(provided, snapshot) => (
-        <div
-          ref={provided.innerRef}
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          //  style={getItemStyle(
-          //      provided.draggableStyle,
-          //      snapshot.isDragging
-          //  )}
-          {...provided.dragHandleProps}
-        >
-          <Paper className={classes.ticket} elevation={1}>
-            <Grid container direction='column'>
-              <Grid container direction='row' alignItems='center'>
-                <Grid item>
-                  <Typography className={classes.ticketName} variant='body1'>
-                    {ticket.title}
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  <Button onClick={() => console.log('edit:', ticket.id)}>
-                    <CreateIcon />
-                  </Button>
+    <React.Fragment>
+      <EditTicketPopup
+        ticket={ticket}
+        open={openEdit}
+        board={board}
+        setBoard={setBoard}
+        handleClose={handleClose}
+      />
+      <Draggable
+        key={ticket?.id}
+        // @ts-ignore : Again, ticket id cannot be null idk why it is saying this.
+        draggableId={ticket?.id}
+        index={keyProp}
+        onClick={() => console.log('clicked ', ticket.id)}
+      >
+        {(provided, snapshot) => (
+          <div
+            ref={provided.innerRef}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            //  style={getItemStyle(
+            //      provided.draggableStyle,
+            //      snapshot.isDragging
+            //  )}
+            {...provided.dragHandleProps}
+          >
+            <Paper className={classes.ticket} elevation={1}>
+              <Grid container direction='column'>
+                <Grid container direction='row' alignItems='center'>
+                  <Grid item>
+                    <Typography className={classes.ticketName} variant='body1'>
+                      {ticket.title}
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <ButtonBase
+                      onClick={handleClickOpen}
+                      style={{ padding: '4px' }}
+                    >
+                      <CreateIcon
+                        style={{ maxHeight: '16px', maxWidth: '16px' }}
+                      />
+                    </ButtonBase>
+                  </Grid>
                 </Grid>
               </Grid>
-            </Grid>
-            {ticket.description && (
-              <Button
-                onClick={() => console.log('open:', ticket.id, 'description')}
-              >
-                <ViewHeadlineIcon />
-              </Button>
-            )}
-          </Paper>
-        </div>
-      )}
-    </Draggable>
+              {ticket.description && (
+                <Button
+                  onClick={() => console.log('open:', ticket.id, 'description')}
+                >
+                  <ViewHeadlineIcon />
+                </Button>
+              )}
+            </Paper>
+          </div>
+        )}
+      </Draggable>
+    </React.Fragment>
   );
 }

@@ -1,6 +1,6 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import { ButtonBase, Grid, Typography } from '@material-ui/core';
+import { ButtonBase, Grid, TextField, Typography } from '@material-ui/core';
 import {
   Board,
   Column,
@@ -65,6 +65,10 @@ export default function ColumnComponent({
   setBoard,
 }: Props): ReactElement {
   const classes = useStyles();
+  const [columnName, setColumnName] = useState<string>(
+    column.name ? column.name : ''
+  );
+  const [editNameToggle, toggleEditName] = useState<boolean>(false);
 
   const addTicketToColumn = async () => {
     const newTicket: TicketInput = {
@@ -113,10 +117,66 @@ export default function ColumnComponent({
     }
   };
 
+  const handleColumnNameExit = async () => {
+    toggleEditName(!editNameToggle);
+
+    // update column name in the thang
+    const newBoard: Board = {
+      ...board,
+      columns: board?.columns?.map((c) => {
+        return c.id === column.id
+          ? {
+              ...c,
+              name: columnName,
+            }
+          : { ...c };
+      }),
+    };
+
+    setBoard(newBoard);
+
+    const input: UpdateBoardInput = {
+      // @ts-ignore :-)
+      id: board.id,
+      columns: newBoard.columns as ColumnInput[],
+    };
+
+    try {
+      (await API.graphql({
+        query: updateBoard,
+        variables: { input: input },
+        authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
+      })) as UpdateBoardMutation;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <Grid container direction='column' className={classes.column}>
       <div style={{ maxHeight: '40px', minHeight: '40px' }}>
-        <Typography className={classes.name}>{column?.name}</Typography>
+        {!editNameToggle && (
+          <ButtonBase onClick={() => toggleEditName(!editNameToggle)}>
+            <Typography className={classes.name}>
+              {column?.name && column.name != ' '
+                ? columnName
+                : 'Enter a column name'}
+            </Typography>
+          </ButtonBase>
+        )}
+        {editNameToggle && (
+          <TextField
+            style={{ maxHeight: '7px' }}
+            id={`${column.id}`}
+            margin='dense'
+            fullWidth
+            autoFocus
+            value={columnName}
+            name='columnTitle'
+            onChange={(e) => setColumnName(e.target.value)}
+            onBlur={handleColumnNameExit}
+          />
+        )}
       </div>
       {/* @ts-ignore: Why does Amplify think column.id can be null...? It can't. In the schema it MUST be there.*/}
       <Droppable droppableId={column.id}>

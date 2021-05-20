@@ -84,7 +84,12 @@ export default function TicketComponent({
           >
             <Paper className={classes.ticket} elevation={1}>
               <Grid container direction='column'>
-                <Grid container direction='row' alignItems='center'>
+                <Grid
+                  container
+                  direction='row'
+                  alignItems='center'
+                  justify='space-between'
+                >
                   <Grid item>
                     <Typography className={classes.ticketName} variant='body1'>
                       {ticket.title}

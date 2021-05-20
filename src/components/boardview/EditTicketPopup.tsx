@@ -2,9 +2,18 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
 import { DialogContent, Grid, TextField, Typography } from '@material-ui/core';
-import { Board, Ticket } from '../../API';
+import {
+  Board,
+  ColumnInput,
+  Ticket,
+  UpdateBoardInput,
+  UpdateBoardMutation,
+} from '../../API';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import ViewHeadlineIcon from '@material-ui/icons/ViewHeadline';
+import { updateBoard } from '../../graphql/mutations';
+import { GRAPHQL_AUTH_MODE } from '@aws-amplify/api';
+import { API } from 'aws-amplify';
 
 const useStyles = makeStyles((theme) => ({
   ticketTitle: {
@@ -26,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     color: '#172b4d',
   },
   field: {
-    background: 'rgba(9,30,66,.01)',
+    // background: 'rgba(9,30,66,.01)',
     color: '#172b4d',
     minHeight: '40px',
     borderRadius: 3,
@@ -53,18 +62,66 @@ export default function EditTicketPopup({
   handleClose,
 }: Props) {
   const classes = useStyles();
-  const [, setTitle] = useState<string>('');
-  const [description, setDescription] = useState<string>('');
+  const [title, setTitle] = useState<string>(ticket.title ? ticket.title : ' ');
+  const [description, setDescription] = useState<string>(
+    ticket.description ? ticket.description : ''
+  );
+
+  console.log('x', board);
+
+  const handleCloseWithSave = async () => {
+    handleClose();
+    console.log('Closed:', title);
+    await updateTicket();
+  };
+
+  const updateTicket = async () => {
+    const newBoard = {
+      ...board,
+      columns: board?.columns?.map((c) => {
+        return c.id === ticket.columnId
+          ? {
+              ...c,
+              tickets: c.tickets?.map((t) => {
+                return t.id === ticket.id
+                  ? { ...t, title: title, description: description }
+                  : { ...t };
+              }),
+            }
+          : { ...c };
+      }),
+    };
+
+    setBoard(newBoard as Board);
+
+    console.log(newBoard);
+    console.log(board.id);
+
+    const input: UpdateBoardInput = {
+      // @ts-ignore :-)
+      id: board.id,
+      columns: newBoard.columns as ColumnInput[],
+    };
+
+    try {
+      (await API.graphql({
+        query: updateBoard,
+        variables: { input: input },
+        authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
+      })) as UpdateBoardMutation;
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <Dialog
       open={open}
       maxWidth={'sm'}
       fullWidth={true}
-      onClose={handleClose}
+      onClose={handleCloseWithSave}
       aria-labelledby='form-dialog-title'
       disableBackdropClick={false}
-      onBackdropClick={handleClose}
       onEscapeKeyDown={handleClose}
     >
       <DialogContent style={{ overflow: 'hidden' }}>
@@ -77,8 +134,8 @@ export default function EditTicketPopup({
               variant='outlined'
               margin='dense'
               fullWidth
-              id='description'
-              name='description'
+              id='title'
+              name='title'
               defaultValue={ticket.title}
               onChange={(e) => setTitle(e.target.value)}
             />
@@ -115,6 +172,7 @@ export default function EditTicketPopup({
               label='Add a more detailed description...'
               value={description}
               name='description'
+              inputProps={{ autoComplete: 'off' }}
               onChange={(e) => setDescription(e.target.value)}
             />
           </Grid>

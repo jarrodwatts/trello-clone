@@ -6,6 +6,7 @@ import { Divider, Theme, Typography } from '@material-ui/core';
 import { useForm, Controller } from 'react-hook-form';
 import { Auth } from 'aws-amplify';
 import { useRouter } from 'next/router';
+import AuthFailure from './AuthFailure';
 const useStyles = makeStyles((theme: Theme) => ({
   paper: {
     display: 'flex',
@@ -32,12 +33,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-// This page really sucks to me :(
-// for some reason you have to verify users before they can do anything with AWS Amplify...?
-// But when they confirm their email you THEN need to also sign them up...
-// Which requires their email and password... which aren't on this page because of the way i designed it.
-// I am sure there is a better way to do this...
-
 interface VerifyInput {
   email: string;
   code: string;
@@ -45,28 +40,44 @@ interface VerifyInput {
 
 export default function VerifyForm({
   passedThroughEmail,
+  passedThroughPassword,
 }: {
-  passedThroughEmail: string;
+  passedThroughEmail?: string;
+  passedThroughPassword?: string;
 }): ReactElement {
   const classes = useStyles();
   const router = useRouter();
   const [resent, setResent] = useState<boolean>(false);
-  const [email, setEmail] = useState<string>(passedThroughEmail);
+  const [email, setEmail] = useState<string | undefined>(passedThroughEmail);
   const { control, register, handleSubmit } = useForm<VerifyInput>();
+  const [showSnackbarFailure, setShowSnackbar] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   const onSubmit = async (data: VerifyInput) => {
     try {
       await tryVerify(data);
+
+      if (passedThroughPassword) {
+        try {
+          await Auth.signIn(data.email, passedThroughPassword);
+        } catch (error) {
+          setErrorMessage(error.message);
+          setShowSnackbar(true);
+        }
+      }
       // if sign up success...
       router.push(`/login`);
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      setErrorMessage(error.message);
+      setShowSnackbar(true);
     }
   };
 
   const tryVerify = async (data: VerifyInput): Promise<void> => {
     try {
-      await Auth.confirmSignUp(email, data.code);
+      if (email) {
+        await Auth.confirmSignUp(email, data.code);
+      }
     } catch (error) {
       console.error('error verifying:', error);
     }
@@ -151,6 +162,12 @@ export default function VerifyForm({
           <Typography>Email Resent!</Typography>
         )}
       </form>
+      {/* Show Snack Bar when auth error */}
+      <AuthFailure
+        errorMessage={errorMessage}
+        open={showSnackbarFailure}
+        toggleOpen={setShowSnackbar}
+      />
     </div>
   );
 }

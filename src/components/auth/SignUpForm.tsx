@@ -9,6 +9,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { Auth } from 'aws-amplify';
 import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth/lib/types';
 import VerifyForm from './VerifyForm';
+import AuthFailure from './AuthFailure';
 
 const useStyles = makeStyles((theme: Theme) => ({
   paper: {
@@ -46,12 +47,21 @@ export default function SignUpForm(): ReactElement {
   const classes = useStyles();
   const [phase, setPhase] = useState<string>('1');
   const [userEmail, setUserEmail] = useState<string>('');
+  const [userPassword, setUserPassword] = useState<string>('');
   const { control, register, handleSubmit } = useForm<SignUpInput>();
+  const [showSnackbarFailure, setShowSnackbar] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   const onSubmit = async (data: SignUpInput) => {
-    await trySignUp(data);
-    setUserEmail(data.email);
-    setPhase('2'); // move to verify screen
+    const attempt = await trySignUp(data);
+    if (attempt) {
+      setUserEmail(data.email);
+      setUserPassword(data.password);
+      setPhase('2'); // move to verify screen
+    } else {
+      console.log('Show snackbar');
+      setShowSnackbar(true);
+    }
   };
 
   const trySignUp = async (data: SignUpInput) => {
@@ -63,6 +73,7 @@ export default function SignUpForm(): ReactElement {
       return user;
     } catch (error) {
       console.error('error signing up:', error);
+      setErrorMessage(error.message);
       return null;
     }
   };
@@ -194,11 +205,22 @@ export default function SignUpForm(): ReactElement {
             </Link>
           </Grid>
         </form>
+        {/* Show Snack Bar when auth error */}
+        <AuthFailure
+          errorMessage={errorMessage}
+          open={showSnackbarFailure}
+          toggleOpen={setShowSnackbar}
+        />
       </div>
     );
   }
   if (phase === '2') {
-    return <VerifyForm passedThroughEmail={userEmail} />;
+    return (
+      <VerifyForm
+        passedThroughEmail={userEmail}
+        passedThroughPassword={userPassword}
+      />
+    );
   } else {
     return <div>Something went wrong :(</div>;
   }

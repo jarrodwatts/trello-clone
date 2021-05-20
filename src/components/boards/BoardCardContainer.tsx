@@ -19,7 +19,8 @@ export default function BoardCardContainer({ workspace }: Props): ReactElement {
           item
           // @ts-ignore
           key={board.id}
-          xs={6}
+          xs={12}
+          sm={6}
           md={3}
           className={classes.boardImageRounding}
         >
@@ -27,7 +28,7 @@ export default function BoardCardContainer({ workspace }: Props): ReactElement {
         </Grid>
       ))}
 
-      <Grid item xs={6} md={3} className={classes.boardImageRounding}>
+      <Grid item xs={12} sm={6} md={3} className={classes.boardImageRounding}>
         <AddBoardCard workspace={workspace} />
       </Grid>
     </Grid>

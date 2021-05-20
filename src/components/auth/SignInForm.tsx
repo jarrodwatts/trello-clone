@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
@@ -9,6 +9,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { Auth } from 'aws-amplify';
 import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth/lib/types';
 import { useRouter } from 'next/router';
+import AuthFailure from './AuthFailure';
 
 const useStyles = makeStyles((theme: Theme) => ({
   paper: {
@@ -45,12 +46,16 @@ export default function SignInForm(): ReactElement {
   const classes = useStyles();
   const router = useRouter();
   const { control, register, handleSubmit } = useForm<SignInInput>();
+  const [showSnackbarFailure, setShowSnackbar] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   const onSubmit = async (data: SignInInput) => {
     const attempt = await trySignIn(data);
     if (attempt) {
-      // TODO: Show error message on failure
       router.push(`/boards`);
+    } else {
+      console.log('Show snack');
+      setShowSnackbar(true);
     }
   };
 
@@ -60,7 +65,7 @@ export default function SignInForm(): ReactElement {
       return user;
     } catch (error) {
       console.error('error signing up:', error);
-      return null;
+      setErrorMessage(error.message);
     }
   };
 
@@ -171,6 +176,12 @@ export default function SignInForm(): ReactElement {
           </Link>
         </Grid>
       </form>
+      {/* Show Snack Bar when auth error */}
+      <AuthFailure
+        errorMessage={errorMessage}
+        open={showSnackbarFailure}
+        toggleOpen={setShowSnackbar}
+      />
     </div>
   );
 }

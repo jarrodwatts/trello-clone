@@ -1,4 +1,5 @@
 import {
+  Avatar,
   ButtonBase,
   Container,
   Grid,
@@ -17,6 +18,7 @@ import { GRAPHQL_AUTH_MODE } from '@aws-amplify/api';
 import AddIcon from '@material-ui/icons/Add';
 import CreateWorkspacePopup from '../components/boards/CreateWorkspacePopup';
 import CreateWorkspaceForm from '../components/boards/CreateWorkspaceForm';
+import randomGradient from '../lib/randomGradient';
 
 const useStyles = makeStyles((theme: Theme) => ({
   topPad: {
@@ -51,6 +53,15 @@ const useStyles = makeStyles((theme: Theme) => ({
     maxHeight: '24px',
     maxWidth: '24px',
     color: '#5e6c84',
+  },
+  smallAvatar: {
+    width: theme.spacing(4),
+    height: theme.spacing(4),
+  },
+  workspaceNameSideBar: {
+    fontWeight: 'bold',
+    color: '#172b4d',
+    fontSize: 14,
   },
 }));
 
@@ -140,6 +151,50 @@ export default function Boards({}: Props): ReactElement {
                     setWorkspaces={setUserWorkspaces}
                     handleClose={handleClose}
                   />
+                </Grid>
+              </Grid>
+
+              <Grid item>
+                <Grid
+                  container
+                  direction='column'
+                  alignItems='flex-start'
+                  justify='center'
+                  spacing={1}
+                >
+                  {userWorkspaces.map((ws) => (
+                    <Grid
+                      item
+                      key={ws.id}
+                      xs={12}
+                      style={{ width: '100%', padding: '8px' }}
+                    >
+                      <ButtonBase style={{ width: '100%' }}>
+                        <Grid
+                          container
+                          direction='row'
+                          alignItems='center'
+                          spacing={1}
+                        >
+                          <Grid item>
+                            <Avatar
+                              className={classes.smallAvatar}
+                              style={{ background: randomGradient() }}
+                            >
+                              <b>{ws?.name?.charAt(0)?.toUpperCase()}</b>
+                            </Avatar>
+                          </Grid>
+                          <Grid item>
+                            <Typography
+                              className={classes.workspaceNameSideBar}
+                            >
+                              {ws.name}
+                            </Typography>
+                          </Grid>
+                        </Grid>
+                      </ButtonBase>
+                    </Grid>
+                  ))}
                 </Grid>
               </Grid>
             </Grid>

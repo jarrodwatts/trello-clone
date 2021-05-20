@@ -1,6 +1,6 @@
 import React, { ReactElement, useState } from 'react';
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import { Button, ButtonBase, Grid, Paper, Typography } from '@material-ui/core';
+import { ButtonBase, Grid, Paper, Typography } from '@material-ui/core';
 import { Board, Column, Ticket } from '../../API';
 import { Draggable } from 'react-beautiful-dnd';
 import CreateIcon from '@material-ui/icons/Create';

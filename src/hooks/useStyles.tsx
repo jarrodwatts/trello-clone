@@ -1,3 +1,9 @@
+/**
+ * Honestly I kind of gave up on this hook half way through but...
+ * The idea was that i could have a bunch of generic styles in here and import them with a hook
+ * I ended up just writing them in the same file mostly
+ */
+
 import { makeStyles, Theme } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme: Theme) => ({

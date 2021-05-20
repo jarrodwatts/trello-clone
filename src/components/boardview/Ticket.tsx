@@ -26,6 +26,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     lineHeight: '20px',
     fontWeight: 400,
   },
+  descriptionIcon: {
+    maxHeight: '16px',
+    maxWidth: '16px',
+    color: '#5e6c84',
+    margin: '4px',
+  },
 }));
 
 interface Props {
@@ -108,11 +114,7 @@ export default function TicketComponent({
                 </Grid>
               </Grid>
               {ticket.description && (
-                <Button
-                  onClick={() => console.log('open:', ticket.id, 'description')}
-                >
-                  <ViewHeadlineIcon />
-                </Button>
+                <ViewHeadlineIcon className={classes.descriptionIcon} />
               )}
             </Paper>
           </div>

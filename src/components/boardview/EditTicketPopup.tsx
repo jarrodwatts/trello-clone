@@ -67,8 +67,6 @@ export default function EditTicketPopup({
     ticket.description ? ticket.description : ''
   );
 
-  console.log('x', board);
-
   const handleCloseWithSave = async () => {
     handleClose();
     console.log('Closed:', title);
@@ -93,9 +91,6 @@ export default function EditTicketPopup({
     };
 
     setBoard(newBoard as Board);
-
-    console.log(newBoard);
-    console.log(board.id);
 
     const input: UpdateBoardInput = {
       // @ts-ignore :-)

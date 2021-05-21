@@ -22,7 +22,7 @@ interface Props {
   toggleOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function InviteSuccess({
+export default function AuthFailure({
   errorMessage,
   open,
   toggleOpen,

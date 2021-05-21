@@ -31,6 +31,8 @@ export default function CreateNewBoardPopup({
     <div>
       <Dialog
         open={open}
+        maxWidth={'xs'}
+        fullWidth={true}
         onClose={handleClose}
         aria-labelledby='form-dialog-title'
       >

@@ -37,7 +37,6 @@ export default function GuestHeader(): ReactElement {
 
   return (
     <div className={classes.root}>
-      {/* TODO: Set Background color to transparent and change elevation on scroll */}
       <AppBar position='static' color='transparent' elevation={0}>
         <Toolbar className={classes.guestBarHeight}>
           <IconButton edge='start' color='inherit' aria-label='menu'>

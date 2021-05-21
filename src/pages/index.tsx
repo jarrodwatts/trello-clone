@@ -9,8 +9,6 @@ export default function Index() {
   const router = useRouter();
   const { user } = useUser();
 
-  // TODO: Change this to be a serverside re-direct
-  // Re-route signed in users to /boards
   if (user) {
     router.push(`/boards`);
   }
@@ -173,9 +171,9 @@ export default function Index() {
               >
                 Jarrod Watts
               </a>
-              ! If you would like to get in touch or support the creation of
-              more things like this, I would love if you checked out my content.
-              Otherwise, thanks for stopping by!
+              ! If you&apos;d like to see more cool stuff like this, I would
+              love for you to check out my content! Feel free to check out my
+              tutorial videos on how to build things just like this! Thanks :-)
             </Typography>
             <Grid
               container

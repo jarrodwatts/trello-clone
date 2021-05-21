@@ -55,8 +55,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 interface Props {
-  workspaces: Workspace[];
-  setWorkspaces: React.Dispatch<React.SetStateAction<Workspace[]>>;
+  workspaces?: Workspace[];
+  setWorkspaces?: React.Dispatch<React.SetStateAction<Workspace[]>>;
   startingPhase?: string;
   inviteToThisWorkspace?: Workspace;
 }
@@ -95,7 +95,7 @@ export default function CreateWorkspaceForm({
       authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
     })) as { data: CreateWorkspaceMutation; errors: any[] };
 
-    if (!newWorkspace.errors) {
+    if (!newWorkspace.errors && setWorkspaces && workspaces) {
       setPhase('invite');
       setWorkspaces([
         ...workspaces,

@@ -8,7 +8,7 @@ type UserContextType = {
   setUser: React.Dispatch<React.SetStateAction<CognitoUserExt | null>>;
 };
 
-// TODO: This feels so dumb that you need to have default values
+// This feels so dumb that you need to have default values for TypeScript contexts
 const UserContext = createContext<UserContextType>({} as UserContextType);
 
 interface Props {

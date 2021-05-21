@@ -1,5 +1,4 @@
 import {
-  Avatar,
   ButtonBase,
   Container,
   Grid,
@@ -18,7 +17,7 @@ import { GRAPHQL_AUTH_MODE } from '@aws-amplify/api';
 import AddIcon from '@material-ui/icons/Add';
 import CreateWorkspacePopup from '../components/boards/CreateWorkspacePopup';
 import CreateWorkspaceForm from '../components/boards/CreateWorkspaceForm';
-import randomGradient from '../lib/randomGradient';
+import WorkspaceDropdown from '../components/boards/WorkspaceDropdown';
 
 const useStyles = makeStyles((theme: Theme) => ({
   topPad: {
@@ -163,37 +162,7 @@ export default function Boards({}: Props): ReactElement {
                   spacing={1}
                 >
                   {userWorkspaces.map((ws) => (
-                    <Grid
-                      item
-                      key={ws.id}
-                      xs={12}
-                      style={{ width: '100%', padding: '8px' }}
-                    >
-                      <ButtonBase style={{ width: '100%' }}>
-                        <Grid
-                          container
-                          direction='row'
-                          alignItems='center'
-                          spacing={1}
-                        >
-                          <Grid item>
-                            <Avatar
-                              className={classes.smallAvatar}
-                              style={{ background: randomGradient() }}
-                            >
-                              <b>{ws?.name?.charAt(0)?.toUpperCase()}</b>
-                            </Avatar>
-                          </Grid>
-                          <Grid item>
-                            <Typography
-                              className={classes.workspaceNameSideBar}
-                            >
-                              {ws.name}
-                            </Typography>
-                          </Grid>
-                        </Grid>
-                      </ButtonBase>
-                    </Grid>
+                    <WorkspaceDropdown workspace={ws} key={ws.id} />
                   ))}
                 </Grid>
               </Grid>

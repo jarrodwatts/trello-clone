@@ -112,7 +112,7 @@ export default function EditTicketPopup({
   return (
     <Dialog
       open={open}
-      maxWidth={'sm'}
+      maxWidth={'xs'}
       fullWidth={true}
       onClose={handleCloseWithSave}
       aria-labelledby='form-dialog-title'

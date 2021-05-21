@@ -15,7 +15,14 @@ import { GRAPHQL_AUTH_MODE } from '@aws-amplify/api';
 import UserHeader from '../../components/Headers/UserHeader';
 import Image from 'next/image';
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import { Grid, Typography } from '@material-ui/core';
+import {
+  Button,
+  Grid,
+  Menu,
+  Typography,
+  Divider,
+  TextField,
+} from '@material-ui/core';
 import ColumnComponent from '../../components/boardview/Column';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { resetServerContext } from 'react-beautiful-dnd';
@@ -23,6 +30,7 @@ import AddColumn from '../../components/boardview/AddColumn';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { updateBoard } from '../../graphql/mutations';
+import InviteSuccess from '../../components/boards/InviteSuccess';
 
 const useStyles = makeStyles((theme: Theme) => ({
   backgroundImage: {
@@ -38,6 +46,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontWeight: 700,
     marginBottom: '8px',
   },
+  hintText: {
+    color: '#5e6c84',
+    lineHeight: '40px',
+    textAlign: 'center',
+    fontSize: 14,
+    fontWeight: 400,
+  },
 }));
 
 /**
@@ -52,6 +67,48 @@ export default function IndividualBoardPage(): ReactElement {
   resetServerContext();
 
   const [board, setBoard] = useState<Board | null>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [inviteEmail, setInviteEmail] = useState<string | undefined>();
+  const [showSnackbarSuccess, setShowSnackbar] = useState<boolean>(false);
+  const [lastAddedMember, setLastAddedMember] = useState<string>('');
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleInvitation = async () => {
+    if (board && inviteEmail) {
+      const existingBoard = board;
+      const newEditors = existingBoard.editors
+        ? [...existingBoard.editors, inviteEmail]
+        : [inviteEmail];
+
+      const updatedBoardInput: UpdateBoardInput = {
+        // @ts-ignore
+        id: board.id,
+        editors: newEditors,
+      };
+
+      try {
+        const newBoard = (await API.graphql({
+          query: updateBoard,
+          variables: { input: updatedBoardInput },
+          authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
+        })) as { data: UpdateBoardMutation };
+
+        setLastAddedMember(inviteEmail);
+        setShowSnackbar(true);
+        setInviteEmail('');
+        setBoard(newBoard.data.updateBoard as Board);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
 
   useEffect(() => {
     if (id && !board) {
@@ -192,6 +249,12 @@ export default function IndividualBoardPage(): ReactElement {
 
     return (
       <React.Fragment>
+        {/* Show Snack Bar when invite success */}
+        <InviteSuccess
+          memberName={lastAddedMember}
+          open={showSnackbarSuccess}
+          toggleOpen={setShowSnackbar}
+        />
         <div className={classes.backgroundImage}>
           <Image
             alt={board?.name}
@@ -203,9 +266,80 @@ export default function IndividualBoardPage(): ReactElement {
         </div>
         <UserHeader st={'grey'} />
         <div style={{ padding: '16px' }}>
-          <Typography variant='h5' className={classes.title}>
-            {board?.name}
-          </Typography>
+          <Grid
+            container
+            direction='row'
+            alignItems='center'
+            justify='flex-start'
+            spacing={4}
+            style={{ marginBottom: '8px' }}
+          >
+            <Grid item>
+              <Typography variant='h5' className={classes.title}>
+                {board?.name}
+              </Typography>
+            </Grid>
+            <Grid item>
+              {' '}
+              <Button
+                aria-controls='simple-menu'
+                aria-haspopup='true'
+                onClick={handleClick}
+              >
+                Invite People
+              </Button>
+              <Menu
+                id='simple-menu'
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                <Grid
+                  container
+                  style={{
+                    minHeight: '412px',
+                    minWidth: '304px',
+                    padding: '4px',
+                  }}
+                  direction='column'
+                  alignItems='center'
+                  spacing={1}
+                >
+                  <Grid item>
+                    <Typography className={classes.hintText}>
+                      Invite to board
+                    </Typography>
+                  </Grid>
+                  <Divider style={{ width: '90%' }} />
+
+                  <Grid item style={{ width: '90%' }}>
+                    <TextField
+                      autoFocus
+                      margin='dense'
+                      variant='outlined'
+                      id='boardName'
+                      label='Email address'
+                      value={inviteEmail}
+                      type='email'
+                      onChange={(e) => setInviteEmail(e.target.value)}
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item style={{ width: '90%' }}>
+                    <Button
+                      fullWidth
+                      variant='contained'
+                      color='primary'
+                      onClick={handleInvitation}
+                    >
+                      Send invitation
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Menu>
+            </Grid>
+          </Grid>
 
           <DragDropContext onDragEnd={onDragEnd}>
             <Grid

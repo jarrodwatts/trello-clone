@@ -10,8 +10,33 @@ import AuthContext from '../context/AuthContext';
 import Amplify, { Auth } from 'aws-amplify';
 import awsconfig from '../aws-exports';
 
-Amplify.configure({
+const isLocalhost = process.env.NODE_ENV == 'development';
+
+const [
+  localRedirectSignIn,
+  productionRedirectSignIn,
+] = awsconfig.oauth.redirectSignIn.split(',');
+
+const [
+  localRedirectSignOut,
+  productionRedirectSignOut,
+] = awsconfig.oauth.redirectSignOut.split(',');
+
+const updatedAwsConfig = {
   ...awsconfig,
+  oauth: {
+    ...awsconfig.oauth,
+    redirectSignIn: isLocalhost
+      ? localRedirectSignIn
+      : productionRedirectSignIn,
+    redirectSignOut: isLocalhost
+      ? localRedirectSignOut
+      : productionRedirectSignOut,
+  },
+};
+
+Amplify.configure({
+  ...updatedAwsConfig,
   // https://github.com/aws-amplify/amplify-cli/issues/3794
   // This allows us to use email as the "owner" claim rather than sub by default.
   // BUT... prevents us from making server-side requests with the API.....

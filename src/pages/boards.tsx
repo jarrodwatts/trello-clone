@@ -18,6 +18,7 @@ import AddIcon from '@material-ui/icons/Add';
 import CreateWorkspacePopup from '../components/boards/CreateWorkspacePopup';
 import CreateWorkspaceForm from '../components/boards/CreateWorkspaceForm';
 import WorkspaceDropdown from '../components/boards/WorkspaceDropdown';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const useStyles = makeStyles((theme: Theme) => ({
   topPad: {
@@ -74,6 +75,7 @@ export default function Boards({}: Props): ReactElement {
   const classes = useStyles();
   const [userWorkspaces, setUserWorkspaces] = useState<Workspace[]>([]);
   const [openCreate, setOpenCreate] = useState(false);
+  const isNotMobile = useMediaQuery<boolean>('(min-width:600px)');
 
   const handleClose = () => {
     setOpenCreate(false);
@@ -114,63 +116,76 @@ export default function Boards({}: Props): ReactElement {
       <Container maxWidth='lg' className={classes.topPad}>
         <Grid container spacing={4}>
           {/* Side Menu Bar */}
-          <Grid item sm={3}>
-            <Grid container direction='column' style={{ marginBottom: '16px' }}>
-              <ButtonBase className={classes.menuButton}>
-                <Grid container alignItems='center' direction='row' spacing={1}>
-                  <Grid item>
-                    <DashboardIcon
-                      color='primary'
-                      className={classes.tinyIcon}
-                    />
+          {isNotMobile && (
+            <Grid item sm={3}>
+              <Grid
+                container
+                direction='column'
+                style={{ marginBottom: '16px' }}
+              >
+                <ButtonBase className={classes.menuButton}>
+                  <Grid
+                    container
+                    alignItems='center'
+                    direction='row'
+                    spacing={1}
+                  >
+                    <Grid item>
+                      <DashboardIcon
+                        color='primary'
+                        className={classes.tinyIcon}
+                      />
+                    </Grid>
+                    <Grid item>
+                      <Typography color='primary' className={classes.textBold}>
+                        Boards
+                      </Typography>
+                    </Grid>
                   </Grid>
+                </ButtonBase>
+              </Grid>
+
+              <Grid container direction='column'>
+                <Grid container direction='row' justify='space-between'>
                   <Grid item>
-                    <Typography color='primary' className={classes.textBold}>
-                      Boards
+                    <Typography className={classes.thinLight}>
+                      WORKSPACES
                     </Typography>
                   </Grid>
+                  <Grid item>
+                    <ButtonBase onClick={handleClickOpen}>
+                      <AddIcon
+                        className={classes.addIconSmall}
+                        color='inherit'
+                      />
+                    </ButtonBase>
+                    <CreateWorkspacePopup
+                      open={openCreate}
+                      workspaces={userWorkspaces}
+                      setWorkspaces={setUserWorkspaces}
+                      handleClose={handleClose}
+                    />
+                  </Grid>
                 </Grid>
-              </ButtonBase>
-            </Grid>
 
-            <Grid container direction='column'>
-              <Grid container direction='row' justify='space-between'>
                 <Grid item>
-                  <Typography className={classes.thinLight}>
-                    WORKSPACES
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  <ButtonBase onClick={handleClickOpen}>
-                    <AddIcon className={classes.addIconSmall} color='inherit' />
-                  </ButtonBase>
-                  <CreateWorkspacePopup
-                    open={openCreate}
-                    workspaces={userWorkspaces}
-                    setWorkspaces={setUserWorkspaces}
-                    handleClose={handleClose}
-                  />
-                </Grid>
-              </Grid>
-
-              <Grid item>
-                <Grid
-                  container
-                  direction='column'
-                  alignItems='flex-start'
-                  justify='center'
-                  spacing={1}
-                >
-                  {userWorkspaces.map((ws) => (
-                    <WorkspaceDropdown workspace={ws} key={ws.id} />
-                  ))}
+                  <Grid
+                    container
+                    direction='column'
+                    alignItems='flex-start'
+                    justify='center'
+                    spacing={1}
+                  >
+                    {userWorkspaces.map((ws) => (
+                      <WorkspaceDropdown workspace={ws} key={ws.id} />
+                    ))}
+                  </Grid>
                 </Grid>
               </Grid>
             </Grid>
-          </Grid>
-
+          )}
           {/* Main Section */}
-          <Grid item sm={9}>
+          <Grid item xs={12} sm={9}>
             {/* Show create workspace component if no workspaces */}
             {userWorkspaces.length === 0 && (
               <CreateWorkspaceForm

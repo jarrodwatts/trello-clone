@@ -13,6 +13,7 @@ import { useUser } from '../../context/AuthContext';
 import GuestHeader from './GuestHeader';
 import ProfileMenu from '../ProfileMenu';
 import { useRouter } from 'next/router';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -44,6 +45,7 @@ export default function UserHeader({ st }: Props): ReactElement {
   const classes = useStyles();
   const router = useRouter();
   const { user } = useUser();
+  const isNotMobile = useMediaQuery<boolean>('(min-width:600px)');
 
   const backgroundStyle = () => {
     if (st === 'blue') {
@@ -68,50 +70,52 @@ export default function UserHeader({ st }: Props): ReactElement {
                 }
           }
         >
-          <Grid
-            container
-            direction='row'
-            alignItems='center'
-            spacing={1}
-            className={classes.pad}
-          >
-            <Grid item>
-              <ButtonBase
-                className={classes.iconButton}
-                style={backgroundStyle()}
-              >
-                <AppsIcon />
-              </ButtonBase>
-            </Grid>
-            <Grid item>
-              <ButtonBase
-                onClick={() => router.push(`/`)}
-                className={classes.iconButton}
-                style={backgroundStyle()}
-              >
-                <HomeIcon />
-              </ButtonBase>
-            </Grid>
-            <Grid item>
-              <ButtonBase
-                onClick={() => router.push(`/boards`)}
-                className={classes.iconButton}
-                style={backgroundStyle()}
-              >
-                <DashboardIcon
-                  style={{ marginRight: '8px', paddingLeft: '4px' }}
-                />
-                <Typography
-                  style={{
-                    fontWeight: 700,
-                    paddingRight: '8px',
-                  }}
+          {isNotMobile && (
+            <Grid
+              container
+              direction='row'
+              alignItems='center'
+              spacing={1}
+              className={classes.pad}
+            >
+              <Grid item>
+                <ButtonBase
+                  className={classes.iconButton}
+                  style={backgroundStyle()}
                 >
-                  Boards
-                </Typography>
-              </ButtonBase>
+                  <AppsIcon />
+                </ButtonBase>
+              </Grid>
+              <Grid item>
+                <ButtonBase
+                  onClick={() => router.push(`/`)}
+                  className={classes.iconButton}
+                  style={backgroundStyle()}
+                >
+                  <HomeIcon />
+                </ButtonBase>
+              </Grid>
+              <Grid item>
+                <ButtonBase
+                  onClick={() => router.push(`/boards`)}
+                  className={classes.iconButton}
+                  style={backgroundStyle()}
+                >
+                  <DashboardIcon
+                    style={{ marginRight: '8px', paddingLeft: '4px' }}
+                  />
+                  <Typography
+                    style={{
+                      fontWeight: 700,
+                      paddingRight: '8px',
+                    }}
+                  >
+                    Boards
+                  </Typography>
+                </ButtonBase>
+              </Grid>
             </Grid>
-          </Grid>
+          )}
 
           <Grid container direction='row' justify='center' alignItems='center'>
             <Grid item>
@@ -135,42 +139,44 @@ export default function UserHeader({ st }: Props): ReactElement {
             </Grid>
           </Grid>
 
-          <Grid
-            container
-            direction='row'
-            justify='flex-end'
-            spacing={1}
-            style={{ marginRight: '4px' }}
-          >
-            <Grid item>
-              <ButtonBase
-                className={classes.iconButton}
-                style={backgroundStyle()}
-              >
-                <AddIcon />
-              </ButtonBase>
-            </Grid>
-            <Grid item>
-              <ButtonBase
-                className={classes.iconButton}
-                style={backgroundStyle()}
-              >
-                <InfoIcon />
-              </ButtonBase>
-            </Grid>
-            <Grid item>
-              <ButtonBase
-                className={classes.iconButton}
-                style={backgroundStyle()}
-              >
-                <NotificationsIcon />
-              </ButtonBase>
-            </Grid>
+          {isNotMobile && (
+            <Grid
+              container
+              direction='row'
+              justify='flex-end'
+              spacing={1}
+              style={{ marginRight: '4px' }}
+            >
+              <Grid item>
+                <ButtonBase
+                  className={classes.iconButton}
+                  style={backgroundStyle()}
+                >
+                  <AddIcon />
+                </ButtonBase>
+              </Grid>
+              <Grid item>
+                <ButtonBase
+                  className={classes.iconButton}
+                  style={backgroundStyle()}
+                >
+                  <InfoIcon />
+                </ButtonBase>
+              </Grid>
+              <Grid item>
+                <ButtonBase
+                  className={classes.iconButton}
+                  style={backgroundStyle()}
+                >
+                  <NotificationsIcon />
+                </ButtonBase>
+              </Grid>
 
-            <Grid item>
-              <ProfileMenu />
+              <Grid item>
+                <ProfileMenu />
+              </Grid>
             </Grid>
-          </Grid>
+          )}
         </AppBar>
 
         {/* Padding to put items below the header */}

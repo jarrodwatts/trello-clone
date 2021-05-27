@@ -47,9 +47,9 @@ export default function Index() {
               component='h2'
               style={{ color: '#091E42', fontWeight: 400, textAlign: 'center' }}
             >
-              It&apos;s purpose is to demonstrate how to use modern technologies
-              like <b>Next.JS</b>, <b>AWS Amplify</b> and <b>TypeScript</b> to
-              create a real project at lightning pace ⚡!{' '}
+              Its purpose is to demonstrate how to use modern technologies like{' '}
+              <b>Next.JS</b>, <b>AWS Amplify</b> and <b>TypeScript</b> to create
+              a real project at lightning pace ⚡!{' '}
             </Typography>
           </Grid>
 

@@ -1,34 +1,31 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 💩 Craplo - A Crappy Trello Clone
 
-## Getting Started
+## The Summary
 
-First, run the development server:
+I built this to demonstrate how quickly you can build complex functional applications with serverless infrastructure like AWS Amplify and Next JS.
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+## The Stack
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This Trello Clone was built using:
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+- AWS Amplify
+- Next JS
+- Material UI
+- TypeScript (basic)
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+It took me about 4 weeks of coding after work to build this project start to finish.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Key Features
 
-## Learn More
+- **Multi-User** Authenticated Access to Workspaces and Boards.
+- Very similar **functionality** replication of the real Trello boards.
+- User-based Access Restrictions on the **GraphQL API**.
+- Social Sign in with Facebook & Google.
+- Next JS 10.0 Image Component.
+- React Context for "global" user and theme state.
 
-To learn more about Next.js, take a look at the following resources:
+## About Me
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+If you like what you see, I recently started making programming content on [YouTube](https://www.youtube.com/channel/UCJae_agpt9S3qwWNED0KHcQ).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+I would really appreciate if you considered checking it out. _Thanks_!
